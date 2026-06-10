@@ -1,4 +1,4 @@
-# Atualização de Firmware que possibilita a incusçao de capas nos jogos.
+# Atualização de Firmware que possibilita a inclusão de capas nos jogos.
 
 Firmware modificada para o EverDrive de Master System que possibilita incluir capas nos jogos.
 
