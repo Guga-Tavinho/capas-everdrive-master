@@ -1,4 +1,5 @@
-# capas-everdrive-master
+# Atualização de Firmware que possibilita a incusçao de capas nos jogos.
+
 Firmware modificada para o EverDrive de Master System que possibilita incluir capas nos jogos.
 
 Tutorial de atualização da firmware e inclusão das capas:
