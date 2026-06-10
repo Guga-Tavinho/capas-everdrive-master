@@ -1,0 +1,634 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.3.0 #8604 (May 11 2013) (MINGW64)
+                              4 ; This file was generated Wed Jun 10 08:26:43 2026
+                              5 ;--------------------------------------------------------
+                              6 	.module sys
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _sysDrawFileSize
+                             13 	.globl _gScreenW
+                             14 	.globl _gAppendChar
+                             15 	.globl _gAppendStringMl
+                             16 	.globl _gSetXY
+                             17 	.globl _gAppendString
+                             18 	.globl _gDrawString
+                             19 	.globl _gDrawStringCx
+                             20 	.globl _gAppendNum
+                             21 	.globl _gAppendHex8
+                             22 	.globl _gAppendHex16
+                             23 	.globl _gAppendHex16SW
+                             24 	.globl _gAppendHex32
+                             25 	.globl _gDrawStringMl
+                             26 	.globl _gDrawNum
+                             27 	.globl _gDrawCursor
+                             28 ;--------------------------------------------------------
+                             29 ; special function registers
+                             30 ;--------------------------------------------------------
+                             31 ;--------------------------------------------------------
+                             32 ; ram data
+                             33 ;--------------------------------------------------------
+                             34 	.area _DATA
+   0000                      35 _gDrawCursor_cursor_strobe_1_75:
+   0000                      36 	.ds 2
+                             37 ;--------------------------------------------------------
+                             38 ; ram data
+                             39 ;--------------------------------------------------------
+                             40 	.area _INITIALIZED
+                             41 ;--------------------------------------------------------
+                             42 ; absolute external ram data
+                             43 ;--------------------------------------------------------
+                             44 	.area _DABS (ABS)
+                             45 ;--------------------------------------------------------
+                             46 ; global & static initialisations
+                             47 ;--------------------------------------------------------
+                             48 	.area _HOME
+                             49 	.area _GSINIT
+                             50 	.area _GSFINAL
+                             51 	.area _GSINIT
+                             52 ;--------------------------------------------------------
+                             53 ; Home
+                             54 ;--------------------------------------------------------
+                             55 	.area _HOME
+                             56 	.area _HOME
+                             57 ;--------------------------------------------------------
+                             58 ; code
+                             59 ;--------------------------------------------------------
+                             60 	.area _CODE
+                             61 ;sys.c:4: void gDrawString(u8 *str, u8 x, u8 y) {
+                             62 ;	---------------------------------
+                             63 ; Function gDrawString
+                             64 ; ---------------------------------
+   0000                      65 _gDrawString_start::
+   0000                      66 _gDrawString:
+                             67 ;sys.c:6: gSetXY(x, y);
+   0000 21 05 00      [10]   68 	ld	hl, #5+0
+   0003 39            [11]   69 	add	hl, sp
+   0004 7E            [ 7]   70 	ld	a, (hl)
+   0005 F5            [11]   71 	push	af
+   0006 33            [ 6]   72 	inc	sp
+   0007 21 05 00      [10]   73 	ld	hl, #5+0
+   000A 39            [11]   74 	add	hl, sp
+   000B 7E            [ 7]   75 	ld	a, (hl)
+   000C F5            [11]   76 	push	af
+   000D 33            [ 6]   77 	inc	sp
+   000E CDr00r00      [17]   78 	call	_gSetXY
+   0011 F1            [10]   79 	pop	af
+                             80 ;sys.c:7: gAppendString(str);
+   0012 C1            [10]   81 	pop	bc
+   0013 E1            [10]   82 	pop	hl
+   0014 E5            [11]   83 	push	hl
+   0015 C5            [11]   84 	push	bc
+   0016 E5            [11]   85 	push	hl
+   0017 CDr00r00      [17]   86 	call	_gAppendString
+   001A F1            [10]   87 	pop	af
+   001B C9            [10]   88 	ret
+   001C                      89 _gDrawString_end::
+                             90 ;sys.c:10: void gDrawStringCx(u8 *str, u8 y) {
+                             91 ;	---------------------------------
+                             92 ; Function gDrawStringCx
+                             93 ; ---------------------------------
+   001C                      94 _gDrawStringCx_start::
+   001C                      95 _gDrawStringCx:
+   001C DD E5         [15]   96 	push	ix
+   001E DD 21 00 00   [14]   97 	ld	ix,#0
+   0022 DD 39         [15]   98 	add	ix,sp
+                             99 ;sys.c:13: while (str[x] != 0)x++;
+   0024 01 00 00      [10]  100 	ld	bc,#0x0000
+   0027                     101 00101$:
+   0027 DD 6E 04      [19]  102 	ld	l,4 (ix)
+   002A DD 66 05      [19]  103 	ld	h,5 (ix)
+   002D 09            [11]  104 	add	hl,bc
+   002E 7E            [ 7]  105 	ld	a,(hl)
+   002F B7            [ 4]  106 	or	a, a
+   0030 28 03         [12]  107 	jr	Z,00103$
+   0032 03            [ 6]  108 	inc	bc
+   0033 18 F2         [12]  109 	jr	00101$
+   0035                     110 00103$:
+                            111 ;sys.c:14: x = (gScreenW() - x) / 2;
+   0035 C5            [11]  112 	push	bc
+   0036 CDr00r00      [17]  113 	call	_gScreenW
+   0039 C1            [10]  114 	pop	bc
+   003A 26 00         [ 7]  115 	ld	h,#0x00
+   003C BF            [ 4]  116 	cp	a, a
+   003D ED 42         [15]  117 	sbc	hl, bc
+   003F CB 3C         [ 8]  118 	srl	h
+   0041 CB 1D         [ 8]  119 	rr	l
+                            120 ;sys.c:15: gDrawString(str, x, y);
+   0043 55            [ 4]  121 	ld	d,l
+   0044 DD 7E 06      [19]  122 	ld	a,6 (ix)
+   0047 F5            [11]  123 	push	af
+   0048 33            [ 6]  124 	inc	sp
+   0049 D5            [11]  125 	push	de
+   004A 33            [ 6]  126 	inc	sp
+   004B DD 6E 04      [19]  127 	ld	l,4 (ix)
+   004E DD 66 05      [19]  128 	ld	h,5 (ix)
+   0051 E5            [11]  129 	push	hl
+   0052 CDr00r00      [17]  130 	call	_gDrawString
+   0055 F1            [10]  131 	pop	af
+   0056 F1            [10]  132 	pop	af
+   0057 DD E1         [14]  133 	pop	ix
+   0059 C9            [10]  134 	ret
+   005A                     135 _gDrawStringCx_end::
+                            136 ;sys.c:18: void gAppendNum(u32 num) {
+                            137 ;	---------------------------------
+                            138 ; Function gAppendNum
+                            139 ; ---------------------------------
+   005A                     140 _gAppendNum_start::
+   005A                     141 _gAppendNum:
+   005A DD E5         [15]  142 	push	ix
+   005C DD 21 00 00   [14]  143 	ld	ix,#0
+   0060 DD 39         [15]  144 	add	ix,sp
+   0062 21 F5 FF      [10]  145 	ld	hl,#-11
+   0065 39            [11]  146 	add	hl,sp
+   0066 F9            [ 6]  147 	ld	sp,hl
+                            148 ;sys.c:22: u8 *str = (u8 *) & buff[10];
+   0067 21 0A 00      [10]  149 	ld	hl,#0x0000 + 0x000A
+   006A 39            [11]  150 	add	hl,sp
+                            151 ;sys.c:25: *str = 0;
+   006B 36 00         [10]  152 	ld	(hl),#0x00
+                            153 ;sys.c:26: if (num == 0)*--str = '0';
+   006D DD 7E 07      [19]  154 	ld	a,7 (ix)
+   0070 DD B6 06      [19]  155 	or	a, 6 (ix)
+   0073 DD B6 05      [19]  156 	or	a, 5 (ix)
+   0076 DD B6 04      [19]  157 	or	a,4 (ix)
+   0079 20 03         [12]  158 	jr	NZ,00111$
+   007B 2B            [ 6]  159 	dec	hl
+   007C 36 30         [10]  160 	ld	(hl),#0x30
+                            161 ;sys.c:27: for (i = 0; num != 0; i++) {
+   007E                     162 00111$:
+   007E 4D            [ 4]  163 	ld	c, l
+   007F 44            [ 4]  164 	ld	b, h
+   0080                     165 00105$:
+   0080 DD 7E 04      [19]  166 	ld	a,4 (ix)
+   0083 DD B6 05      [19]  167 	or	a, 5 (ix)
+   0086 DD B6 06      [19]  168 	or	a, 6 (ix)
+   0089 DD B6 07      [19]  169 	or	a, 7 (ix)
+   008C 28 51         [12]  170 	jr	Z,00103$
+                            171 ;sys.c:28: *--str = num % 10 + '0';
+   008E 0B            [ 6]  172 	dec	bc
+   008F C5            [11]  173 	push	bc
+   0090 21 00 00      [10]  174 	ld	hl,#0x0000
+   0093 E5            [11]  175 	push	hl
+   0094 21 0A 00      [10]  176 	ld	hl,#0x000A
+   0097 E5            [11]  177 	push	hl
+   0098 DD 6E 06      [19]  178 	ld	l,6 (ix)
+   009B DD 66 07      [19]  179 	ld	h,7 (ix)
+   009E E5            [11]  180 	push	hl
+   009F DD 6E 04      [19]  181 	ld	l,4 (ix)
+   00A2 DD 66 05      [19]  182 	ld	h,5 (ix)
+   00A5 E5            [11]  183 	push	hl
+   00A6 CDr00r00      [17]  184 	call	__modulong_rrx_s
+   00A9 F1            [10]  185 	pop	af
+   00AA F1            [10]  186 	pop	af
+   00AB F1            [10]  187 	pop	af
+   00AC F1            [10]  188 	pop	af
+   00AD C1            [10]  189 	pop	bc
+   00AE 7D            [ 4]  190 	ld	a,l
+   00AF C6 30         [ 7]  191 	add	a, #0x30
+   00B1 02            [ 7]  192 	ld	(bc),a
+                            193 ;sys.c:29: num /= 10;
+   00B2 C5            [11]  194 	push	bc
+   00B3 21 00 00      [10]  195 	ld	hl,#0x0000
+   00B6 E5            [11]  196 	push	hl
+   00B7 21 0A 00      [10]  197 	ld	hl,#0x000A
+   00BA E5            [11]  198 	push	hl
+   00BB DD 6E 06      [19]  199 	ld	l,6 (ix)
+   00BE DD 66 07      [19]  200 	ld	h,7 (ix)
+   00C1 E5            [11]  201 	push	hl
+   00C2 DD 6E 04      [19]  202 	ld	l,4 (ix)
+   00C5 DD 66 05      [19]  203 	ld	h,5 (ix)
+   00C8 E5            [11]  204 	push	hl
+   00C9 CDr00r00      [17]  205 	call	__divulong_rrx_s
+   00CC F1            [10]  206 	pop	af
+   00CD F1            [10]  207 	pop	af
+   00CE F1            [10]  208 	pop	af
+   00CF F1            [10]  209 	pop	af
+   00D0 C1            [10]  210 	pop	bc
+   00D1 DD 75 04      [19]  211 	ld	4 (ix),l
+   00D4 DD 74 05      [19]  212 	ld	5 (ix),h
+   00D7 DD 73 06      [19]  213 	ld	6 (ix),e
+   00DA DD 72 07      [19]  214 	ld	7 (ix),d
+                            215 ;sys.c:27: for (i = 0; num != 0; i++) {
+   00DD 18 A1         [12]  216 	jr	00105$
+   00DF                     217 00103$:
+                            218 ;sys.c:32: gAppendString(str);
+   00DF C5            [11]  219 	push	bc
+   00E0 CDr00r00      [17]  220 	call	_gAppendString
+   00E3 DD F9         [10]  221 	ld	sp,ix
+   00E5 DD E1         [14]  222 	pop	ix
+   00E7 C9            [10]  223 	ret
+   00E8                     224 _gAppendNum_end::
+                            225 ;sys.c:36: void gAppendHex8(u8 num) {
+                            226 ;	---------------------------------
+                            227 ; Function gAppendHex8
+                            228 ; ---------------------------------
+   00E8                     229 _gAppendHex8_start::
+   00E8                     230 _gAppendHex8:
+   00E8 DD E5         [15]  231 	push	ix
+   00EA DD 21 00 00   [14]  232 	ld	ix,#0
+   00EE DD 39         [15]  233 	add	ix,sp
+   00F0 21 F8 FF      [10]  234 	ld	hl,#-8
+   00F3 39            [11]  235 	add	hl,sp
+   00F4 F9            [ 6]  236 	ld	sp,hl
+                            237 ;sys.c:40: buff[2] = 0;
+   00F5 21 00 00      [10]  238 	ld	hl,#0x0000
+   00F8 39            [11]  239 	add	hl,sp
+   00F9 4D            [ 4]  240 	ld	c,l
+   00FA 44            [ 4]  241 	ld	b,h
+   00FB 23            [ 6]  242 	inc	hl
+   00FC 23            [ 6]  243 	inc	hl
+   00FD 36 00         [10]  244 	ld	(hl),#0x00
+                            245 ;sys.c:42: val = num >> 4;
+   00FF DD 7E 04      [19]  246 	ld	a,4 (ix)
+   0102 07            [ 4]  247 	rlca
+   0103 07            [ 4]  248 	rlca
+   0104 07            [ 4]  249 	rlca
+   0105 07            [ 4]  250 	rlca
+   0106 E6 0F         [ 7]  251 	and	a,#0x0F
+   0108 57            [ 4]  252 	ld	d,a
+                            253 ;sys.c:43: if (val > 9)val += 7;
+   0109 3E 09         [ 7]  254 	ld	a,#0x09
+   010B 92            [ 4]  255 	sub	a, d
+   010C 30 04         [12]  256 	jr	NC,00102$
+   010E 7A            [ 4]  257 	ld	a,d
+   010F C6 07         [ 7]  258 	add	a, #0x07
+   0111 57            [ 4]  259 	ld	d,a
+   0112                     260 00102$:
+                            261 ;sys.c:44: buff[0] = val + '0';
+   0112 7A            [ 4]  262 	ld	a,d
+   0113 C6 30         [ 7]  263 	add	a, #0x30
+   0115 02            [ 7]  264 	ld	(bc),a
+                            265 ;sys.c:45: val = num & 0x0f;
+   0116 DD 7E 04      [19]  266 	ld	a,4 (ix)
+   0119 E6 0F         [ 7]  267 	and	a, #0x0F
+   011B 57            [ 4]  268 	ld	d,a
+                            269 ;sys.c:46: if (val > 9)val += 7;
+   011C 3E 09         [ 7]  270 	ld	a,#0x09
+   011E 92            [ 4]  271 	sub	a, d
+   011F 30 04         [12]  272 	jr	NC,00104$
+   0121 7A            [ 4]  273 	ld	a,d
+   0122 C6 07         [ 7]  274 	add	a, #0x07
+   0124 57            [ 4]  275 	ld	d,a
+   0125                     276 00104$:
+                            277 ;sys.c:47: buff[1] = val + '0';
+   0125 69            [ 4]  278 	ld	l, c
+   0126 60            [ 4]  279 	ld	h, b
+   0127 23            [ 6]  280 	inc	hl
+   0128 7A            [ 4]  281 	ld	a,d
+   0129 C6 30         [ 7]  282 	add	a, #0x30
+   012B 77            [ 7]  283 	ld	(hl),a
+                            284 ;sys.c:49: gAppendString(buff);
+   012C D5            [11]  285 	push	de
+   012D C5            [11]  286 	push	bc
+   012E CDr00r00      [17]  287 	call	_gAppendString
+   0131 F1            [10]  288 	pop	af
+   0132 D1            [10]  289 	pop	de
+   0133 DD F9         [10]  290 	ld	sp,ix
+   0135 DD E1         [14]  291 	pop	ix
+   0137 C9            [10]  292 	ret
+   0138                     293 _gAppendHex8_end::
+                            294 ;sys.c:52: void gAppendHex16(u16 num) {
+                            295 ;	---------------------------------
+                            296 ; Function gAppendHex16
+                            297 ; ---------------------------------
+   0138                     298 _gAppendHex16_start::
+   0138                     299 _gAppendHex16:
+                            300 ;sys.c:54: gAppendHex8(num >> 8);
+   0138 FD 21 02 00   [14]  301 	ld	iy,#2
+   013C FD 39         [15]  302 	add	iy,sp
+   013E FD 66 01      [19]  303 	ld	h,1 (iy)
+   0141 2E 00         [ 7]  304 	ld	l,#0x00
+   0143 E5            [11]  305 	push	hl
+   0144 33            [ 6]  306 	inc	sp
+   0145 CDrE8r00      [17]  307 	call	_gAppendHex8
+   0148 33            [ 6]  308 	inc	sp
+                            309 ;sys.c:55: gAppendHex8(num & 0xff);
+   0149 FD 21 02 00   [14]  310 	ld	iy,#2
+   014D FD 39         [15]  311 	add	iy,sp
+   014F FD 66 00      [19]  312 	ld	h,0 (iy)
+   0152 2E 00         [ 7]  313 	ld	l,#0x00
+   0154 E5            [11]  314 	push	hl
+   0155 33            [ 6]  315 	inc	sp
+   0156 CDrE8r00      [17]  316 	call	_gAppendHex8
+   0159 33            [ 6]  317 	inc	sp
+   015A C9            [10]  318 	ret
+   015B                     319 _gAppendHex16_end::
+                            320 ;sys.c:58: void gAppendHex16SW(u16 num) {
+                            321 ;	---------------------------------
+                            322 ; Function gAppendHex16SW
+                            323 ; ---------------------------------
+   015B                     324 _gAppendHex16SW_start::
+   015B                     325 _gAppendHex16SW:
+                            326 ;sys.c:60: gAppendHex8(num & 0xff);
+   015B FD 21 02 00   [14]  327 	ld	iy,#2
+   015F FD 39         [15]  328 	add	iy,sp
+   0161 FD 66 00      [19]  329 	ld	h,0 (iy)
+   0164 2E 00         [ 7]  330 	ld	l,#0x00
+   0166 E5            [11]  331 	push	hl
+   0167 33            [ 6]  332 	inc	sp
+   0168 CDrE8r00      [17]  333 	call	_gAppendHex8
+   016B 33            [ 6]  334 	inc	sp
+                            335 ;sys.c:61: gAppendHex8(num >> 8);
+   016C FD 21 02 00   [14]  336 	ld	iy,#2
+   0170 FD 39         [15]  337 	add	iy,sp
+   0172 FD 66 01      [19]  338 	ld	h,1 (iy)
+   0175 2E 00         [ 7]  339 	ld	l,#0x00
+   0177 E5            [11]  340 	push	hl
+   0178 33            [ 6]  341 	inc	sp
+   0179 CDrE8r00      [17]  342 	call	_gAppendHex8
+   017C 33            [ 6]  343 	inc	sp
+   017D C9            [10]  344 	ret
+   017E                     345 _gAppendHex16SW_end::
+                            346 ;sys.c:64: void gAppendHex32(u32 num) {
+                            347 ;	---------------------------------
+                            348 ; Function gAppendHex32
+                            349 ; ---------------------------------
+   017E                     350 _gAppendHex32_start::
+   017E                     351 _gAppendHex32:
+   017E DD E5         [15]  352 	push	ix
+   0180 DD 21 00 00   [14]  353 	ld	ix,#0
+   0184 DD 39         [15]  354 	add	ix,sp
+                            355 ;sys.c:66: gAppendHex16(num >> 16);
+   0186 F5            [11]  356 	push	af
+   0187 DD 6E 04      [19]  357 	ld	l,4 (ix)
+   018A DD 66 05      [19]  358 	ld	h,5 (ix)
+   018D DD 5E 06      [19]  359 	ld	e,6 (ix)
+   0190 DD 56 07      [19]  360 	ld	d,7 (ix)
+   0193 F1            [10]  361 	pop	af
+   0194 06 10         [ 7]  362 	ld	b,#0x10
+   0196                     363 00103$:
+   0196 CB 3A         [ 8]  364 	srl	d
+   0198 CB 1B         [ 8]  365 	rr	e
+   019A CB 1C         [ 8]  366 	rr	h
+   019C CB 1D         [ 8]  367 	rr	l
+   019E 10 F6         [13]  368 	djnz	00103$
+   01A0 E5            [11]  369 	push	hl
+   01A1 CDr38r01      [17]  370 	call	_gAppendHex16
+   01A4 F1            [10]  371 	pop	af
+                            372 ;sys.c:67: gAppendHex16(num & 0xffff);
+   01A5 DD 6E 04      [19]  373 	ld	l,4 (ix)
+   01A8 DD 66 05      [19]  374 	ld	h,5 (ix)
+   01AB E5            [11]  375 	push	hl
+   01AC CDr38r01      [17]  376 	call	_gAppendHex16
+   01AF F1            [10]  377 	pop	af
+   01B0 DD E1         [14]  378 	pop	ix
+   01B2 C9            [10]  379 	ret
+   01B3                     380 _gAppendHex32_end::
+                            381 ;sys.c:70: void gDrawStringMl(u8 *str, u8 x, u8 y, u16 len) {
+                            382 ;	---------------------------------
+                            383 ; Function gDrawStringMl
+                            384 ; ---------------------------------
+   01B3                     385 _gDrawStringMl_start::
+   01B3                     386 _gDrawStringMl:
+                            387 ;sys.c:72: gSetXY(x, y);
+   01B3 21 05 00      [10]  388 	ld	hl, #5+0
+   01B6 39            [11]  389 	add	hl, sp
+   01B7 7E            [ 7]  390 	ld	a, (hl)
+   01B8 F5            [11]  391 	push	af
+   01B9 33            [ 6]  392 	inc	sp
+   01BA 21 05 00      [10]  393 	ld	hl, #5+0
+   01BD 39            [11]  394 	add	hl, sp
+   01BE 7E            [ 7]  395 	ld	a, (hl)
+   01BF F5            [11]  396 	push	af
+   01C0 33            [ 6]  397 	inc	sp
+   01C1 CDr00r00      [17]  398 	call	_gSetXY
+   01C4 F1            [10]  399 	pop	af
+                            400 ;sys.c:73: gAppendStringMl(str, len);
+   01C5 21 06 00      [10]  401 	ld	hl, #6
+   01C8 39            [11]  402 	add	hl, sp
+   01C9 4E            [ 7]  403 	ld	c, (hl)
+   01CA 23            [ 6]  404 	inc	hl
+   01CB 46            [ 7]  405 	ld	b, (hl)
+   01CC C5            [11]  406 	push	bc
+   01CD 21 04 00      [10]  407 	ld	hl, #4
+   01D0 39            [11]  408 	add	hl, sp
+   01D1 4E            [ 7]  409 	ld	c, (hl)
+   01D2 23            [ 6]  410 	inc	hl
+   01D3 46            [ 7]  411 	ld	b, (hl)
+   01D4 C5            [11]  412 	push	bc
+   01D5 CDr00r00      [17]  413 	call	_gAppendStringMl
+   01D8 F1            [10]  414 	pop	af
+   01D9 F1            [10]  415 	pop	af
+   01DA C9            [10]  416 	ret
+   01DB                     417 _gDrawStringMl_end::
+                            418 ;sys.c:76: void gDrawNum(u32 num, u8 x, u8 y) {
+                            419 ;	---------------------------------
+                            420 ; Function gDrawNum
+                            421 ; ---------------------------------
+   01DB                     422 _gDrawNum_start::
+   01DB                     423 _gDrawNum:
+                            424 ;sys.c:78: gSetXY(x, y);
+   01DB 21 07 00      [10]  425 	ld	hl, #7+0
+   01DE 39            [11]  426 	add	hl, sp
+   01DF 7E            [ 7]  427 	ld	a, (hl)
+   01E0 F5            [11]  428 	push	af
+   01E1 33            [ 6]  429 	inc	sp
+   01E2 21 07 00      [10]  430 	ld	hl, #7+0
+   01E5 39            [11]  431 	add	hl, sp
+   01E6 7E            [ 7]  432 	ld	a, (hl)
+   01E7 F5            [11]  433 	push	af
+   01E8 33            [ 6]  434 	inc	sp
+   01E9 CDr00r00      [17]  435 	call	_gSetXY
+   01EC F1            [10]  436 	pop	af
+                            437 ;sys.c:79: gAppendNum(num);
+   01ED FD 21 02 00   [14]  438 	ld	iy,#2
+   01F1 FD 39         [15]  439 	add	iy,sp
+   01F3 FD 6E 02      [19]  440 	ld	l,2 (iy)
+   01F6 FD 66 03      [19]  441 	ld	h,3 (iy)
+   01F9 E5            [11]  442 	push	hl
+   01FA FD 6E 00      [19]  443 	ld	l,0 (iy)
+   01FD FD 66 01      [19]  444 	ld	h,1 (iy)
+   0200 E5            [11]  445 	push	hl
+   0201 CDr5Ar00      [17]  446 	call	_gAppendNum
+   0204 F1            [10]  447 	pop	af
+   0205 F1            [10]  448 	pop	af
+   0206 C9            [10]  449 	ret
+   0207                     450 _gDrawNum_end::
+                            451 ;sys.c:82: void sysDrawFileSize(u32 size, u16 x, u16 y) {
+                            452 ;	---------------------------------
+                            453 ; Function sysDrawFileSize
+                            454 ; ---------------------------------
+   0207                     455 _sysDrawFileSize_start::
+   0207                     456 _sysDrawFileSize:
+   0207 DD E5         [15]  457 	push	ix
+   0209 DD 21 00 00   [14]  458 	ld	ix,#0
+   020D DD 39         [15]  459 	add	ix,sp
+   020F F5            [11]  460 	push	af
+                            461 ;sys.c:85: gDrawNum(size, x, y);
+   0210 DD 7E 0A      [19]  462 	ld	a,10 (ix)
+   0213 DD 77 FF      [19]  463 	ld	-1 (ix),a
+   0216 DD 7E 08      [19]  464 	ld	a,8 (ix)
+   0219 DD 77 FE      [19]  465 	ld	-2 (ix),a
+                            466 ;sys.c:84: if (size < 1024) {
+   021C DD 7E 05      [19]  467 	ld	a,5 (ix)
+   021F E6 FC         [ 7]  468 	and	a, #0xFC
+   0221 20 33         [12]  469 	jr	NZ,00105$
+   0223 DD 7E 06      [19]  470 	ld	a,6 (ix)
+   0226 B7            [ 4]  471 	or	a, a
+   0227 20 2D         [12]  472 	jr	NZ,00105$
+   0229 DD 7E 07      [19]  473 	ld	a,7 (ix)
+   022C B7            [ 4]  474 	or	a, a
+   022D 20 27         [12]  475 	jr	NZ,00105$
+                            476 ;sys.c:85: gDrawNum(size, x, y);
+   022F DD 66 FF      [19]  477 	ld	h,-1 (ix)
+   0232 DD 6E FE      [19]  478 	ld	l,-2 (ix)
+   0235 E5            [11]  479 	push	hl
+   0236 DD 6E 06      [19]  480 	ld	l,6 (ix)
+   0239 DD 66 07      [19]  481 	ld	h,7 (ix)
+   023C E5            [11]  482 	push	hl
+   023D DD 6E 04      [19]  483 	ld	l,4 (ix)
+   0240 DD 66 05      [19]  484 	ld	h,5 (ix)
+   0243 E5            [11]  485 	push	hl
+   0244 CDrDBr01      [17]  486 	call	_gDrawNum
+   0247 21 06 00      [10]  487 	ld	hl,#0x0006
+   024A 39            [11]  488 	add	hl,sp
+   024B F9            [ 6]  489 	ld	sp,hl
+                            490 ;sys.c:86: gAppendChar((u8) 'B');
+   024C 3E 42         [ 7]  491 	ld	a,#0x42
+   024E F5            [11]  492 	push	af
+   024F 33            [ 6]  493 	inc	sp
+   0250 CDr00r00      [17]  494 	call	_gAppendChar
+   0253 33            [ 6]  495 	inc	sp
+   0254 18 77         [12]  496 	jr	00107$
+   0256                     497 00105$:
+                            498 ;sys.c:87: } else if (size < 0x100000) {
+   0256 DD 7E 06      [19]  499 	ld	a,6 (ix)
+   0259 E6 F0         [ 7]  500 	and	a, #0xF0
+   025B 20 3C         [12]  501 	jr	NZ,00102$
+   025D DD 7E 07      [19]  502 	ld	a,7 (ix)
+   0260 B7            [ 4]  503 	or	a, a
+   0261 20 36         [12]  504 	jr	NZ,00102$
+                            505 ;sys.c:88: gDrawNum(size / 1024, x, y);
+   0263 F5            [11]  506 	push	af
+   0264 DD 5E 04      [19]  507 	ld	e,4 (ix)
+   0267 DD 56 05      [19]  508 	ld	d,5 (ix)
+   026A DD 4E 06      [19]  509 	ld	c,6 (ix)
+   026D DD 46 07      [19]  510 	ld	b,7 (ix)
+   0270 F1            [10]  511 	pop	af
+   0271 3E 0A         [ 7]  512 	ld	a,#0x0A
+   0273                     513 00119$:
+   0273 CB 38         [ 8]  514 	srl	b
+   0275 CB 19         [ 8]  515 	rr	c
+   0277 CB 1A         [ 8]  516 	rr	d
+   0279 CB 1B         [ 8]  517 	rr	e
+   027B 3D            [ 4]  518 	dec	a
+   027C 20 F5         [12]  519 	jr	NZ,00119$
+   027E DD 66 FF      [19]  520 	ld	h,-1 (ix)
+   0281 DD 6E FE      [19]  521 	ld	l,-2 (ix)
+   0284 E5            [11]  522 	push	hl
+   0285 C5            [11]  523 	push	bc
+   0286 D5            [11]  524 	push	de
+   0287 CDrDBr01      [17]  525 	call	_gDrawNum
+   028A 21 06 00      [10]  526 	ld	hl,#0x0006
+   028D 39            [11]  527 	add	hl,sp
+   028E F9            [ 6]  528 	ld	sp,hl
+                            529 ;sys.c:89: gAppendChar((u8) 'K');
+   028F 3E 4B         [ 7]  530 	ld	a,#0x4B
+   0291 F5            [11]  531 	push	af
+   0292 33            [ 6]  532 	inc	sp
+   0293 CDr00r00      [17]  533 	call	_gAppendChar
+   0296 33            [ 6]  534 	inc	sp
+   0297 18 34         [12]  535 	jr	00107$
+   0299                     536 00102$:
+                            537 ;sys.c:91: gDrawNum(size / 0x100000, x, y);
+   0299 F5            [11]  538 	push	af
+   029A DD 5E 04      [19]  539 	ld	e,4 (ix)
+   029D DD 56 05      [19]  540 	ld	d,5 (ix)
+   02A0 DD 4E 06      [19]  541 	ld	c,6 (ix)
+   02A3 DD 46 07      [19]  542 	ld	b,7 (ix)
+   02A6 F1            [10]  543 	pop	af
+   02A7 3E 14         [ 7]  544 	ld	a,#0x14
+   02A9                     545 00121$:
+   02A9 CB 38         [ 8]  546 	srl	b
+   02AB CB 19         [ 8]  547 	rr	c
+   02AD CB 1A         [ 8]  548 	rr	d
+   02AF CB 1B         [ 8]  549 	rr	e
+   02B1 3D            [ 4]  550 	dec	a
+   02B2 20 F5         [12]  551 	jr	NZ,00121$
+   02B4 DD 66 FF      [19]  552 	ld	h,-1 (ix)
+   02B7 DD 6E FE      [19]  553 	ld	l,-2 (ix)
+   02BA E5            [11]  554 	push	hl
+   02BB C5            [11]  555 	push	bc
+   02BC D5            [11]  556 	push	de
+   02BD CDrDBr01      [17]  557 	call	_gDrawNum
+   02C0 21 06 00      [10]  558 	ld	hl,#0x0006
+   02C3 39            [11]  559 	add	hl,sp
+   02C4 F9            [ 6]  560 	ld	sp,hl
+                            561 ;sys.c:92: gAppendChar((u8) 'M');
+   02C5 3E 4D         [ 7]  562 	ld	a,#0x4D
+   02C7 F5            [11]  563 	push	af
+   02C8 33            [ 6]  564 	inc	sp
+   02C9 CDr00r00      [17]  565 	call	_gAppendChar
+   02CC 33            [ 6]  566 	inc	sp
+   02CD                     567 00107$:
+   02CD DD F9         [10]  568 	ld	sp,ix
+   02CF DD E1         [14]  569 	pop	ix
+   02D1 C9            [10]  570 	ret
+   02D2                     571 _sysDrawFileSize_end::
+                            572 ;sys.c:96: void gDrawCursor(u8 *str, u16 x, u16 y) {
+                            573 ;	---------------------------------
+                            574 ; Function gDrawCursor
+                            575 ; ---------------------------------
+   02D2                     576 _gDrawCursor_start::
+   02D2                     577 _gDrawCursor:
+   02D2 DD E5         [15]  578 	push	ix
+   02D4 DD 21 00 00   [14]  579 	ld	ix,#0
+   02D8 DD 39         [15]  580 	add	ix,sp
+                            581 ;sys.c:100: cursor_strobe++;
+   02DA 21r00r00      [10]  582 	ld	hl, #_gDrawCursor_cursor_strobe_1_75+0
+   02DD 34            [11]  583 	inc	(hl)
+   02DE 20 04         [12]  584 	jr	NZ,00109$
+   02E0 21r01r00      [10]  585 	ld	hl, #_gDrawCursor_cursor_strobe_1_75+1
+   02E3 34            [11]  586 	inc	(hl)
+   02E4                     587 00109$:
+                            588 ;sys.c:102: if ((cursor_strobe & 15) < 8) {
+   02E4 3Ar00r00      [13]  589 	ld	a,(#_gDrawCursor_cursor_strobe_1_75 + 0)
+   02E7 E6 0F         [ 7]  590 	and	a, #0x0F
+   02E9 6F            [ 4]  591 	ld	l,a
+   02EA 1E 00         [ 7]  592 	ld	e,#0x00
+                            593 ;sys.c:103: gDrawString(str, x, y);
+   02EC DD 66 08      [19]  594 	ld	h,8 (ix)
+   02EF DD 56 06      [19]  595 	ld	d,6 (ix)
+                            596 ;sys.c:102: if ((cursor_strobe & 15) < 8) {
+   02F2 7D            [ 4]  597 	ld	a,l
+   02F3 D6 08         [ 7]  598 	sub	a, #0x08
+   02F5 7B            [ 4]  599 	ld	a,e
+   02F6 DE 00         [ 7]  600 	sbc	a, #0x00
+   02F8 30 12         [12]  601 	jr	NC,00102$
+                            602 ;sys.c:103: gDrawString(str, x, y);
+   02FA E5            [11]  603 	push	hl
+   02FB 33            [ 6]  604 	inc	sp
+   02FC D5            [11]  605 	push	de
+   02FD 33            [ 6]  606 	inc	sp
+   02FE DD 6E 04      [19]  607 	ld	l,4 (ix)
+   0301 DD 66 05      [19]  608 	ld	h,5 (ix)
+   0304 E5            [11]  609 	push	hl
+   0305 CDr00r00      [17]  610 	call	_gDrawString
+   0308 F1            [10]  611 	pop	af
+   0309 F1            [10]  612 	pop	af
+   030A 18 0D         [12]  613 	jr	00104$
+   030C                     614 00102$:
+                            615 ;sys.c:105: gDrawString(" ", x, y);
+   030C 01r1Cr03      [10]  616 	ld	bc,#__str_0
+   030F E5            [11]  617 	push	hl
+   0310 33            [ 6]  618 	inc	sp
+   0311 D5            [11]  619 	push	de
+   0312 33            [ 6]  620 	inc	sp
+   0313 C5            [11]  621 	push	bc
+   0314 CDr00r00      [17]  622 	call	_gDrawString
+   0317 F1            [10]  623 	pop	af
+   0318 F1            [10]  624 	pop	af
+   0319                     625 00104$:
+   0319 DD E1         [14]  626 	pop	ix
+   031B C9            [10]  627 	ret
+   031C                     628 _gDrawCursor_end::
+   031C                     629 __str_0:
+   031C 20                  630 	.ascii " "
+   031D 00                  631 	.db 0x00
+                            632 	.area _CODE
+                            633 	.area _INITIALIZER
+                            634 	.area _CABS (ABS)

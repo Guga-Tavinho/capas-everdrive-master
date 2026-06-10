@@ -1,0 +1,685 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.3.0 #8604 (May 11 2013) (MINGW64)
+                              4 ; This file was generated Wed Jun 10 08:26:43 2026
+                              5 ;--------------------------------------------------------
+                              6 	.module str
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _str_cmp_len
+                             13 	.globl _str_length
+                             14 	.globl _str_extension
+                             15 	.globl _str_extension_list
+                             16 	.globl _str_eq_ncase
+                             17 	.globl _str_copy
+                             18 	.globl _str_append
+                             19 	.globl _str_append_hex8
+                             20 	.globl _str_append_hex16
+                             21 	.globl _str_append_hex32
+                             22 	.globl _str_contains
+                             23 	.globl _str_append_num
+                             24 ;--------------------------------------------------------
+                             25 ; special function registers
+                             26 ;--------------------------------------------------------
+                             27 ;--------------------------------------------------------
+                             28 ; ram data
+                             29 ;--------------------------------------------------------
+                             30 	.area _DATA
+                             31 ;--------------------------------------------------------
+                             32 ; ram data
+                             33 ;--------------------------------------------------------
+                             34 	.area _INITIALIZED
+                             35 ;--------------------------------------------------------
+                             36 ; absolute external ram data
+                             37 ;--------------------------------------------------------
+                             38 	.area _DABS (ABS)
+                             39 ;--------------------------------------------------------
+                             40 ; global & static initialisations
+                             41 ;--------------------------------------------------------
+                             42 	.area _HOME
+                             43 	.area _GSINIT
+                             44 	.area _GSFINAL
+                             45 	.area _GSINIT
+                             46 ;--------------------------------------------------------
+                             47 ; Home
+                             48 ;--------------------------------------------------------
+                             49 	.area _HOME
+                             50 	.area _HOME
+                             51 ;--------------------------------------------------------
+                             52 ; code
+                             53 ;--------------------------------------------------------
+                             54 	.area _CODE
+                             55 ;str.c:6: u8 str_cmp_len(u8 *str1, u8 *str2, u8 len) {
+                             56 ;	---------------------------------
+                             57 ; Function str_cmp_len
+                             58 ; ---------------------------------
+   0000                      59 _str_cmp_len_start::
+   0000                      60 _str_cmp_len:
+   0000 DD E5         [15]   61 	push	ix
+   0002 DD 21 00 00   [14]   62 	ld	ix,#0
+   0006 DD 39         [15]   63 	add	ix,sp
+   0008 F5            [11]   64 	push	af
+   0009 3B            [ 6]   65 	dec	sp
+                             66 ;str.c:8: while (len--)if (*str1++ != *str2++)return 0;
+   000A DD 4E 04      [19]   67 	ld	c,4 (ix)
+   000D DD 46 05      [19]   68 	ld	b,5 (ix)
+   0010 DD 5E 06      [19]   69 	ld	e,6 (ix)
+   0013 DD 56 07      [19]   70 	ld	d,7 (ix)
+   0016 DD 7E 08      [19]   71 	ld	a,8 (ix)
+   0019 DD 77 FD      [19]   72 	ld	-3 (ix),a
+   001C                      73 00103$:
+   001C DD 66 FD      [19]   74 	ld	h,-3 (ix)
+   001F DD 35 FD      [23]   75 	dec	-3 (ix)
+   0022 7C            [ 4]   76 	ld	a,h
+   0023 B7            [ 4]   77 	or	a, a
+   0024 28 16         [12]   78 	jr	Z,00105$
+   0026 0A            [ 7]   79 	ld	a,(bc)
+   0027 DD 77 FF      [19]   80 	ld	-1 (ix),a
+   002A 03            [ 6]   81 	inc	bc
+   002B 1A            [ 7]   82 	ld	a,(de)
+   002C DD 77 FE      [19]   83 	ld	-2 (ix),a
+   002F 13            [ 6]   84 	inc	de
+   0030 DD 7E FF      [19]   85 	ld	a,-1 (ix)
+   0033 DD 96 FE      [19]   86 	sub	a, -2 (ix)
+   0036 28 E4         [12]   87 	jr	Z,00103$
+   0038 2E 00         [ 7]   88 	ld	l,#0x00
+   003A 18 02         [12]   89 	jr	00106$
+   003C                      90 00105$:
+                             91 ;str.c:10: return 1;
+   003C 2E 01         [ 7]   92 	ld	l,#0x01
+   003E                      93 00106$:
+   003E DD F9         [10]   94 	ld	sp,ix
+   0040 DD E1         [14]   95 	pop	ix
+   0042 C9            [10]   96 	ret
+   0043                      97 _str_cmp_len_end::
+                             98 ;str.c:13: u8 str_length(u8 *str) {
+                             99 ;	---------------------------------
+                            100 ; Function str_length
+                            101 ; ---------------------------------
+   0043                     102 _str_length_start::
+   0043                     103 _str_length:
+                            104 ;str.c:16: while (*str++ != 0)len++;
+   0043 16 00         [ 7]  105 	ld	d,#0x00
+   0045 C1            [10]  106 	pop	bc
+   0046 E1            [10]  107 	pop	hl
+   0047 E5            [11]  108 	push	hl
+   0048 C5            [11]  109 	push	bc
+   0049                     110 00101$:
+   0049 7E            [ 7]  111 	ld	a,(hl)
+   004A 23            [ 6]  112 	inc	hl
+   004B B7            [ 4]  113 	or	a, a
+   004C 28 03         [12]  114 	jr	Z,00103$
+   004E 14            [ 4]  115 	inc	d
+   004F 18 F8         [12]  116 	jr	00101$
+   0051                     117 00103$:
+                            118 ;str.c:17: return len;
+   0051 6A            [ 4]  119 	ld	l,d
+   0052 C9            [10]  120 	ret
+   0053                     121 _str_length_end::
+                            122 ;str.c:20: u8 str_extension(u8 *target, u8 *str) {
+                            123 ;	---------------------------------
+                            124 ; Function str_extension
+                            125 ; ---------------------------------
+   0053                     126 _str_extension_start::
+   0053                     127 _str_extension:
+   0053 DD E5         [15]  128 	push	ix
+   0055 DD 21 00 00   [14]  129 	ld	ix,#0
+   0059 DD 39         [15]  130 	add	ix,sp
+                            131 ;str.c:25: if (*target == (u8) '.')target++;
+   005B DD 6E 04      [19]  132 	ld	l,4 (ix)
+   005E DD 66 05      [19]  133 	ld	h,5 (ix)
+   0061 7E            [ 7]  134 	ld	a,(hl)
+   0062 D6 2E         [ 7]  135 	sub	a, #0x2E
+   0064 20 07         [12]  136 	jr	NZ,00102$
+   0066 23            [ 6]  137 	inc	hl
+   0067 DD 75 04      [19]  138 	ld	4 (ix),l
+   006A DD 74 05      [19]  139 	ld	5 (ix),h
+   006D                     140 00102$:
+                            141 ;str.c:26: str_len = str_length(str);
+   006D DD 6E 06      [19]  142 	ld	l,6 (ix)
+   0070 DD 66 07      [19]  143 	ld	h,7 (ix)
+   0073 E5            [11]  144 	push	hl
+   0074 CDr43r00      [17]  145 	call	_str_length
+                            146 ;str.c:27: targ_len = str_length(target);
+   0077 E3            [19]  147 	ex	(sp),hl
+   0078 DD 4E 04      [19]  148 	ld	c,4 (ix)
+   007B DD 46 05      [19]  149 	ld	b,5 (ix)
+   007E C5            [11]  150 	push	bc
+   007F CDr43r00      [17]  151 	call	_str_length
+   0082 F1            [10]  152 	pop	af
+   0083 5D            [ 4]  153 	ld	e,l
+   0084 E1            [10]  154 	pop	hl
+                            155 ;str.c:28: if (str_len < targ_len)return 0;
+   0085 7D            [ 4]  156 	ld	a,l
+   0086 93            [ 4]  157 	sub	a, e
+   0087 30 04         [12]  158 	jr	NC,00104$
+   0089 2E 00         [ 7]  159 	ld	l,#0x00
+   008B 18 1B         [12]  160 	jr	00105$
+   008D                     161 00104$:
+                            162 ;str.c:31: return str_eq_ncase(target, &str[str_len - targ_len]);
+   008D 26 00         [ 7]  163 	ld	h,#0x00
+   008F 16 00         [ 7]  164 	ld	d,#0x00
+   0091 BF            [ 4]  165 	cp	a, a
+   0092 ED 52         [15]  166 	sbc	hl, de
+   0094 DD 5E 06      [19]  167 	ld	e,6 (ix)
+   0097 DD 56 07      [19]  168 	ld	d,7 (ix)
+   009A 19            [11]  169 	add	hl,de
+   009B E5            [11]  170 	push	hl
+   009C DD 6E 04      [19]  171 	ld	l,4 (ix)
+   009F DD 66 05      [19]  172 	ld	h,5 (ix)
+   00A2 E5            [11]  173 	push	hl
+   00A3 CDrD6r00      [17]  174 	call	_str_eq_ncase
+   00A6 F1            [10]  175 	pop	af
+   00A7 F1            [10]  176 	pop	af
+   00A8                     177 00105$:
+   00A8 DD E1         [14]  178 	pop	ix
+   00AA C9            [10]  179 	ret
+   00AB                     180 _str_extension_end::
+                            181 ;str.c:35: u8 str_extension_list(u8 **ext_list, u8 *name) {
+                            182 ;	---------------------------------
+                            183 ; Function str_extension_list
+                            184 ; ---------------------------------
+   00AB                     185 _str_extension_list_start::
+   00AB                     186 _str_extension_list:
+                            187 ;str.c:37: while (*ext_list != 0) {
+   00AB C1            [10]  188 	pop	bc
+   00AC E1            [10]  189 	pop	hl
+   00AD E5            [11]  190 	push	hl
+   00AE C5            [11]  191 	push	bc
+   00AF                     192 00103$:
+   00AF E5            [11]  193 	push	hl
+   00B0 5E            [ 7]  194 	ld	e,(hl)
+   00B1 23            [ 6]  195 	inc	hl
+   00B2 56            [ 7]  196 	ld	d,(hl)
+   00B3 E1            [10]  197 	pop	hl
+   00B4 7A            [ 4]  198 	ld	a,d
+   00B5 B3            [ 4]  199 	or	a,e
+   00B6 28 1B         [12]  200 	jr	Z,00105$
+                            201 ;str.c:38: if (str_extension(*ext_list, name))return 1;
+   00B8 E5            [11]  202 	push	hl
+   00B9 21 06 00      [10]  203 	ld	hl, #6
+   00BC 39            [11]  204 	add	hl, sp
+   00BD 4E            [ 7]  205 	ld	c, (hl)
+   00BE 23            [ 6]  206 	inc	hl
+   00BF 46            [ 7]  207 	ld	b, (hl)
+   00C0 C5            [11]  208 	push	bc
+   00C1 D5            [11]  209 	push	de
+   00C2 CDr53r00      [17]  210 	call	_str_extension
+   00C5 F1            [10]  211 	pop	af
+   00C6 F1            [10]  212 	pop	af
+   00C7 7D            [ 4]  213 	ld	a,l
+   00C8 E1            [10]  214 	pop	hl
+   00C9 B7            [ 4]  215 	or	a, a
+   00CA 28 03         [12]  216 	jr	Z,00102$
+   00CC 2E 01         [ 7]  217 	ld	l,#0x01
+   00CE C9            [10]  218 	ret
+   00CF                     219 00102$:
+                            220 ;str.c:39: ext_list++;
+   00CF 23            [ 6]  221 	inc	hl
+   00D0 23            [ 6]  222 	inc	hl
+   00D1 18 DC         [12]  223 	jr	00103$
+   00D3                     224 00105$:
+                            225 ;str.c:42: return 0;
+   00D3 2E 00         [ 7]  226 	ld	l,#0x00
+   00D5 C9            [10]  227 	ret
+   00D6                     228 _str_extension_list_end::
+                            229 ;str.c:45: u8 str_eq_ncase(u8 *str1, u8 *str2) {
+                            230 ;	---------------------------------
+                            231 ; Function str_eq_ncase
+                            232 ; ---------------------------------
+   00D6                     233 _str_eq_ncase_start::
+   00D6                     234 _str_eq_ncase:
+   00D6 DD E5         [15]  235 	push	ix
+   00D8 DD 21 00 00   [14]  236 	ld	ix,#0
+   00DC DD 39         [15]  237 	add	ix,sp
+   00DE F5            [11]  238 	push	af
+   00DF F5            [11]  239 	push	af
+   00E0 DD 7E 04      [19]  240 	ld	a,4 (ix)
+   00E3 DD 77 FE      [19]  241 	ld	-2 (ix),a
+   00E6 DD 7E 05      [19]  242 	ld	a,5 (ix)
+   00E9 DD 77 FF      [19]  243 	ld	-1 (ix),a
+   00EC DD 4E 06      [19]  244 	ld	c,6 (ix)
+   00EF DD 46 07      [19]  245 	ld	b,7 (ix)
+   00F2                     246 00113$:
+                            247 ;str.c:52: if (*str1 == 0 && *str2 == 0)return 1;
+   00F2 DD 6E FE      [19]  248 	ld	l,-2 (ix)
+   00F5 DD 66 FF      [19]  249 	ld	h,-1 (ix)
+   00F8 7E            [ 7]  250 	ld	a,(hl)
+   00F9 DD 77 FD      [19]  251 	ld	-3 (ix),a
+   00FC 0A            [ 7]  252 	ld	a,(bc)
+   00FD 5F            [ 4]  253 	ld	e,a
+   00FE DD 7E FD      [19]  254 	ld	a,-3 (ix)
+   0101 B7            [ 4]  255 	or	a,a
+   0102 20 07         [12]  256 	jr	NZ,00102$
+   0104 B3            [ 4]  257 	or	a,e
+   0105 20 04         [12]  258 	jr	NZ,00102$
+   0107 2E 01         [ 7]  259 	ld	l,#0x01
+   0109 18 35         [12]  260 	jr	00115$
+   010B                     261 00102$:
+                            262 ;str.c:53: val1 = *str1++;
+   010B DD 34 FE      [23]  263 	inc	-2 (ix)
+   010E 20 03         [12]  264 	jr	NZ,00141$
+   0110 DD 34 FF      [23]  265 	inc	-1 (ix)
+   0113                     266 00141$:
+   0113 DD 7E FD      [19]  267 	ld	a,-3 (ix)
+   0116 DD 77 FC      [19]  268 	ld	-4 (ix),a
+                            269 ;str.c:54: val2 = *str2++;
+   0119 03            [ 6]  270 	inc	bc
+                            271 ;str.c:55: if (val1 >= (u8) 'A' && val1 <= (u8) 'Z')val1 |= 0x20;
+   011A DD 7E FC      [19]  272 	ld	a,-4 (ix)
+   011D D6 41         [ 7]  273 	sub	a, #0x41
+   011F 38 0B         [12]  274 	jr	C,00105$
+   0121 3E 5A         [ 7]  275 	ld	a,#0x5A
+   0123 DD 96 FC      [19]  276 	sub	a, -4 (ix)
+   0126 38 04         [12]  277 	jr	C,00105$
+   0128 DD CB FC EE   [23]  278 	set	5, -4 (ix)
+   012C                     279 00105$:
+                            280 ;str.c:56: if (val2 >= (u8) 'A' && val2 <= (u8) 'Z')val2 |= 0x20;
+   012C 7B            [ 4]  281 	ld	a,e
+   012D D6 41         [ 7]  282 	sub	a, #0x41
+   012F 38 07         [12]  283 	jr	C,00108$
+   0131 3E 5A         [ 7]  284 	ld	a,#0x5A
+   0133 93            [ 4]  285 	sub	a, e
+   0134 38 02         [12]  286 	jr	C,00108$
+   0136 CB EB         [ 8]  287 	set	5, e
+   0138                     288 00108$:
+                            289 ;str.c:57: if (val1 != val2)return 0;
+   0138 DD 7E FC      [19]  290 	ld	a,-4 (ix)
+   013B 93            [ 4]  291 	sub	a, e
+   013C 28 B4         [12]  292 	jr	Z,00113$
+   013E 2E 00         [ 7]  293 	ld	l,#0x00
+   0140                     294 00115$:
+   0140 DD F9         [10]  295 	ld	sp,ix
+   0142 DD E1         [14]  296 	pop	ix
+   0144 C9            [10]  297 	ret
+   0145                     298 _str_eq_ncase_end::
+                            299 ;str.c:62: void str_copy(u8 *src, u8 *dst) {
+                            300 ;	---------------------------------
+                            301 ; Function str_copy
+                            302 ; ---------------------------------
+   0145                     303 _str_copy_start::
+   0145                     304 _str_copy:
+   0145 DD E5         [15]  305 	push	ix
+   0147 DD 21 00 00   [14]  306 	ld	ix,#0
+   014B DD 39         [15]  307 	add	ix,sp
+                            308 ;str.c:64: while (*src != 0)*dst++ = *src++;
+   014D DD 5E 04      [19]  309 	ld	e,4 (ix)
+   0150 DD 56 05      [19]  310 	ld	d,5 (ix)
+   0153 DD 4E 06      [19]  311 	ld	c,6 (ix)
+   0156 DD 46 07      [19]  312 	ld	b,7 (ix)
+   0159                     313 00101$:
+   0159 1A            [ 7]  314 	ld	a,(de)
+   015A B7            [ 4]  315 	or	a, a
+   015B 28 05         [12]  316 	jr	Z,00103$
+   015D 13            [ 6]  317 	inc	de
+   015E 02            [ 7]  318 	ld	(bc),a
+   015F 03            [ 6]  319 	inc	bc
+   0160 18 F7         [12]  320 	jr	00101$
+   0162                     321 00103$:
+                            322 ;str.c:65: *dst = 0;
+   0162 AF            [ 4]  323 	xor	a, a
+   0163 02            [ 7]  324 	ld	(bc),a
+   0164 DD E1         [14]  325 	pop	ix
+   0166 C9            [10]  326 	ret
+   0167                     327 _str_copy_end::
+                            328 ;str.c:69: void str_append(u8 *dst, u8 *src) {
+                            329 ;	---------------------------------
+                            330 ; Function str_append
+                            331 ; ---------------------------------
+   0167                     332 _str_append_start::
+   0167                     333 _str_append:
+   0167 DD E5         [15]  334 	push	ix
+   0169 DD 21 00 00   [14]  335 	ld	ix,#0
+   016D DD 39         [15]  336 	add	ix,sp
+                            337 ;str.c:71: while (*dst != 0)dst++;
+   016F DD 4E 04      [19]  338 	ld	c,4 (ix)
+   0172 DD 46 05      [19]  339 	ld	b,5 (ix)
+   0175                     340 00101$:
+   0175 0A            [ 7]  341 	ld	a,(bc)
+   0176 B7            [ 4]  342 	or	a, a
+   0177 28 03         [12]  343 	jr	Z,00112$
+   0179 03            [ 6]  344 	inc	bc
+   017A 18 F9         [12]  345 	jr	00101$
+                            346 ;str.c:72: while (*src != 0)*dst++ = *src++;
+   017C                     347 00112$:
+   017C DD 5E 06      [19]  348 	ld	e,6 (ix)
+   017F DD 56 07      [19]  349 	ld	d,7 (ix)
+   0182                     350 00104$:
+   0182 1A            [ 7]  351 	ld	a,(de)
+   0183 B7            [ 4]  352 	or	a, a
+   0184 28 05         [12]  353 	jr	Z,00106$
+   0186 13            [ 6]  354 	inc	de
+   0187 02            [ 7]  355 	ld	(bc),a
+   0188 03            [ 6]  356 	inc	bc
+   0189 18 F7         [12]  357 	jr	00104$
+   018B                     358 00106$:
+                            359 ;str.c:73: *dst = 0;
+   018B AF            [ 4]  360 	xor	a, a
+   018C 02            [ 7]  361 	ld	(bc),a
+   018D DD E1         [14]  362 	pop	ix
+   018F C9            [10]  363 	ret
+   0190                     364 _str_append_end::
+                            365 ;str.c:76: void str_append_hex8(u8 num, u8 *dst) {
+                            366 ;	---------------------------------
+                            367 ; Function str_append_hex8
+                            368 ; ---------------------------------
+   0190                     369 _str_append_hex8_start::
+   0190                     370 _str_append_hex8:
+   0190 DD E5         [15]  371 	push	ix
+   0192 DD 21 00 00   [14]  372 	ld	ix,#0
+   0196 DD 39         [15]  373 	add	ix,sp
+                            374 ;str.c:81: str_len = str_length(dst);
+   0198 D5            [11]  375 	push	de
+   0199 DD 6E 05      [19]  376 	ld	l,5 (ix)
+   019C DD 66 06      [19]  377 	ld	h,6 (ix)
+   019F E5            [11]  378 	push	hl
+   01A0 CDr43r00      [17]  379 	call	_str_length
+   01A3 F1            [10]  380 	pop	af
+   01A4 D1            [10]  381 	pop	de
+                            382 ;str.c:82: dst = (u8 *) & dst[str_len];
+   01A5 DD 7E 05      [19]  383 	ld	a,5 (ix)
+   01A8 85            [ 4]  384 	add	a, l
+   01A9 DD 77 05      [19]  385 	ld	5 (ix),a
+   01AC DD 7E 06      [19]  386 	ld	a,6 (ix)
+   01AF CE 00         [ 7]  387 	adc	a, #0x00
+   01B1 DD 77 06      [19]  388 	ld	6 (ix),a
+                            389 ;str.c:83: dst[2] = 0;
+   01B4 DD 6E 05      [19]  390 	ld	l,5 (ix)
+   01B7 DD 66 06      [19]  391 	ld	h,6 (ix)
+   01BA 23            [ 6]  392 	inc	hl
+   01BB 23            [ 6]  393 	inc	hl
+   01BC 36 00         [10]  394 	ld	(hl),#0x00
+                            395 ;str.c:85: val = num >> 4;
+   01BE DD 7E 04      [19]  396 	ld	a,4 (ix)
+   01C1 07            [ 4]  397 	rlca
+   01C2 07            [ 4]  398 	rlca
+   01C3 07            [ 4]  399 	rlca
+   01C4 07            [ 4]  400 	rlca
+   01C5 E6 0F         [ 7]  401 	and	a,#0x0F
+   01C7 57            [ 4]  402 	ld	d,a
+                            403 ;str.c:86: if (val > 9)val += 7;
+   01C8 3E 09         [ 7]  404 	ld	a,#0x09
+   01CA 92            [ 4]  405 	sub	a, d
+   01CB 30 04         [12]  406 	jr	NC,00102$
+   01CD 7A            [ 4]  407 	ld	a,d
+   01CE C6 07         [ 7]  408 	add	a, #0x07
+   01D0 57            [ 4]  409 	ld	d,a
+   01D1                     410 00102$:
+                            411 ;str.c:87: dst[0] = val + '0';
+   01D1 DD 6E 05      [19]  412 	ld	l,5 (ix)
+   01D4 DD 66 06      [19]  413 	ld	h,6 (ix)
+   01D7 7A            [ 4]  414 	ld	a,d
+   01D8 C6 30         [ 7]  415 	add	a, #0x30
+   01DA 77            [ 7]  416 	ld	(hl),a
+                            417 ;str.c:88: val = num & 0x0f;
+   01DB DD 7E 04      [19]  418 	ld	a,4 (ix)
+   01DE E6 0F         [ 7]  419 	and	a, #0x0F
+   01E0 57            [ 4]  420 	ld	d,a
+                            421 ;str.c:89: if (val > 9)val += 7;
+   01E1 3E 09         [ 7]  422 	ld	a,#0x09
+   01E3 92            [ 4]  423 	sub	a, d
+   01E4 30 04         [12]  424 	jr	NC,00104$
+   01E6 7A            [ 4]  425 	ld	a,d
+   01E7 C6 07         [ 7]  426 	add	a, #0x07
+   01E9 57            [ 4]  427 	ld	d,a
+   01EA                     428 00104$:
+                            429 ;str.c:90: dst[1] = val + '0';
+   01EA 23            [ 6]  430 	inc	hl
+   01EB 7A            [ 4]  431 	ld	a,d
+   01EC C6 30         [ 7]  432 	add	a, #0x30
+   01EE 77            [ 7]  433 	ld	(hl),a
+   01EF DD E1         [14]  434 	pop	ix
+   01F1 C9            [10]  435 	ret
+   01F2                     436 _str_append_hex8_end::
+                            437 ;str.c:94: void str_append_hex16(u16 num, u8 *dst) {
+                            438 ;	---------------------------------
+                            439 ; Function str_append_hex16
+                            440 ; ---------------------------------
+   01F2                     441 _str_append_hex16_start::
+   01F2                     442 _str_append_hex16:
+                            443 ;str.c:96: str_append_hex8(num >> 8, dst);
+   01F2 FD 21 02 00   [14]  444 	ld	iy,#2
+   01F6 FD 39         [15]  445 	add	iy,sp
+   01F8 FD 66 01      [19]  446 	ld	h,1 (iy)
+   01FB 2E 00         [ 7]  447 	ld	l,#0x00
+   01FD FD 21 04 00   [14]  448 	ld	iy,#4
+   0201 FD 39         [15]  449 	add	iy,sp
+   0203 FD 4E 00      [19]  450 	ld	c,0 (iy)
+   0206 FD 46 01      [19]  451 	ld	b,1 (iy)
+   0209 C5            [11]  452 	push	bc
+   020A E5            [11]  453 	push	hl
+   020B 33            [ 6]  454 	inc	sp
+   020C CDr90r01      [17]  455 	call	_str_append_hex8
+   020F F1            [10]  456 	pop	af
+   0210 33            [ 6]  457 	inc	sp
+                            458 ;str.c:97: str_append_hex8(num & 0xff, dst);
+   0211 FD 21 02 00   [14]  459 	ld	iy,#2
+   0215 FD 39         [15]  460 	add	iy,sp
+   0217 FD 66 00      [19]  461 	ld	h,0 (iy)
+   021A 2E 00         [ 7]  462 	ld	l,#0x00
+   021C FD 21 04 00   [14]  463 	ld	iy,#4
+   0220 FD 39         [15]  464 	add	iy,sp
+   0222 FD 4E 00      [19]  465 	ld	c,0 (iy)
+   0225 FD 46 01      [19]  466 	ld	b,1 (iy)
+   0228 C5            [11]  467 	push	bc
+   0229 E5            [11]  468 	push	hl
+   022A 33            [ 6]  469 	inc	sp
+   022B CDr90r01      [17]  470 	call	_str_append_hex8
+   022E F1            [10]  471 	pop	af
+   022F 33            [ 6]  472 	inc	sp
+   0230 C9            [10]  473 	ret
+   0231                     474 _str_append_hex16_end::
+                            475 ;str.c:102: void str_append_hex32(u32 num, u8 *dst) {
+                            476 ;	---------------------------------
+                            477 ; Function str_append_hex32
+                            478 ; ---------------------------------
+   0231                     479 _str_append_hex32_start::
+   0231                     480 _str_append_hex32:
+   0231 DD E5         [15]  481 	push	ix
+   0233 DD 21 00 00   [14]  482 	ld	ix,#0
+   0237 DD 39         [15]  483 	add	ix,sp
+                            484 ;str.c:104: str_append_hex16(num >> 16, dst);
+   0239 F5            [11]  485 	push	af
+   023A DD 6E 04      [19]  486 	ld	l,4 (ix)
+   023D DD 66 05      [19]  487 	ld	h,5 (ix)
+   0240 DD 5E 06      [19]  488 	ld	e,6 (ix)
+   0243 DD 56 07      [19]  489 	ld	d,7 (ix)
+   0246 F1            [10]  490 	pop	af
+   0247 06 10         [ 7]  491 	ld	b,#0x10
+   0249                     492 00103$:
+   0249 CB 3A         [ 8]  493 	srl	d
+   024B CB 1B         [ 8]  494 	rr	e
+   024D CB 1C         [ 8]  495 	rr	h
+   024F CB 1D         [ 8]  496 	rr	l
+   0251 10 F6         [13]  497 	djnz	00103$
+   0253 DD 4E 08      [19]  498 	ld	c,8 (ix)
+   0256 DD 46 09      [19]  499 	ld	b,9 (ix)
+   0259 C5            [11]  500 	push	bc
+   025A E5            [11]  501 	push	hl
+   025B CDrF2r01      [17]  502 	call	_str_append_hex16
+   025E F1            [10]  503 	pop	af
+   025F F1            [10]  504 	pop	af
+                            505 ;str.c:105: str_append_hex16(num & 0xffff, dst);
+   0260 DD 6E 04      [19]  506 	ld	l,4 (ix)
+   0263 DD 66 05      [19]  507 	ld	h,5 (ix)
+   0266 DD 4E 08      [19]  508 	ld	c,8 (ix)
+   0269 DD 46 09      [19]  509 	ld	b,9 (ix)
+   026C C5            [11]  510 	push	bc
+   026D E5            [11]  511 	push	hl
+   026E CDrF2r01      [17]  512 	call	_str_append_hex16
+   0271 F1            [10]  513 	pop	af
+   0272 F1            [10]  514 	pop	af
+   0273 DD E1         [14]  515 	pop	ix
+   0275 C9            [10]  516 	ret
+   0276                     517 _str_append_hex32_end::
+                            518 ;str.c:110: u8 str_contains(u8 *target, u8 *str) {
+                            519 ;	---------------------------------
+                            520 ; Function str_contains
+                            521 ; ---------------------------------
+   0276                     522 _str_contains_start::
+   0276                     523 _str_contains:
+   0276 DD E5         [15]  524 	push	ix
+   0278 DD 21 00 00   [14]  525 	ld	ix,#0
+   027C DD 39         [15]  526 	add	ix,sp
+   027E F5            [11]  527 	push	af
+   027F F5            [11]  528 	push	af
+                            529 ;str.c:112: u16 targ_len = str_length(target);
+   0280 DD 6E 04      [19]  530 	ld	l,4 (ix)
+   0283 DD 66 05      [19]  531 	ld	h,5 (ix)
+   0286 E5            [11]  532 	push	hl
+   0287 CDr43r00      [17]  533 	call	_str_length
+   028A F1            [10]  534 	pop	af
+   028B DD 75 FC      [19]  535 	ld	-4 (ix),l
+   028E DD 36 FD 00   [19]  536 	ld	-3 (ix),#0x00
+                            537 ;str.c:116: for (eq_len = 0; eq_len < targ_len;) {
+   0292 11 00 00      [10]  538 	ld	de,#0x0000
+   0295 DD 4E 06      [19]  539 	ld	c,6 (ix)
+   0298 DD 46 07      [19]  540 	ld	b,7 (ix)
+   029B                     541 00110$:
+   029B 7B            [ 4]  542 	ld	a,e
+   029C DD 96 FC      [19]  543 	sub	a, -4 (ix)
+   029F 7A            [ 4]  544 	ld	a,d
+   02A0 DD 9E FD      [19]  545 	sbc	a, -3 (ix)
+   02A3 30 26         [12]  546 	jr	NC,00106$
+                            547 ;str.c:118: if (*str == 0)return 0;
+   02A5 0A            [ 7]  548 	ld	a,(bc)
+   02A6 B7            [ 4]  549 	or	a,a
+   02A7 20 03         [12]  550 	jr	NZ,00102$
+   02A9 6F            [ 4]  551 	ld	l,a
+   02AA 18 31         [12]  552 	jr	00112$
+   02AC                     553 00102$:
+                            554 ;str.c:119: if (*str++ == target[eq_len]) {
+   02AC DD 77 FF      [19]  555 	ld	-1 (ix),a
+   02AF 03            [ 6]  556 	inc	bc
+   02B0 DD 6E 04      [19]  557 	ld	l,4 (ix)
+   02B3 DD 66 05      [19]  558 	ld	h,5 (ix)
+   02B6 19            [11]  559 	add	hl,de
+   02B7 7E            [ 7]  560 	ld	a,(hl)
+   02B8 DD 77 FE      [19]  561 	ld	-2 (ix),a
+   02BB DD 7E FF      [19]  562 	ld	a,-1 (ix)
+   02BE DD 96 FE      [19]  563 	sub	a, -2 (ix)
+   02C1 20 03         [12]  564 	jr	NZ,00104$
+                            565 ;str.c:120: eq_len++;
+   02C3 13            [ 6]  566 	inc	de
+   02C4 18 D5         [12]  567 	jr	00110$
+   02C6                     568 00104$:
+                            569 ;str.c:122: eq_len = 0;
+   02C6 11 00 00      [10]  570 	ld	de,#0x0000
+   02C9 18 D0         [12]  571 	jr	00110$
+   02CB                     572 00106$:
+                            573 ;str.c:126: if (eq_len != targ_len)return 0;
+   02CB DD 7E FC      [19]  574 	ld	a,-4 (ix)
+   02CE 93            [ 4]  575 	sub	a, e
+   02CF 20 06         [12]  576 	jr	NZ,00131$
+   02D1 DD 7E FD      [19]  577 	ld	a,-3 (ix)
+   02D4 92            [ 4]  578 	sub	a, d
+   02D5 28 04         [12]  579 	jr	Z,00108$
+   02D7                     580 00131$:
+   02D7 2E 00         [ 7]  581 	ld	l,#0x00
+   02D9 18 02         [12]  582 	jr	00112$
+   02DB                     583 00108$:
+                            584 ;str.c:128: return 1;
+   02DB 2E 01         [ 7]  585 	ld	l,#0x01
+   02DD                     586 00112$:
+   02DD DD F9         [10]  587 	ld	sp,ix
+   02DF DD E1         [14]  588 	pop	ix
+   02E1 C9            [10]  589 	ret
+   02E2                     590 _str_contains_end::
+                            591 ;str.c:133: void str_append_num(u32 num, u8 *dst) {
+                            592 ;	---------------------------------
+                            593 ; Function str_append_num
+                            594 ; ---------------------------------
+   02E2                     595 _str_append_num_start::
+   02E2                     596 _str_append_num:
+   02E2 DD E5         [15]  597 	push	ix
+   02E4 DD 21 00 00   [14]  598 	ld	ix,#0
+   02E8 DD 39         [15]  599 	add	ix,sp
+   02EA 21 F5 FF      [10]  600 	ld	hl,#-11
+   02ED 39            [11]  601 	add	hl,sp
+   02EE F9            [ 6]  602 	ld	sp,hl
+                            603 ;str.c:137: u8 *str = (u8 *) & buff[10];
+   02EF 21 0A 00      [10]  604 	ld	hl,#0x0000 + 0x000A
+   02F2 39            [11]  605 	add	hl,sp
+                            606 ;str.c:140: *str = 0;
+   02F3 36 00         [10]  607 	ld	(hl),#0x00
+                            608 ;str.c:141: if (num == 0)*--str = '0';
+   02F5 DD 7E 07      [19]  609 	ld	a,7 (ix)
+   02F8 DD B6 06      [19]  610 	or	a, 6 (ix)
+   02FB DD B6 05      [19]  611 	or	a, 5 (ix)
+   02FE DD B6 04      [19]  612 	or	a,4 (ix)
+   0301 20 03         [12]  613 	jr	NZ,00111$
+   0303 2B            [ 6]  614 	dec	hl
+   0304 36 30         [10]  615 	ld	(hl),#0x30
+                            616 ;str.c:142: for (i = 0; num != 0; i++) {
+   0306                     617 00111$:
+   0306 4D            [ 4]  618 	ld	c, l
+   0307 44            [ 4]  619 	ld	b, h
+   0308                     620 00105$:
+   0308 DD 7E 04      [19]  621 	ld	a,4 (ix)
+   030B DD B6 05      [19]  622 	or	a, 5 (ix)
+   030E DD B6 06      [19]  623 	or	a, 6 (ix)
+   0311 DD B6 07      [19]  624 	or	a, 7 (ix)
+   0314 28 51         [12]  625 	jr	Z,00103$
+                            626 ;str.c:143: *--str = num % 10 + '0';
+   0316 0B            [ 6]  627 	dec	bc
+   0317 C5            [11]  628 	push	bc
+   0318 21 00 00      [10]  629 	ld	hl,#0x0000
+   031B E5            [11]  630 	push	hl
+   031C 21 0A 00      [10]  631 	ld	hl,#0x000A
+   031F E5            [11]  632 	push	hl
+   0320 DD 6E 06      [19]  633 	ld	l,6 (ix)
+   0323 DD 66 07      [19]  634 	ld	h,7 (ix)
+   0326 E5            [11]  635 	push	hl
+   0327 DD 6E 04      [19]  636 	ld	l,4 (ix)
+   032A DD 66 05      [19]  637 	ld	h,5 (ix)
+   032D E5            [11]  638 	push	hl
+   032E CDr00r00      [17]  639 	call	__modulong_rrx_s
+   0331 F1            [10]  640 	pop	af
+   0332 F1            [10]  641 	pop	af
+   0333 F1            [10]  642 	pop	af
+   0334 F1            [10]  643 	pop	af
+   0335 C1            [10]  644 	pop	bc
+   0336 7D            [ 4]  645 	ld	a,l
+   0337 C6 30         [ 7]  646 	add	a, #0x30
+   0339 02            [ 7]  647 	ld	(bc),a
+                            648 ;str.c:144: num /= 10;
+   033A C5            [11]  649 	push	bc
+   033B 21 00 00      [10]  650 	ld	hl,#0x0000
+   033E E5            [11]  651 	push	hl
+   033F 21 0A 00      [10]  652 	ld	hl,#0x000A
+   0342 E5            [11]  653 	push	hl
+   0343 DD 6E 06      [19]  654 	ld	l,6 (ix)
+   0346 DD 66 07      [19]  655 	ld	h,7 (ix)
+   0349 E5            [11]  656 	push	hl
+   034A DD 6E 04      [19]  657 	ld	l,4 (ix)
+   034D DD 66 05      [19]  658 	ld	h,5 (ix)
+   0350 E5            [11]  659 	push	hl
+   0351 CDr00r00      [17]  660 	call	__divulong_rrx_s
+   0354 F1            [10]  661 	pop	af
+   0355 F1            [10]  662 	pop	af
+   0356 F1            [10]  663 	pop	af
+   0357 F1            [10]  664 	pop	af
+   0358 C1            [10]  665 	pop	bc
+   0359 DD 75 04      [19]  666 	ld	4 (ix),l
+   035C DD 74 05      [19]  667 	ld	5 (ix),h
+   035F DD 73 06      [19]  668 	ld	6 (ix),e
+   0362 DD 72 07      [19]  669 	ld	7 (ix),d
+                            670 ;str.c:142: for (i = 0; num != 0; i++) {
+   0365 18 A1         [12]  671 	jr	00105$
+   0367                     672 00103$:
+                            673 ;str.c:147: str_append(dst, str);
+   0367 C5            [11]  674 	push	bc
+   0368 DD 6E 08      [19]  675 	ld	l,8 (ix)
+   036B DD 66 09      [19]  676 	ld	h,9 (ix)
+   036E E5            [11]  677 	push	hl
+   036F CDr67r01      [17]  678 	call	_str_append
+   0372 DD F9         [10]  679 	ld	sp,ix
+   0374 DD E1         [14]  680 	pop	ix
+   0376 C9            [10]  681 	ret
+   0377                     682 _str_append_num_end::
+                            683 	.area _CODE
+                            684 	.area _INITIALIZER
+                            685 	.area _CABS (ABS)

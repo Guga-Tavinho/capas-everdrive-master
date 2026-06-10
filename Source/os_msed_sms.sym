@@ -1,0 +1,246 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+  0 __osLoadSram                                                   0CFF GR
+  0 __osLoadSram_end                                               0DCC GR
+  0 __osLoadSram_start                                             0CFF GR
+  0 __osSaveSram                                                   0BA4 GR
+  0 __osSaveSram_end                                               0CBF GR
+  0 __osSaveSram_start                                             0BA4 GR
+  0 __str_0                                                        00D1 R
+  0 __str_1                                                        00E6 R
+  0 __str_10                                                       0355 R
+  0 __str_11                                                       0359 R
+  0 __str_12                                                       0363 R
+  0 __str_13                                                       037D R
+  0 __str_14                                                       0382 R
+  0 __str_15                                                       0387 R
+  0 __str_16                                                       0480 R
+  0 __str_17                                                       048F R
+  0 __str_18                                                       049C R
+  0 __str_19                                                       04B7 R
+  0 __str_2                                                        0100 R
+  0 __str_20                                                       056B R
+  0 __str_21                                                       057C R
+  0 __str_22                                                       058B R
+  0 __str_23                                                       059D R
+  0 __str_24                                                       05B0 R
+  0 __str_25                                                       05B3 R
+  0 __str_26                                                       05B7 R
+  0 __str_27                                                       06C0 R
+  0 __str_28                                                       06C1 R
+  0 __str_29                                                       06CF R
+  0 __str_3                                                        0212 R
+  0 __str_30                                                       06DD R
+  0 __str_31                                                       06EC R
+  0 __str_32                                                       0707 R
+  0 __str_33                                                       0716 R
+  0 __str_34                                                       073D R
+  0 __str_35                                                       0746 R
+  0 __str_36                                                       0751 R
+  0 __str_37                                                       075F R
+  0 __str_38                                                       076A R
+  0 __str_39                                                       0784 R
+  0 __str_4                                                        0223 R
+  0 __str_40                                                       079E R
+  0 __str_41                                                       07AE R
+  0 __str_42                                                       07CE R
+  0 __str_43                                                       0953 R
+  0 __str_44                                                       0B30 R
+  0 __str_45                                                       0B31 R
+  0 __str_46                                                       0B42 R
+  0 __str_47                                                       0B56 R
+  0 __str_48                                                       0B6F R
+  0 __str_49                                                       0B8C R
+  0 __str_5                                                        0236 R
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+Symbol Table
+
+  0 __str_50                                                       0B98 R
+  0 __str_51                                                       0CBF R
+  0 __str_52                                                       0CD8 R
+  0 __str_53                                                       0CDE R
+  0 __str_54                                                       0DCC R
+  0 __str_55                                                       0DD2 R
+  0 __str_56                                                       0DD6 R
+  0 __str_57                                                       0ED1 R
+  0 __str_58                                                       0EDB R
+  0 __str_59                                                       0EE2 R
+  0 __str_6                                                        0246 R
+  0 __str_60                                                       0EF4 R
+  0 __str_61                                                       0F06 R
+  0 __str_62                                                       10CC R
+  0 __str_63                                                       10DD R
+  0 __str_64                                                       10E6 R
+  0 __str_65                                                       1211 R
+  0 __str_66                                                       122A R
+  0 __str_67                                                       1337 R
+  0 __str_68                                                       1346 R
+  0 __str_69                                                       1355 R
+  0 __str_7                                                        034A R
+  0 __str_70                                                       135F R
+  0 __str_71                                                       13CD R
+  0 __str_8                                                        034E R
+  0 __str_9                                                        0352 R
+  1 _bi_card_type                                                  0003 GR
+    _bi_flash_erase                                                **** GX
+    _bi_get_cpld_ver                                               **** GX
+    _bi_init                                                       **** GX
+    _bi_install_os                                                 **** GX
+    _bi_is_gg_cart                                                 **** GX
+    _bi_set_ram_bank                                               **** GX
+    _bi_set_rom_bank                                               **** GX
+    _bi_start_game                                                 **** GX
+    _bi_usb_rd_busy                                                **** GX
+    _bi_usb_rd_byte                                                **** GX
+    _bi_usb_to_rom                                                 **** GX
+    _bi_usb_wr_byte                                                **** GX
+  1 _cart_3e                                                       0000 GR
+    _diskInit                                                      **** GX
+    _fat_init                                                      **** GX
+    _fat_make_dir                                                  **** GX
+    _fat_make_sync_name                                            **** GX
+    _fat_open_file                                                 **** GX
+    _fat_open_file_by_name                                         **** GX
+    _fat_read                                                      **** GX
+    _fat_skip_sectors                                              **** GX
+    _fat_write_file                                                **** GX
+    _file                                                          **** GX
+  1 _flash_erase_code                                              1006 GR
+    _gAppendChar                                                   **** GX
+    _gAppendNum                                                    **** GX
+    _gAppendString                                                 **** GX
+    _gCleanScreen                                                  **** GX
+    _gConsPrint                                                    **** GX
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+
+Symbol Table
+
+    _gDrawString                                                   **** GX
+    _gDrawStringCx                                                 **** GX
+    _gRepaint                                                      **** GX
+    _gSetFont                                                      **** GX
+    _gSetPal                                                       **** GX
+    _gSetSGpal                                                     **** GX
+    _gSetXY                                                        **** GX
+    _g_set_vdp_reg                                                 **** GX
+    _guiDrawMenu                                                   **** GX
+    _guiHexView                                                    **** GX
+    _guiPrintError                                                 **** GX
+  1 _joy                                                           0001 GR
+  0 _osAbout                                                       05D1 GR
+  0 _osAbout_end                                                   06C0 GR
+  0 _osAbout_start                                                 05D1 GR
+  0 _osCLeanGameSram                                               0E04 GR
+  0 _osCLeanGameSram_end                                           0E22 GR
+  0 _osCLeanGameSram_start                                         0E04 GR
+  0 _osExitBrowser                                                 04BD GR
+  0 _osExitBrowser_end                                             04C3 GR
+  0 _osExitBrowser_start                                           04BD GR
+  0 _osFileMenu                                                    025F GR
+  0 _osFileMenu_end                                                034A GR
+  0 _osFileMenu_start                                              025F GR
+  0 _osFileToSram                                                  0F0F GR
+  0 _osFileToSram_end                                              0FBB GR
+  0 _osFileToSram_start                                            0F0F GR
+  0 _osGetDate                                                     04C3 GR
+  0 _osGetDate_end                                                 04C7 GR
+  0 _osGetDate_start                                               04C3 GR
+  0 _osGetTime                                                     04C7 GR
+  0 _osGetTime_end                                                 04CB GR
+  0 _osGetTime_start                                               04C7 GR
+  0 _osInit                                                        0000 GR
+  0 _osInit_end                                                    00D1 GR
+  0 _osInit_start                                                  0000 GR
+  0 _osLoadSram                                                    0DE7 GR
+  0 _osLoadSram_end                                                0E04 GR
+  0 _osLoadSram_start                                              0DE7 GR
+  0 _osMainMenu                                                    0400 GR
+  0 _osMainMenu_end                                                0480 GR
+  0 _osMainMenu_start                                              0400 GR
+  0 _osMallocRam                                                   038C GR
+  0 _osMallocRam_end                                               03CB GR
+  0 _osMallocRam_start                                             038C GR
+  0 _osReleaseRam                                                  03CB GR
+  0 _osReleaseRam_end                                              0400 GR
+  0 _osReleaseRam_start                                            03CB GR
+  0 _osRomMenu                                                     0166 GR
+  0 _osRomMenu_end                                                 0212 GR
+  0 _osRomMenu_start                                               0166 GR
+  0 _osSaveRamMenu                                                 0E22 GR
+  0 _osSaveRamMenu_end                                             0ED1 GR
+  0 _osSaveRamMenu_start                                           0E22 GR
+  0 _osSaveSram                                                    0CE2 GR
+  0 _osSaveSram_end                                                0CFF GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+
+Symbol Table
+
+  0 _osSaveSram_start                                              0CE2 GR
+  0 _osSelectGame                                                  0957 GR
+  0 _osSelectGameUsb                                               122F GR
+  0 _osSelectGameUsb_end                                           1337 GR
+  0 _osSelectGameUsb_start                                         122F GR
+  0 _osSelectGame_end                                              0B30 GR
+  0 _osSelectGame_start                                            0957 GR
+  0 _osSetRomCfg                                                   081E GR
+  0 _osSetRomCfg_end                                               0953 GR
+  0 _osSetRomCfg_start                                             081E GR
+  0 _osSramToFile                                                  0FBB GR
+  0 _osSramToFile_end                                              1077 GR
+  0 _osSramToFile_start                                            0FBB GR
+  0 _osStartGame                                                   07D2 GR
+  0 _osStartGame_end                                               081E GR
+  0 _osStartGame_start                                             07D2 GR
+  0 _osSysInfo                                                     04CB GR
+  0 _osSysInfo_end                                                 056B GR
+  0 _osSysInfo_start                                               04CB GR
+  0 _osUpdate                                                      10F9 GR
+  0 _osUpdateMenu                                                  1077 GR
+  0 _osUpdateMenu_end                                              10CC GR
+  0 _osUpdateMenu_start                                            1077 GR
+  0 _osUpdateUsb                                                   1375 GR
+  0 _osUpdateUsb_end                                               13CD GR
+  0 _osUpdateUsb_start                                             1375 GR
+  0 _osUpdate_end                                                  1211 GR
+  0 _osUpdate_start                                                10F9 GR
+  0 _osUsbListene2r                                                010E GR
+  0 _osUsbListene2r_end                                            0111 GR
+  0 _osUsbListene2r_start                                          010E GR
+  0 _osUsbListener                                                 0111 GR
+  0 _osUsbListener_end                                             0166 GR
+  0 _osUsbListener_start                                           0111 GR
+  1 _os_ram                                                        0006 GR
+    _os_ver                                                        **** GX
+  1 _ram_ptr                                                       0004 GR
+  1 _rom_inf                                                       1186 GR
+  1 _spi_to_rom_code                                               1086 GR
+    _str_cmp_len                                                   **** GX
+    _str_copy                                                      **** GX
+    _str_extension                                                 **** GX
+    _str_extension_list                                            **** GX
+    _sysInit                                                       **** GX
+    _sysJoyWait                                                    **** GX
+  1 _usb_to_rom_code                                               1106 GR
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+
+Area Table
+
+   0 _CODE                                      size 13DC   flags    0
+   1 _DATA                                      size 1188   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

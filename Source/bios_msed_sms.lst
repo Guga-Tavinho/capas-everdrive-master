@@ -1,0 +1,942 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+
+
+                              1 .area	_HEADER (ABS)
+   0000                       2 .org 	0
+   0000 C3 01 00      [10]    3     jp	sms_rst
+                              4 
+   0008                       5 .org	0x08
+   0008 ED 4D         [14]    6     reti
+   0010                       7 .org	0x10
+   0010 ED 4D         [14]    8     reti
+   0018                       9 .org	0x18
+   0018 ED 4D         [14]   10     reti
+   0020                      11 .org	0x20
+   0020 ED 4D         [14]   12     reti
+   0028                      13 .org	0x28
+   0028 ED 4D         [14]   14     reti
+   0030                      15 .org	0x30
+   0030 ED 4D         [14]   16     reti
+   0038                      17 .org	0x38
+   0038 ED 4D         [14]   18     reti
+   0066                      19 .org	0x66
+   0066 ED 4D         [14]   20     reti
+                             21 
+   0080                      22 .org 0x80
+   0080 45 44 4F 53          23 .ascii "EDOS"
+                             24 .area	_CODE
+                             25 .globl _os_ver
+   0000                      26 _os_ver:
+   0000 09                   27 .db 9
+                             28 
+                             29 
+                             30 
+                             31 
+                     00BE    32 VDP_DAT = 0xBE
+                     00BF    33 VDP_CNT = 0xBF
+                             34 
+                     00C0    35 VDP_CRAM = 0b11000000
+                             36 
+                             37 .globl	_main
+                             38 .globl _cart_3e
+                             39 
+   0001                      40 sms_rst:
+   0001 F3            [ 4]   41     di
+   0002 31 F0 DF      [10]   42     ld sp, #0xDFF0
+   0005 3A 00 C0      [13]   43     ld a, (0xc000)
+   0008 32 00 00      [13]   44     ld (_cart_3e), a
+   000B C3 00 00      [10]   45     jp _main
+                             46 
+                             47 ;ram regs. write only
+                     FFF8    48 REG_CFG = 0xfff8
+                     FFF9    49 REG_KEY = 0xfff9
+                     FFFA    50 REG_BNK_CFG0 = 0xfffa
+                     FFFB    51 REG_BNK_CFG1 = 0xfffb
+                     FFFC    52 REG_BNK_CFG2 = 0xfffc
+                             53 
+                     7F00    54 REG_SPI = 0x7f00
+                     7F01    55 REG_STATE = 0x7f01
+                     7F02    56 REG_FIFO = 0x7f02
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+
+
+                     7F03    57 REG_FIRM = 0x7f03
+                             58 
+                     0080    59 ST_SPI_BUSY = 128
+                     0040    60 ST_ROM_BUSY = 64
+                     0020    61 ST_FIFO_RD_BUSY = 32
+                     0010    62 ST_FIFO_WR_BUSY = 16
+                     0008    63 ST_DEV_GG = 8
+                             64 
+                     0001    65 CFG_ROM_REGS_ON = 1
+                     0002    66 CFG_SPI_SS = 2
+                     0004    67 CFG_SPI_FULL_SPEED = 4
+                     0008    68 CFG_CDM_MAP = 8
+                     0010    69 CFG_AUTO_BUSY = 16
+                     0020    70 CFG_ROM_WE_OFF = 32
+                     0040    71 CFG_SMS_MODE = 64
+                             72 
+                     0002    73 BCFG_ROM_BANK = 2
+                     0004    74 BCFG_RAM_BANK = 4
+                     0008    75 BCFG_RAM_NROM = 8
+                             76 
+                             77 .globl _bi_init
+                             78 .globl _bi_spi_qq
+                             79 .globl _bi_spi_q
+                             80 .globl _bi_spi
+                             81 .globl _bi_ss_on
+                             82 .globl _bi_ss_off
+                             83 .globl _bi_spi_speed_on
+                             84 .globl _bi_spi_to_ram
+                             85 .globl _bi_flash_erase
+                             86 .globl _bi_usb_rd_busy
+                             87 .globl _bi_usb_wr_busy
+                             88 .globl _bi_usb_rd_byte
+                             89 .globl _bi_usb_wr_byte
+                             90 .globl _bi_spi_to_rom
+                             91 .globl _bi_start_game
+                             92 .globl _bi_get_cpld_ver
+                             93 .globl _bi_set_ram_bank
+                             94 .globl _bi_set_rom_bank
+                             95 .globl _bi_ram_to_spi
+                             96 .globl _bi_is_gg_cart
+                             97 .globl _bi_install_os
+                             98 .globl _bi_usb_to_rom
+                             99 
+                            100 .globl _flash_erase_code
+                            101 .globl _spi_to_rom_code
+                            102 .globl _usb_to_rom_code
+                            103 
+   000E                     104 _bi_init:
+   000E 3E 00         [ 7]  105     ld a, #0x00
+   0010 32 F9 FF      [13]  106     ld (REG_KEY), a
+   0013 3E 52         [ 7]  107     ld a, #0x52
+   0015 32 F9 FF      [13]  108     ld (REG_KEY), a
+   0018 3E 45         [ 7]  109     ld a, #0x45
+   001A 32 F9 FF      [13]  110     ld (REG_KEY), a
+   001D 3E 4E         [ 7]  111     ld a, #0x4E
+   001F 32 F9 FF      [13]  112     ld (REG_KEY), a
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+
+
+
+                            113 
+   0022 3E 01         [ 7]  114     ld a, #CFG_ROM_REGS_ON
+   0024 32 F8 FF      [13]  115     ld (REG_CFG), a
+                            116 
+   0027 3E 02         [ 7]  117     ld a, #BCFG_ROM_BANK
+   0029 32 FC FF      [13]  118     ld (REG_BNK_CFG2), a
+                            119     
+   002C 21 3D 01      [10]  120     ld hl, #bi_flash_erase_code
+   002F 11 00 00      [10]  121     ld de, #_flash_erase_code
+   0032 01 80 00      [10]  122     ld bc, #128
+   0035 ED B0         [21]  123     ldir
+                            124 
+   0037 21 C5 01      [10]  125     ld hl, #bi_spi_to_rom_code
+   003A 11 00 00      [10]  126     ld de, #_spi_to_rom_code
+   003D 01 80 00      [10]  127     ld bc, #128
+   0040 ED B0         [21]  128     ldir
+                            129 
+   0042 21 FB 03      [10]  130     ld hl, #bi_usb_to_rom_code
+   0045 11 00 00      [10]  131     ld de, #_usb_to_rom_code
+   0048 01 80 00      [10]  132     ld bc, #128
+   004B ED B0         [21]  133     ldir
+                            134 
+   004D C9            [10]  135     ret
+                            136 
+   004E                     137 _bi_spi_q:
+   004E                     138 _bi_spi:
+   004E DD E5         [15]  139     push ix
+   0050 DD 21 00 00   [14]  140     ld	ix,#0
+   0054 DD 39         [15]  141     add	ix,sp
+                            142     
+   0056 DD 7E 04      [19]  143     ld a, 4(ix)
+   0059 32 00 7F      [13]  144     ld (REG_SPI), a
+   005C                     145 1$:
+   005C 3A 01 7F      [13]  146     ld a, (REG_STATE)
+   005F 07            [ 4]  147     rlca
+   0060 38 FA         [12]  148     jr c, 1$
+   0062 3A 00 7F      [13]  149     ld a, (REG_SPI)
+   0065 6F            [ 4]  150     ld l, a
+                            151 
+   0066 DD E1         [14]  152     pop ix
+   0068 C9            [10]  153     ret
+                            154 
+   0069                     155 _bi_spi_qq:
+   0069 DD E5         [15]  156     push ix
+   006B DD 21 00 00   [14]  157     ld	ix,#0
+   006F DD 39         [15]  158     add	ix,sp
+                            159     
+   0071 DD 7E 04      [19]  160     ld a, 4(ix)
+   0074 32 00 7F      [13]  161     ld (REG_SPI), a
+   0077                     162 1$:
+                            163     ;ld a, (REG_STATE)
+                            164     ;rlca
+                            165     ;jr c, 1$
+                            166 
+   0077 DD E1         [14]  167     pop ix
+   0079 C9            [10]  168     ret
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+
+
+
+                            169 
+                            170 
+   007A                     171 _bi_ss_on:
+   007A 3A F8 FF      [13]  172     ld a, (REG_CFG)
+   007D F6 02         [ 7]  173     or a, #CFG_SPI_SS
+   007F 32 F8 FF      [13]  174     ld (REG_CFG), a
+   0082 C9            [10]  175     ret
+                            176 
+   0083                     177 _bi_ss_off:
+   0083 3A F8 FF      [13]  178     ld a, (REG_CFG)
+   0086 E6 FD         [ 7]  179     and a, #~CFG_SPI_SS
+   0088 32 F8 FF      [13]  180     ld (REG_CFG), a
+   008B C9            [10]  181     ret
+                            182 
+   008C                     183 _bi_spi_speed_on:
+   008C 3A F8 FF      [13]  184     ld a, (REG_CFG)
+   008F F6 04         [ 7]  185     or a, #CFG_SPI_FULL_SPEED
+   0091 32 F8 FF      [13]  186     ld (REG_CFG), a
+   0094 C9            [10]  187     ret
+                            188 
+   0095                     189 bi_spi_ff:
+   0095 3E FF         [ 7]  190     ld a, #0xff
+   0097                     191 bi_spi_a:
+   0097 32 00 7F      [13]  192     ld (REG_SPI), a
+   009A                     193 1$:
+   009A 3A 01 7F      [13]  194     ld a, (REG_STATE)
+   009D 07            [ 4]  195     rlca
+   009E 38 FA         [12]  196     jr c, 1$
+   00A0 3A 00 7F      [13]  197     ld a, (REG_SPI)
+   00A3 C9            [10]  198     ret
+                            199 
+                            200 
+                            201 
+   00A4                     202 bi_spi_to_ram_256:
+   00A4 11 00 7F      [10]  203     ld de, #REG_SPI
+   00A7                     204 1$:
+   00A7 00            [ 4]  205     nop
+   00A8 1A            [ 7]  206     ld a, (de)
+   00A9 77            [ 7]  207     ld (hl), a
+                            208 
+   00AA 3E FF         [ 7]  209     ld a, #0xff
+   00AC 12            [ 7]  210     ld (de), a
+                            211 
+   00AD 23            [ 6]  212     inc hl
+                            213 
+   00AE 0D            [ 4]  214     dec c
+   00AF 20 F6         [12]  215     jr nz, 1$
+   00B1 C9            [10]  216     ret
+                            217 
+   00B2                     218 _bi_spi_to_ram:
+   00B2 DD E5         [15]  219     push ix
+   00B4 DD 21 00 00   [14]  220     ld	ix,#0
+   00B8 DD 39         [15]  221     add	ix,sp
+                            222     
+   00BA DD 6E 04      [19]  223     ld l, 4(ix)
+   00BD DD 66 05      [19]  224     ld h, 5(ix)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+
+
+
+   00C0 DD 46 06      [19]  225     ld b, 6(ix)
+   00C3 0E 00         [ 7]  226     ld c, #0  
+   00C5                     227 1$:
+   00C5 11 00 00      [10]  228     ld de, #0
+   00C8                     229 11$:
+   00C8 CD 95 00      [17]  230     call bi_spi_ff
+   00CB FE FE         [ 7]  231     cp #0xfe
+   00CD 28 08         [12]  232     jr z, 3$
+   00CF 15            [ 4]  233     dec d
+   00D0 20 F6         [12]  234     jr nz, 11$
+   00D2 1D            [ 4]  235     dec e
+   00D3 20 F3         [12]  236     jr nz, 11$
+   00D5 18 16         [12]  237     jr err_fe
+   00D7                     238 3$:
+   00D7 3E FF         [ 7]  239     ld a, #0xff
+   00D9 32 00 7F      [13]  240     ld (REG_SPI), a
+                            241 
+   00DC CD A4 00      [17]  242     call bi_spi_to_ram_256
+   00DF CD A4 00      [17]  243     call bi_spi_to_ram_256
+                            244        
+   00E2 CD 95 00      [17]  245     call bi_spi_ff
+                            246     ;call bi_spi_ff
+                            247 
+   00E5 05            [ 4]  248     dec b
+   00E6 20 DD         [12]  249     jr nz, 1$
+                            250 
+   00E8 2E 00         [ 7]  251     ld l, #0
+                            252 
+   00EA DD E1         [14]  253     pop ix
+   00EC C9            [10]  254     ret
+   00ED                     255 err_fe:
+   00ED 3E D3         [ 7]  256     ld a, #0xD3
+   00EF 6F            [ 4]  257     ld l, a
+   00F0 DD E1         [14]  258     pop ix
+   00F2 C9            [10]  259     ret
+                            260 
+                            261 
+                            262 
+                            263 
+                            264 
+   00F3                     265 _bi_usb_rd_busy:
+   00F3 3A 01 7F      [13]  266     ld a, (REG_STATE)
+   00F6 E6 20         [ 7]  267     and a, #ST_FIFO_RD_BUSY
+   00F8 6F            [ 4]  268     ld l, a
+   00F9 C9            [10]  269     ret
+                            270 
+   00FA                     271 _bi_usb_wr_busy:
+   00FA 3A 01 7F      [13]  272     ld a, (REG_STATE)
+   00FD E6 10         [ 7]  273     and a, #ST_FIFO_WR_BUSY
+   00FF 6F            [ 4]  274     ld l, a
+   0100 C9            [10]  275     ret
+                            276 
+   0101                     277 _bi_usb_rd_byte:
+   0101 3A 01 7F      [13]  278     ld a, (REG_STATE)
+   0104 E6 20         [ 7]  279     and a, #ST_FIFO_RD_BUSY
+   0106 20 F9         [12]  280     jr nz, _bi_usb_rd_byte
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 6.
+
+
+
+   0108 3A 02 7F      [13]  281     ld a, (REG_FIFO)
+   010B 6F            [ 4]  282     ld l, a
+   010C C9            [10]  283     ret
+                            284 
+                            285 
+   010D                     286 _bi_usb_wr_byte:
+   010D 3A 01 7F      [13]  287     ld a, (REG_STATE)
+   0110 E6 10         [ 7]  288     and a, #ST_FIFO_WR_BUSY
+   0112 20 F9         [12]  289     jr nz, _bi_usb_wr_byte
+                            290     
+   0114 DD E5         [15]  291     push ix
+   0116 DD 21 00 00   [14]  292     ld	ix,#0
+   011A DD 39         [15]  293     add	ix,sp
+                            294     
+   011C DD 7E 04      [19]  295     ld a, 4(ix)
+   011F 32 02 7F      [13]  296     ld (REG_FIFO), a
+                            297     
+   0122 DD E1         [14]  298     pop ix
+   0124 C9            [10]  299     ret
+                            300 
+                            301 ;void bi_flash_erase(u32 base_addr, u16 len64k);
+   0125                     302 _bi_flash_erase:
+   0125 DD E5         [15]  303     push ix
+   0127 DD 21 00 00   [14]  304     ld	ix,#0
+   012B DD 39         [15]  305     add	ix,sp
+                            306 
+   012D DD 7E 06      [19]  307     ld a, 6(ix)
+                            308     ;ld a, #16
+   0130 CB 27         [ 8]  309     sla a
+   0132 CB 27         [ 8]  310     sla a
+   0134 32 FF FF      [13]  311     ld (0xffff), a
+   0137 DD 46 08      [19]  312     ld b, 8(ix)
+                            313 
+   013A C3 00 00      [10]  314     jp _flash_erase_code
+   013D                     315 bi_flash_erase_code:
+   013D 3E AA         [ 7]  316     ld a, #0xaa
+   013F 32 AA 8A      [13]  317     ld (0x8aaa), a
+   0142 3E 55         [ 7]  318     ld a, #0x55
+   0144 32 55 85      [13]  319     ld (0x8555), a
+   0147 3E 80         [ 7]  320     ld a, #0x80
+   0149 32 AA 8A      [13]  321     ld (0x8aaa), a
+   014C 3E AA         [ 7]  322     ld a, #0xaa
+   014E 32 AA 8A      [13]  323     ld (0x8aaa), a
+   0151 3E 55         [ 7]  324     ld a, #0x55
+   0153 32 55 85      [13]  325     ld (0x8555), a
+                            326 
+   0156 0E 04         [ 7]  327     ld c, #4
+   0158                     328 1$:
+   0158 3E 30         [ 7]  329     ld a, #0x30
+   015A 32 00 80      [13]  330     ld (0x8000), a
+   015D 32 00 A0      [13]  331     ld (0xa000), a
+   0160 3A FF FF      [13]  332     ld a, (0xffff)
+   0163 3C            [ 4]  333     inc a
+   0164 32 FF FF      [13]  334     ld (0xffff), a
+   0167 0D            [ 4]  335     dec c
+   0168 20 EE         [12]  336     jr nz, 1$
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 7.
+
+
+
+   016A 0E 04         [ 7]  337     ld c, #4
+   016C 05            [ 4]  338     dec b
+   016D 20 E9         [12]  339     jr nz, 1$
+                            340 
+   016F                     341 2$:;wait ry
+   016F 3A 00 80      [13]  342     ld a, (0x8000)
+   0172 47            [ 4]  343     ld b, a
+   0173 3A 00 80      [13]  344     ld a, (0x8000)
+   0176 B8            [ 4]  345     cp a, b
+   0177 20 F6         [12]  346     jr nz, 2$
+                            347 
+   0179 DD E1         [14]  348     pop ix
+   017B C9            [10]  349     ret
+                            350 
+                            351 ;u8 bi_spi_to_rom(void *addr, u16 slen);
+   017C                     352 _bi_spi_to_rom:
+   017C DD E5         [15]  353     push ix
+   017E DD 21 00 00   [14]  354     ld	ix,#0
+   0182 DD 39         [15]  355     add	ix,sp
+                            356 
+   0184 DD 6E 04      [19]  357     ld l, 4(ix)
+   0187 DD 66 05      [19]  358     ld h, 5(ix)
+   018A DD 46 06      [19]  359     ld b, 6(ix)
+                            360 
+   018D 7E            [ 7]  361     ld a, (hl)
+                            362     
+   018E CB 3F         [ 8]  363     srl a
+   0190 CB 3F         [ 8]  364     srl a
+   0192 CB 3F         [ 8]  365     srl a
+   0194 CB 3F         [ 8]  366     srl a
+   0196 CB 3F         [ 8]  367     srl a
+   0198 4F            [ 4]  368     ld c, a
+   0199 23            [ 6]  369     inc hl
+   019A 7E            [ 7]  370     ld a, (hl)
+                            371     
+   019B CB 27         [ 8]  372     sla a
+   019D CB 27         [ 8]  373     sla a
+   019F CB 27         [ 8]  374     sla a
+   01A1 B1            [ 4]  375     or a, c
+                            376     ;ld a, #0
+   01A2 32 FF FF      [13]  377     ld (0xffff), a
+   01A5 2B            [ 6]  378     dec hl
+                            379     
+   01A6 7E            [ 7]  380     ld a, (hl)
+   01A7 E6 1F         [ 7]  381     and a, #31
+   01A9 CB 27         [ 8]  382     sla a
+   01AB C6 80         [ 7]  383     add a, #0x80
+   01AD 67            [ 4]  384     ld h, a
+   01AE 2E 00         [ 7]  385     ld l, #0
+                            386 
+   01B0 11 00 7F      [10]  387     ld de, #REG_SPI
+   01B3                     388 1$:;copy block 512b
+   01B3 CD 00 00      [17]  389     call _spi_to_rom_code
+   01B6 CD 95 00      [17]  390     call bi_spi_ff
+   01B9 CD 95 00      [17]  391     call bi_spi_ff
+   01BC 05            [ 4]  392     dec b
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 8.
+
+
+
+   01BD 20 F4         [12]  393     jr nz, 1$
+                            394 
+   01BF 3E 00         [ 7]  395     ld a, #0
+   01C1 6F            [ 4]  396     ld l, a
+   01C2 DD E1         [14]  397     pop ix
+                            398 
+   01C4 C9            [10]  399     ret
+                            400 
+                            401 
+   01C5                     402 bi_spi_to_rom_code:
+                            403 ;unlock bypass
+   01C5 3E AA         [ 7]  404     ld a, #0xaa
+   01C7 32 AA 8A      [13]  405     ld (0x8aaa), a
+   01CA 3E 55         [ 7]  406     ld a, #0x55
+   01CC 32 55 85      [13]  407     ld (0x8555), a
+   01CF 3E 20         [ 7]  408     ld a, #0x20
+   01D1 32 AA 8A      [13]  409     ld (0x8aaa), a
+   01D4                     410 1$:;wait fe
+   01D4 3E FF         [ 7]  411     ld a, #0xff
+   01D6 12            [ 7]  412     ld (de), a
+   01D7                     413 2$:
+   01D7 3A 01 7F      [13]  414     ld a, (REG_STATE)
+   01DA 07            [ 4]  415     rlca
+   01DB 38 FA         [12]  416     jr c, 2$
+                            417 
+                            418 ;copy 512b
+   01DD 1A            [ 7]  419     ld a, (de)
+   01DE FE FE         [ 7]  420     cp a, #0xfe
+   01E0 20 F2         [12]  421     jr nz, 1$
+   01E2                     422 3$:
+   01E2 3E FF         [ 7]  423     ld a, #0xff
+   01E4 12            [ 7]  424     ld (de), a
+                            425 
+                            426 ;may be dangerous if rom busy 
+                            427     
+   01E5                     428 4$:
+   01E5 3A 01 7F      [13]  429     ld a, (REG_STATE) 
+   01E8 E6 C0         [ 7]  430     and a, #ST_ROM_BUSY | ST_SPI_BUSY
+   01EA 20 F9         [12]  431     jr nz, 4$
+                            432     
+   01EC 3E A0         [ 7]  433     ld a, #0xa0
+   01EE 77            [ 7]  434     ld (hl), a
+                            435     
+   01EF 1A            [ 7]  436     ld a, (de)
+   01F0 77            [ 7]  437     ld (hl), a
+   01F1 2C            [ 4]  438     inc l
+   01F2 20 EE         [12]  439     jr nz, 3$
+   01F4 24            [ 4]  440     inc h
+                            441 
+   01F5 7C            [ 4]  442     ld a, h
+   01F6 E6 01         [ 7]  443     and a, #1
+   01F8 20 E8         [12]  444     jr nz, 3$
+                            445 
+   01FA                     446 5$:;block 512b  end. wait ry
+   01FA 3A 01 7F      [13]  447     ld a, (REG_STATE) 
+   01FD E6 40         [ 7]  448     and a, #ST_ROM_BUSY
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 9.
+
+
+
+   01FF 20 F9         [12]  449     jr nz, 5$
+                            450 
+                            451 ;unlock bypass reset
+   0201 3E 90         [ 7]  452     ld a, #0x90
+   0203 32 00 80      [13]  453     ld (0x8000), a
+   0206 3E 00         [ 7]  454     ld a, #0x00
+   0208 32 00 80      [13]  455     ld (0x8000), a
+                            456 
+   020B 7C            [ 4]  457     ld a, h
+   020C FE C0         [ 7]  458     cp a, #0xc0
+   020E 20 0A         [12]  459     jr nz, 6$
+                            460 ;inc block 16k
+   0210 3A FF FF      [13]  461     ld a, (0xffff)
+   0213 3C            [ 4]  462     inc a
+   0214 32 FF FF      [13]  463     ld (0xffff), a
+   0217 21 00 80      [10]  464     ld hl, #0x8000
+   021A                     465 6$:
+   021A C9            [10]  466     ret
+                            467 
+                            468 
+                            469 
+                            470 
+   021B                     471 _bi_get_cpld_ver:
+   021B 3A 03 7F      [13]  472     ld a, (REG_FIRM)
+   021E 6F            [ 4]  473     ld l, a
+   021F C9            [10]  474     ret
+                            475 
+   0220                     476 _bi_set_ram_bank:
+   0220 DD E5         [15]  477     push ix
+   0222 DD 21 00 00   [14]  478     ld	ix,#0
+   0226 DD 39         [15]  479     add	ix,sp
+                            480     
+   0228 DD 7E 04      [19]  481     ld a, 4(ix)
+   022B E6 01         [ 7]  482     and a, #1
+   022D CB 27         [ 8]  483     sla a
+   022F CB 27         [ 8]  484     sla a
+   0231 F6 08         [ 7]  485     or a, #BCFG_RAM_NROM
+   0233 32 FC FF      [13]  486     ld (REG_BNK_CFG2), a
+                            487 
+   0236 DD E1         [14]  488     pop ix
+   0238 C9            [10]  489     ret
+                            490 
+                            491 
+   0239                     492 _bi_set_rom_bank:
+   0239 DD E5         [15]  493     push ix
+   023B DD 21 00 00   [14]  494     ld	ix,#0
+   023F DD 39         [15]  495     add	ix,sp
+                            496     
+   0241 DD 7E 04      [19]  497     ld a, 4(ix)
+   0244 E6 01         [ 7]  498     and a, #1
+   0246 CB 27         [ 8]  499     sla a
+   0248 32 FC FF      [13]  500     ld (REG_BNK_CFG2), a
+                            501 
+   024B DD E1         [14]  502     pop ix
+   024D C9            [10]  503     ret
+                            504 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 10.
+
+
+
+   024E                     505 _bi_ram_to_spi:
+   024E DD E5         [15]  506     push ix
+   0250 DD 21 00 00   [14]  507     ld	ix,#0
+   0254 DD 39         [15]  508     add	ix,sp
+                            509     
+   0256 DD 6E 04      [19]  510     ld l, 4(ix)
+   0259 DD 66 05      [19]  511     ld h, 5(ix)
+   025C DD 46 06      [19]  512     ld b, 6(ix)
+   025F 0E 00         [ 7]  513     ld c, #0
+                            514 
+   0261                     515 1$:
+   0261 CD 95 00      [17]  516     call bi_spi_ff
+   0264 CD 95 00      [17]  517     call bi_spi_ff
+   0267 3E FC         [ 7]  518     ld a, #0xfc
+   0269 CD 97 00      [17]  519     call bi_spi_a
+   026C                     520 2$:
+   026C 7E            [ 7]  521     ld a, (hl)
+   026D CD 97 00      [17]  522     call bi_spi_a
+   0270 23            [ 6]  523     inc hl
+   0271 7E            [ 7]  524     ld a, (hl)
+   0272 CD 97 00      [17]  525     call bi_spi_a
+   0275 23            [ 6]  526     inc hl
+   0276 0D            [ 4]  527     dec c
+   0277 20 F3         [12]  528     jr nz, 2$
+                            529 
+   0279 CD 95 00      [17]  530     call bi_spi_ff
+   027C CD 95 00      [17]  531     call bi_spi_ff
+   027F CD 95 00      [17]  532     call bi_spi_ff
+                            533 
+   0282 E6 1F         [ 7]  534     and a, #0x1f
+   0284 FE 05         [ 7]  535     cp a, #0x05
+   0286 20 39         [12]  536     jr nz, wr_err1
+                            537 
+   0288 11 00 00      [10]  538     ld de, #0
+   028B                     539 3$:
+   028B CD 95 00      [17]  540     call bi_spi_ff
+   028E FE FF         [ 7]  541     cp a, #0xff
+   0290 28 08         [12]  542     jr z, 4$
+   0292 14            [ 4]  543     inc d
+   0293 20 F6         [12]  544     jr nz, 3$
+   0295 1C            [ 4]  545     inc e
+   0296 20 F3         [12]  546     jr nz, 3$
+   0298 18 2B         [12]  547     jr wr_err2
+                            548 
+   029A                     549 4$:
+   029A 05            [ 4]  550     dec b
+   029B 20 C4         [12]  551     jr nz, 1$
+                            552 
+                            553 
+   029D 3E FD         [ 7]  554     ld a, #0xfd
+   029F CD 97 00      [17]  555     call bi_spi_a
+   02A2 3E FF         [ 7]  556     ld a, #0xff
+   02A4 CD 97 00      [17]  557     call bi_spi_a
+   02A7 11 00 00      [10]  558     ld de, #0
+   02AA                     559 5$:
+   02AA CD 95 00      [17]  560     call bi_spi_ff
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 11.
+
+
+
+   02AD E6 01         [ 7]  561     and a, #1
+   02AF FE 00         [ 7]  562     cp a, #0
+   02B1 20 08         [12]  563     jr nz, 6$
+   02B3 14            [ 4]  564     inc d
+   02B4 20 F4         [12]  565     jr nz, 5$
+   02B6 1C            [ 4]  566     inc e
+   02B7 20 F1         [12]  567     jr nz, 5$
+   02B9 18 0E         [12]  568     jr wr_err3
+                            569 
+   02BB                     570 6$:
+                            571     
+   02BB 3E 00         [ 7]  572     ld a, #0
+   02BD 6F            [ 4]  573     ld l, a
+   02BE DD E1         [14]  574     pop ix
+   02C0 C9            [10]  575     ret
+                            576 
+   02C1                     577 wr_err1:
+   02C1 3E D5         [ 7]  578     ld a, #0xd5
+   02C3 18 06         [12]  579     jr wr_err
+   02C5                     580 wr_err2:
+   02C5 3E D6         [ 7]  581     ld a, #0xd6
+   02C7 18 02         [12]  582     jr wr_err
+   02C9                     583 wr_err3:
+   02C9 3E D7         [ 7]  584     ld a, #0xd7
+   02CB                     585 wr_err:
+   02CB 6F            [ 4]  586     ld l, a
+   02CC DD E1         [14]  587     pop ix
+   02CE C9            [10]  588     ret
+                            589 
+                            590 
+   02CF                     591 _bi_is_gg_cart:
+   02CF 3A 01 7F      [13]  592     ld a, (REG_STATE)
+   02D2 E6 08         [ 7]  593     and a, #ST_DEV_GG
+   02D4 6F            [ 4]  594     ld l, a
+   02D5 C9            [10]  595     ret
+                            596 
+                            597 
+                            598 ;7	Expansion slot enable	SMS2, GG, Genesis
+                            599 ;6	Cartridge slot enable	GG, Genesis
+                            600 ;5	Card slot enable	SMS2, GG, Genesis
+                            601 ;4	RAM enable	 
+                            602 ;3	BIOS ROM enable	Genesis
+                            603 ;2	I/O enable	GG, Genesis
+                            604 ;1	Unknown	 
+                            605 ;0	Unknown	 
+                            606 
+                            607 
+   02D6                     608 _bi_start_game:
+   02D6 DD E5         [15]  609     push ix
+   02D8 DD 21 00 00   [14]  610     ld	ix,#0
+   02DC DD 39         [15]  611     add	ix,sp
+   02DE 3A 00 00      [13]  612     ld a, (_cart_3e)
+   02E1 32 00 C8      [13]  613     ld (0xc800), a
+   02E4 DD 7E 04      [19]  614     ld a, 4(ix)
+   02E7 21 F5 02      [10]  615     ld hl, #start_game_code
+   02EA 11 00 C0      [10]  616     ld de, #0xc000
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 12.
+
+
+
+   02ED 01 80 00      [10]  617     ld bc, #128
+   02F0 ED B0         [21]  618     ldir
+   02F2 C3 00 C0      [10]  619     jp 0xc000
+   02F5                     620 start_game_code:
+   02F5 47            [ 4]  621     ld b, a
+   02F6 3E 00         [ 7]  622     ld a, #0
+   02F8 32 FD FF      [13]  623     ld (0xfffd), a
+   02FB 3E 01         [ 7]  624     ld a, #1
+   02FD 32 FE FF      [13]  625     ld (0xfffe), a
+   0300 3E 02         [ 7]  626     ld a, #2
+   0302 32 FF FF      [13]  627     ld (0xffff), a
+                            628 
+   0305 3E 02         [ 7]  629     ld a, #BCFG_ROM_BANK
+   0307 32 FA FF      [13]  630     ld (REG_BNK_CFG0), a
+   030A 32 FB FF      [13]  631     ld (REG_BNK_CFG1), a
+   030D 32 FC FF      [13]  632     ld (REG_BNK_CFG2), a
+                            633 
+                            634     ;ld a, (_r_start_cfg)
+                            635     ;ld a, #64 | 32
+   0310 78            [ 4]  636     ld a, b
+   0311 32 F8 FF      [13]  637     ld (REG_CFG), a
+   0314 3E 00         [ 7]  638     ld a, #0
+   0316 32 F9 FF      [13]  639     ld (REG_KEY), a
+   0319 31 F0 DF      [10]  640     ld sp, #0xDFF0
+                            641     
+                            642     ;ld a, (0xc800)
+   031C 3E 2B         [ 7]  643     ld a, #~(128 | 64 | 16 | 4)
+   031E 32 00 C0      [13]  644     ld (0xc000), a
+                            645     ;out (0x3e), a
+                            646 
+                            647     ;ld a, #~(1 << 6 | 1<< 4 | 1 << 2)
+                            648     ;ld (0xc000), a
+                            649     ;ld a, #~(1 << 6 | 1<< 4 | 1 << 2)
+                            650     ;out (0x3e), a
+                            651 
+                            652 
+   0321 C3 00 00      [10]  653     jp 0
+                            654 
+                            655 
+   0324                     656 _bi_install_os:
+   0324 21 32 03      [10]  657     ld hl, #install_os_code
+   0327 11 00 C0      [10]  658     ld de, #0xc000
+   032A 01 00 01      [10]  659     ld bc, #256
+   032D ED B0         [21]  660     ldir
+   032F C3 00 C0      [10]  661     jp 0xc000
+   0332                     662 install_os_code:
+   0332 3E 00         [ 7]  663     ld a, #0
+   0334 32 FC FF      [13]  664     ld (REG_BNK_CFG2), a
+   0337 3E 04         [ 7]  665     ld a, #4
+   0339 32 FF FF      [13]  666     ld (0xffff), a
+                            667 
+   033C 3E AA         [ 7]  668     ld a, #0xaa
+   033E 32 AA 8A      [13]  669     ld (0x8aaa), a
+   0341 3E 55         [ 7]  670     ld a, #0x55
+   0343 32 55 85      [13]  671     ld (0x8555), a
+   0346 3E 80         [ 7]  672     ld a, #0x80
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 13.
+
+
+
+   0348 32 AA 8A      [13]  673     ld (0x8aaa), a
+   034B 3E AA         [ 7]  674     ld a, #0xaa
+   034D 32 AA 8A      [13]  675     ld (0x8aaa), a
+   0350 3E 55         [ 7]  676     ld a, #0x55
+   0352 32 55 85      [13]  677     ld (0x8555), a
+   0355 3E 30         [ 7]  678     ld a, #0x30
+   0357 32 00 80      [13]  679     ld (0x8000), a
+   035A                     680 1$:;wait erase
+   035A 3A 01 7F      [13]  681     ld a, (REG_STATE)
+   035D E6 40         [ 7]  682     and #ST_ROM_BUSY
+   035F 20 F9         [12]  683     jr nz, 1$
+                            684 
+                            685 
+   0361                     686 2$:;prog block 16k
+   0361 21 00 80      [10]  687     ld hl, #0x8000
+   0364                     688 3$:;AAA AA 555 55 AAA A0 PA PD
+   0364 3A 01 7F      [13]  689     ld a, (REG_STATE)
+   0367 E6 40         [ 7]  690     and #ST_ROM_BUSY
+   0369 20 F9         [12]  691     jr nz, 3$
+                            692     
+   036B 3E 02         [ 7]  693     ld a, #BCFG_ROM_BANK
+   036D 32 FC FF      [13]  694     ld (REG_BNK_CFG2), a
+   0370 7E            [ 7]  695     ld a, (hl)
+   0371 F5            [11]  696     push af
+                            697 
+   0372 3E 00         [ 7]  698     ld a, #0
+   0374 32 FC FF      [13]  699     ld (REG_BNK_CFG2), a
+                            700     
+   0377 3E AA         [ 7]  701     ld a, #0xaa
+   0379 32 AA 8A      [13]  702     ld (0x8aaa), a
+   037C 3E 55         [ 7]  703     ld a, #0x55
+   037E 32 55 85      [13]  704     ld (0x8555), a
+   0381 3E A0         [ 7]  705     ld a, #0xA0
+   0383 32 AA 8A      [13]  706     ld (0x8aaa), a
+                            707 
+   0386 F1            [10]  708     pop af
+   0387 77            [ 7]  709     ld (hl), a
+                            710 
+   0388 23            [ 6]  711     inc hl
+   0389 7C            [ 4]  712     ld a, h
+   038A FE C0         [ 7]  713     cp a, #0xc0
+   038C 20 D6         [12]  714     jr nz, 3$
+                            715 
+   038E 3A FF FF      [13]  716     ld a, (0xffff)
+   0391 3C            [ 4]  717     inc a
+   0392 32 FF FF      [13]  718     ld (0xffff), a
+   0395 FE 06         [ 7]  719     cp a, #6
+   0397 20 C8         [12]  720     jr nz, 2$
+                            721 
+   0399                     722 4$:
+   0399 3A 01 7F      [13]  723     ld a, (REG_STATE)
+   039C E6 40         [ 7]  724     and #ST_ROM_BUSY
+   039E 20 F9         [12]  725     jr nz, 4$
+                            726 
+   03A0 3E 04         [ 7]  727     ld a, #4
+   03A2 32 FD FF      [13]  728     ld (0xfffd), a
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 14.
+
+
+
+   03A5 3E 05         [ 7]  729     ld a, #5
+   03A7 32 FE FF      [13]  730     ld (0xfffe), a
+                            731 
+                            732 
+   03AA 3E 00         [ 7]  733     ld a, #0
+   03AC 32 FA FF      [13]  734     ld (REG_BNK_CFG0), a
+   03AF 32 FB FF      [13]  735     ld (REG_BNK_CFG1), a
+   03B2 32 F8 FF      [13]  736     ld (REG_CFG), a
+   03B5 32 F9 FF      [13]  737     ld (REG_KEY), a
+                            738 
+   03B8 C3 00 00      [10]  739     jp 0
+                            740 
+                            741 ;*******************************************************************************
+   03BB                     742 _bi_usb_to_rom:
+   03BB DD E5         [15]  743     push ix
+   03BD DD 21 00 00   [14]  744     ld	ix,#0
+   03C1 DD 39         [15]  745     add	ix,sp
+                            746 
+   03C3 DD 6E 04      [19]  747     ld l, 4(ix)
+   03C6 DD 66 05      [19]  748     ld h, 5(ix)
+   03C9 DD 46 06      [19]  749     ld b, 6(ix)
+                            750 
+   03CC 7E            [ 7]  751     ld a, (hl)
+                            752     
+   03CD CB 3F         [ 8]  753     srl a
+   03CF CB 3F         [ 8]  754     srl a
+   03D1 CB 3F         [ 8]  755     srl a
+   03D3 CB 3F         [ 8]  756     srl a
+   03D5 CB 3F         [ 8]  757     srl a
+   03D7 4F            [ 4]  758     ld c, a
+   03D8 23            [ 6]  759     inc hl
+   03D9 7E            [ 7]  760     ld a, (hl)
+                            761     
+   03DA CB 27         [ 8]  762     sla a
+   03DC CB 27         [ 8]  763     sla a
+   03DE CB 27         [ 8]  764     sla a
+   03E0 B1            [ 4]  765     or a, c
+                            766     ;ld a, #0
+   03E1 32 FF FF      [13]  767     ld (0xffff), a
+   03E4 2B            [ 6]  768     dec hl
+                            769     
+   03E5 7E            [ 7]  770     ld a, (hl)
+   03E6 E6 1F         [ 7]  771     and a, #31
+   03E8 CB 27         [ 8]  772     sla a
+   03EA C6 80         [ 7]  773     add a, #0x80
+   03EC 67            [ 4]  774     ld h, a
+   03ED 2E 00         [ 7]  775     ld l, #0
+                            776 
+   03EF 11 02 7F      [10]  777     ld de, #REG_FIFO
+   03F2                     778 1$:;copy block 512b
+   03F2 CD 00 00      [17]  779     call _usb_to_rom_code
+   03F5 05            [ 4]  780     dec b
+   03F6 20 FA         [12]  781     jr nz, 1$
+                            782 
+   03F8 DD E1         [14]  783     pop ix
+   03FA C9            [10]  784     ret
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 15.
+
+
+
+                            785 
+                            786 
+   03FB                     787 bi_usb_to_rom_code:
+                            788 ;unlock bypass
+   03FB 3E AA         [ 7]  789     ld a, #0xaa
+   03FD 32 AA 8A      [13]  790     ld (0x8aaa), a
+   0400 3E 55         [ 7]  791     ld a, #0x55
+   0402 32 55 85      [13]  792     ld (0x8555), a
+   0405 3E 20         [ 7]  793     ld a, #0x20
+   0407 32 AA 8A      [13]  794     ld (0x8aaa), a
+   040A                     795 1$:
+                            796     
+   040A                     797 4$:
+   040A 3A 01 7F      [13]  798     ld a, (REG_STATE) 
+   040D E6 60         [ 7]  799     and a, #ST_ROM_BUSY | ST_FIFO_RD_BUSY
+   040F 20 F9         [12]  800     jr nz, 4$
+                            801 
+   0411 3E A0         [ 7]  802     ld a, #0xa0
+   0413 77            [ 7]  803     ld (hl), a
+                            804 
+   0414 1A            [ 7]  805     ld a, (de)
+   0415 77            [ 7]  806     ld (hl), a
+   0416 2C            [ 4]  807     inc l
+   0417 20 F1         [12]  808     jr nz, 1$
+   0419 24            [ 4]  809     inc h
+                            810 
+   041A 7C            [ 4]  811     ld a, h
+   041B E6 01         [ 7]  812     and a, #1
+   041D 20 EB         [12]  813     jr nz, 1$
+                            814 
+   041F                     815 5$:;block 512b  end. wait ry
+   041F 3A 01 7F      [13]  816     ld a, (REG_STATE) 
+   0422 E6 40         [ 7]  817     and a, #ST_ROM_BUSY
+   0424 20 F9         [12]  818     jr nz, 5$
+                            819 
+                            820 ;unlock bypass reset
+   0426 3E 90         [ 7]  821     ld a, #0x90
+   0428 32 00 80      [13]  822     ld (0x8000), a
+   042B 3E 00         [ 7]  823     ld a, #0x00
+   042D 32 00 80      [13]  824     ld (0x8000), a
+                            825 
+   0430 7C            [ 4]  826     ld a, h
+   0431 FE C0         [ 7]  827     cp a, #0xc0
+   0433 20 0A         [12]  828     jr nz, 6$
+                            829 ;inc block 16k
+   0435 3A FF FF      [13]  830     ld a, (0xffff)
+   0438 3C            [ 4]  831     inc a
+   0439 32 FF FF      [13]  832     ld (0xffff), a
+   043C 21 00 80      [10]  833     ld hl, #0x8000
+   043F                     834 6$:
+   043F C9            [10]  835     ret
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 16.
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |     BCFG_RAM=  0004     |     BCFG_RAM=  0008 
+    BCFG_ROM=  0002     |     CFG_AUTO=  0010     |     CFG_CDM_=  0008 
+    CFG_ROM_=  0001     |     CFG_ROM_=  0020     |     CFG_SMS_=  0040 
+    CFG_SPI_=  0004     |     CFG_SPI_=  0002     |     REG_BNK_=  FFFA 
+    REG_BNK_=  FFFB     |     REG_BNK_=  FFFC     |     REG_CFG =  FFF8 
+    REG_FIFO=  7F02     |     REG_FIRM=  7F03     |     REG_KEY =  FFF9 
+    REG_SPI =  7F00     |     REG_STAT=  7F01     |     ST_DEV_G=  0008 
+    ST_FIFO_=  0020     |     ST_FIFO_=  0010     |     ST_ROM_B=  0040 
+    ST_SPI_B=  0080     |     VDP_CNT =  00BF     |     VDP_CRAM=  00C0 
+    VDP_DAT =  00BE     |   0 _bi_flas   0125 GR  |   0 _bi_get_   021B GR
+  0 _bi_init   000E GR  |   0 _bi_inst   0324 GR  |   0 _bi_is_g   02CF GR
+  0 _bi_ram_   024E GR  |   0 _bi_set_   0220 GR  |   0 _bi_set_   0239 GR
+  0 _bi_spi    004E GR  |   0 _bi_spi_   004E GR  |   0 _bi_spi_   0069 GR
+  0 _bi_spi_   008C GR  |   0 _bi_spi_   00B2 GR  |   0 _bi_spi_   017C GR
+  0 _bi_ss_o   0083 GR  |   0 _bi_ss_o   007A GR  |   0 _bi_star   02D6 GR
+  0 _bi_usb_   00F3 GR  |   0 _bi_usb_   0101 GR  |   0 _bi_usb_   03BB GR
+  0 _bi_usb_   00FA GR  |   0 _bi_usb_   010D GR  |     _cart_3e   **** GX
+    _flash_e   **** GX  |     _main      **** GX  |   0 _os_ver    0000 GR
+    _spi_to_   **** GX  |     _usb_to_   **** GX  |   0 bi_flash   013D R
+  0 bi_spi_a   0097 R   |   0 bi_spi_f   0095 R   |   0 bi_spi_t   00A4 R
+  0 bi_spi_t   01C5 R   |   0 bi_usb_t   03FB R   |   0 err_fe     00ED R
+  0 install_   0332 R   |   0 sms_rst    0001 R   |   0 start_ga   02F5 R
+  0 wr_err     02CB R   |   0 wr_err1    02C1 R   |   0 wr_err2    02C5 R
+  0 wr_err3    02C9 R
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 17.
+
+Area Table
+
+   0 _CODE      size  440   flags    0
+   1 _HEADER    size    0   flags    8
+   2 _HEADER0   size    3   flags    8
+   3 _HEADER1   size    2   flags    8
+   4 _HEADER2   size    2   flags    8
+   5 _HEADER3   size    2   flags    8
+   6 _HEADER4   size    2   flags    8
+   7 _HEADER5   size    2   flags    8
+   8 _HEADER6   size    2   flags    8
+   9 _HEADER7   size    2   flags    8
+   A _HEADER8   size    2   flags    8
+   B _HEADER9   size    4   flags    8
+

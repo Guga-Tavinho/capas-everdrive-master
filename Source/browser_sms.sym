@@ -1,0 +1,43 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+    __divuint_rrx_s                                                **** GX
+    __mulint_rrx_s                                                 **** GX
+  1 _br_rec                                                        0000 GR
+  0 _browser                                                       0000 GR
+  0 _browser_end                                                   0554 GR
+  0 _browser_start                                                 0000 GR
+    _fat_dir                                                       **** GX
+    _fat_dir_size                                                  **** GX
+    _fat_get_full_record                                           **** GX
+    _fat_load_dir                                                  **** GX
+    _fat_sub_dir_clust                                             **** GX
+    _guiDrawBrowser                                                **** GX
+    _guiGetMaxRows                                                 **** GX
+    _joy                                                           **** GX
+    _osExitBrowser                                                 **** GX
+    _osFileMenu                                                    **** GX
+    _osMainMenu                                                    **** GX
+    _osStartGame                                                   **** GX
+  1 _sel_stack                                                     00E5 GR
+    _sysJoyWait                                                    **** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+Area Table
+
+   0 _CODE                                      size  554   flags    0
+   1 _DATA                                      size  125   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

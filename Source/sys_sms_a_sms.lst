@@ -1,0 +1,279 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+
+
+                              1 
+                              2 
+                              3 
+                     00BE     4 VDP_DAT = 0xBE
+                     00BF     5 VDP_CNT = 0xBF
+                     00DC     6 JOY_LO = 0xdc
+                     00DD     7 JOY_HI = 0xdd
+                              8 
+                     0000     9 VDP_VRAM_RD = 0b00000000
+                     0040    10 VDP_VRAM_WR = 0b01000000
+                     0080    11 VDP_REG_WR =  0b10000000
+                     00C0    12 VDP_CRAM =    0b11000000
+                             13 
+                             14 
+                             15 
+                             16 .globl _g_vdp_init
+   0000                      17 _g_vdp_init:
+   0000 21 0D 01      [10]   18     ld hl, #vdp_reg
+   0003 06 16         [ 7]   19     ld b, #22
+   0005 0E BF         [ 7]   20     ld c, #VDP_CNT
+   0007 ED B3         [21]   21     otir
+                             22 
+   0009 3E 00         [ 7]   23     ld a, #0x00
+   000B D3 BF         [11]   24     out (VDP_CNT), a
+   000D 3E 40         [ 7]   25     ld a, #0x00 | VDP_VRAM_WR
+   000F D3 BF         [11]   26     out (VDP_CNT), a
+                             27     
+   0011 21 00 10      [10]   28     ld hl, #0x1000
+   0014 3E 00         [ 7]   29     ld a, #0x00
+   0016                      30 001$:
+   0016 D3 BE         [11]   31     out (VDP_DAT), a
+   0018 D3 BE         [11]   32     out (VDP_DAT), a
+   001A D3 BE         [11]   33     out (VDP_DAT), a
+   001C D3 BE         [11]   34     out (VDP_DAT), a
+   001E 2D            [ 4]   35     dec l
+   001F 20 F5         [12]   36     jr nz, 001$
+   0021 25            [ 4]   37     dec h
+   0022 20 F2         [12]   38     jr nz, 001$
+   0024 C9            [10]   39     ret
+                             40 
+                             41 
+                             42 .globl _g_set_pal
+   0025                      43 _g_set_pal:
+   0025 DD E5         [15]   44     push ix
+   0027 DD 21 00 00   [14]   45     ld	ix,#0
+   002B DD 39         [15]   46     add	ix,sp
+                             47 
+   002D 3E 00         [ 7]   48     ld a, #0
+   002F D3 BF         [11]   49     out (VDP_CNT), a
+   0031 DD 7E 06      [19]   50     ld a, 6(ix)
+   0034 F6 C0         [ 7]   51     or a, #VDP_CRAM
+   0036 D3 BF         [11]   52     out (VDP_CNT), a
+                             53 
+   0038 DD 6E 04      [19]   54     ld l, 4(ix)
+   003B DD 66 05      [19]   55     ld h, 5(ix)
+   003E DD 46 07      [19]   56     ld b, 7(ix)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+
+
+   0041 0E BE         [ 7]   57     ld c, #VDP_DAT
+   0043 ED B3         [21]   58     otir
+                             59 
+   0045 DD E1         [14]   60     pop ix
+   0047 C9            [10]   61     ret
+                             62 
+                             63 .globl _g_vram_wr
+   0048                      64 _g_vram_wr:
+   0048 DD E5         [15]   65     push ix
+   004A DD 21 00 00   [14]   66     ld	ix,#0
+   004E DD 39         [15]   67     add	ix,sp
+                             68 
+   0050 DD 7E 06      [19]   69     ld a, 6 (ix)
+   0053 D3 BF         [11]   70     out (VDP_CNT), a
+   0055 DD 7E 07      [19]   71     ld a, 7 (ix)
+   0058 F6 40         [ 7]   72     or a, #VDP_VRAM_WR
+   005A D3 BF         [11]   73     out (VDP_CNT), a
+                             74 
+   005C DD 6E 04      [19]   75     ld l,4 (ix)
+   005F DD 66 05      [19]   76     ld h,5 (ix)
+   0062 0E BE         [ 7]   77     ld c, #VDP_DAT
+                             78 
+   0064 DD 46 08      [19]   79     ld b,8 (ix)
+   0067 DD 7E 09      [19]   80     ld a,9 (ix)
+   006A 3C            [ 4]   81     inc a
+   006B 04            [ 4]   82     inc b
+   006C 05            [ 4]   83     dec b
+   006D 28 02         [12]   84     jr z, vr1
+   006F                      85 vr0:
+   006F ED B3         [21]   86     otir
+   0071                      87 vr1:
+   0071 3D            [ 4]   88     dec a
+   0072 20 FB         [12]   89     jr nz, vr0
+                             90 
+   0074 DD E1         [14]   91     pop ix
+   0076 C9            [10]   92     ret
+                             93 
+                             94 .globl _g_set_vdp_reg
+   0077                      95 _g_set_vdp_reg:
+   0077 DD E5         [15]   96     push ix
+   0079 DD 21 00 00   [14]   97     ld	ix,#0
+   007D DD 39         [15]   98     add	ix,sp
+                             99 
+   007F DD 7E 05      [19]  100     ld a, 5 (ix)
+   0082 D3 BF         [11]  101     out (VDP_CNT), a
+   0084 DD 7E 04      [19]  102     ld a, 4 (ix)
+   0087 F6 80         [ 7]  103     or a, #VDP_REG_WR
+   0089 D3 BF         [11]  104     out (VDP_CNT), a
+                            105 
+   008B DD E1         [14]  106     pop ix
+   008D C9            [10]  107     ret
+                            108 
+                            109 
+                            110 
+                            111 .globl _sysMemSet
+   008E                     112 _sysMemSet:
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+
+
+
+                            113     
+   008E DD E5         [15]  114     push ix
+   0090 DD 21 00 00   [14]  115     ld	ix,#0
+   0094 DD 39         [15]  116     add	ix,sp
+                            117 
+   0096 DD 6E 04      [19]  118     ld l,4 (ix)
+   0099 DD 66 05      [19]  119     ld h,5 (ix)
+   009C DD 7E 06      [19]  120     ld a,6 (ix)
+   009F DD 46 07      [19]  121     ld b,7 (ix)
+   00A2 DD 4E 08      [19]  122     ld c,8 (ix)
+                            123     
+   00A5 0C            [ 4]  124     inc c
+   00A6 04            [ 4]  125     inc b
+   00A7 05            [ 4]  126     dec b
+   00A8 28 05         [12]  127     jr z, 002$
+   00AA                     128 001$:
+   00AA 77            [ 7]  129     ld (hl), a
+   00AB 23            [ 6]  130     inc hl
+   00AC 05            [ 4]  131     dec b
+   00AD 20 FB         [12]  132     jr nz, 001$
+   00AF                     133 002$:
+   00AF 0D            [ 4]  134     dec c
+   00B0 20 F8         [12]  135     jr nz, 001$
+                            136 
+   00B2 DD E1         [14]  137     pop ix
+   00B4 C9            [10]  138     ret
+                            139 
+                            140 .globl _sysMemCopy
+   00B5                     141 _sysMemCopy:
+   00B5 DD E5         [15]  142     push ix
+   00B7 DD 21 00 00   [14]  143     ld	ix,#0
+   00BB DD 39         [15]  144     add	ix,sp
+                            145 
+   00BD DD 6E 04      [19]  146     ld l, 4(ix)
+   00C0 DD 66 05      [19]  147     ld h, 5(ix)
+   00C3 DD 5E 06      [19]  148     ld e, 6(ix)
+   00C6 DD 56 07      [19]  149     ld d, 7(ix)
+   00C9 DD 4E 08      [19]  150     ld c, 8(ix)
+   00CC DD 46 09      [19]  151     ld b, 9(ix)
+                            152     
+   00CF ED B0         [21]  153     ldir
+                            154 
+   00D1 DD E1         [14]  155     pop ix
+   00D3 C9            [10]  156     ret
+                            157 
+                            158 .globl _gfx_buff
+                            159 .globl _gRepaint
+   00D4                     160 _gRepaint:
+   00D4 21 00 00      [10]  161     ld hl, #_gfx_buff
+   00D7 3E 00         [ 7]  162     ld a, #0x00
+   00D9 D3 BF         [11]  163     out (VDP_CNT), a
+   00DB 3E 78         [ 7]  164     ld a, #0x38 | VDP_VRAM_WR
+   00DD D3 BF         [11]  165     out (VDP_CNT), a
+                            166 
+   00DF 06 00         [ 7]  167     ld b, #0
+   00E1 0E BE         [ 7]  168     ld c, #VDP_DAT
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+
+
+
+                            169     
+   00E3 CD F9 00      [17]  170     call _gVsync
+   00E6 ED B3         [21]  171     otir
+   00E8 ED B3         [21]  172     otir
+                            173     
+                            174     
+   00EA CD F9 00      [17]  175     call _gVsync
+   00ED ED B3         [21]  176     otir
+   00EF ED B3         [21]  177     otir
+                            178 
+   00F1 CD F9 00      [17]  179     call _gVsync
+   00F4 ED B3         [21]  180     otir
+   00F6 ED B3         [21]  181     otir
+                            182 
+                            183 
+   00F8 C9            [10]  184     ret
+                            185 
+                            186 .globl _gVsync
+   00F9                     187 _gVsync:
+   00F9 DB BF         [11]  188     in a, (VDP_CNT)
+   00FB 07            [ 4]  189     rlca
+   00FC 38 FB         [12]  190     jr c, _gVsync
+   00FE                     191 1$:
+   00FE DB BF         [11]  192     in a, (VDP_CNT)
+   0100 07            [ 4]  193     rlca
+   0101 30 FB         [12]  194     jr nc, 1$
+   0103 C9            [10]  195     ret
+                            196 
+                            197 .globl _sys_joy_read
+   0104                     198 _sys_joy_read:
+   0104 CD F9 00      [17]  199     call _gVsync
+   0107 DB DC         [11]  200     in a, (JOY_LO)
+   0109 EE FF         [ 7]  201     xor #0xff
+   010B 6F            [ 4]  202     ld l, a
+                            203     
+   010C C9            [10]  204     ret
+                            205 
+                            206 
+   010D                     207 vdp_reg:
+   010D 04                  208     .db 0b00000100		; byte to write to VDP register
+   010E 80                  209     .db 0b10000000		; register to write to (%1000xxxx where xxxx is reg. no.)
+                            210 
+   010F 80                  211     .db 0b10000000
+   0110 81                  212     .db 0b10000001
+                            213 
+   0111 FF                  214     .db 0b11111111
+   0112 82                  215     .db 0b10000010
+                            216 
+   0113 FF                  217     .db 0b11111111  ; reg 3
+   0114 83                  218     .db 0b10000011
+                            219 
+   0115 FF                  220     .db 0b11111111  ; reg 4
+   0116 84                  221     .db 0b10000100
+                            222 
+   0117 FF                  223     .db 0b11111111
+   0118 85                  224     .db 0b10000101
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+
+
+
+                            225 
+   0119 FF                  226     .db 0b11111111
+   011A 86                  227     .db 0b10000110
+                            228 
+   011B 02                  229     .db 0b00000010
+   011C 87                  230     .db 0b10000111
+                            231 
+   011D 00                  232     .db 0b00000000
+   011E 88                  233     .db 0b10001000
+                            234 
+   011F 00                  235     .db 0b00000000
+   0120 89                  236     .db 0b10001001
+                            237 
+   0121 00                  238     .db 0b00000000
+   0122 8A                  239     .db 0b10001010
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 6.
+
+Symbol Table
+
+    .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
+    .__.H$L.=  0000 L   |     JOY_HI  =  00DD     |     JOY_LO  =  00DC 
+    VDP_CNT =  00BF     |     VDP_CRAM=  00C0     |     VDP_DAT =  00BE 
+    VDP_REG_=  0080     |     VDP_VRAM=  0000     |     VDP_VRAM=  0040 
+  0 _gRepain   00D4 GR  |   0 _gVsync    00F9 GR  |   0 _g_set_p   0025 GR
+  0 _g_set_v   0077 GR  |   0 _g_vdp_i   0000 GR  |   0 _g_vram_   0048 GR
+    _gfx_buf   **** GX  |   0 _sysMemC   00B5 GR  |   0 _sysMemS   008E GR
+  0 _sys_joy   0104 GR  |   0 vdp_reg    010D R   |   0 vr0        006F R
+  0 vr1        0071 R
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 7.
+
+Area Table
+
+   0 _CODE      size  123   flags    0
+

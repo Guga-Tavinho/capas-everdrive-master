@@ -1,0 +1,867 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           _divulong
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__GSFINAL                      
+     00000000  l__GSINIT                       
+     00000000  l__HEADER                       
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     00000000  s__HEADER                       
+     00000000  s__HEADER0                      
+     00000000  s__HEADER1                      
+     00000000  s__HEADER2                      
+     00000000  s__HEADER3                      
+     00000000  s__HEADER4                      
+     00000000  s__HEADER5                      
+     00000000  s__HEADER6                      
+     00000000  s__HEADER7                      
+     00000000  s__HEADER8                      
+     00000000  s__HEADER9                      
+     00000002  l__HEADER1                      
+     00000002  l__HEADER2                      
+     00000002  l__HEADER3                      
+     00000002  l__HEADER4                      
+     00000002  l__HEADER5                      
+     00000002  l__HEADER6                      
+     00000002  l__HEADER7                      
+     00000002  l__HEADER8                      
+     00000003  l__HEADER0                      
+     00000004  l__HEADER9                      
+     00000200  s__CODE                         
+     00001D2A  l__DATA                         
+     000078BD  l__CODE                         
+     0000C000  s__DATA                         
+     0000DD2A  s__GSFINAL                      
+     0000DD2A  s__GSINIT                       
+     0000DD2A  s__HOME                         
+     0000DD2A  s__INITIALIZED                  
+     0000DD2A  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000200  _os_ver                            
+     0000020E  _bi_init                           
+     0000024E  _bi_spi                            
+     0000024E  _bi_spi_q                          
+     00000269  _bi_spi_qq                         
+     0000027A  _bi_ss_on                          
+     00000283  _bi_ss_off                         
+     0000028C  _bi_spi_speed_on                   
+     000002B2  _bi_spi_to_ram                     
+     000002F3  _bi_usb_rd_busy                    
+     000002FA  _bi_usb_wr_busy                    
+     00000301  _bi_usb_rd_byte                    
+     0000030D  _bi_usb_wr_byte                    
+     00000325  _bi_flash_erase                    
+     0000037C  _bi_spi_to_rom                     
+     0000041B  _bi_get_cpld_ver                   
+     00000420  _bi_set_ram_bank                   
+     00000439  _bi_set_rom_bank                   
+     0000044E  _bi_ram_to_spi                     
+     000004CF  _bi_is_gg_cart                     
+     000004D6  _bi_start_game                     
+     00000524  _bi_install_os                     
+     000005BB  _bi_usb_to_rom                     
+     00000640  _g_vdp_init                        
+     00000665  _g_set_pal                         
+     00000688  _g_vram_wr                         
+     000006B7  _g_set_vdp_reg                     
+     000006CE  _sysMemSet                         
+     000006F5  _sysMemCopy                        
+     00000714  _gRepaint                          
+     00000739  _gVsync                            
+     00000744  _sys_joy_read                      
+     00000763  _browser                           browser
+     00000763  _browser_start                     browser
+     00000CB7  _browser_end                       browser
+     00000CB7  _diskCrc7                          disk
+     00000CB7  _diskCrc7_start                    disk
+     00000D56  _diskCmd                           disk
+     00000D56  _diskCmd_start                     disk
+     00000D56  _diskCrc7_end                      disk
+     00000EC1  _diskCmdFast                       disk
+     00000EC1  _diskCmdFast_start                 disk
+     00000EC1  _diskCmd_end                       disk
+     00000F96  _diskCmdFast_end                   disk
+     00000F96  _diskInit                          disk
+     00000F96  _diskInit_start                    disk
+     000011CF  _diskInit_end                      disk
+     000011CF  _diskOpenRead                      disk
+     000011CF  _diskOpenRead_start                disk
+     0000121D  _diskOpenRead_end                  disk
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000121D  _diskReadToRam                     disk
+     0000121D  _diskReadToRam_start               disk
+     000012D2  _diskReadToRam_end                 disk
+     000012D2  _diskReadToRom                     disk
+     000012D2  _diskReadToRom_start               disk
+     00001387  _diskCloseRW                       disk
+     00001387  _diskCloseRW_start                 disk
+     00001387  _diskReadToRom_end                 disk
+     000013CB  _diskCloseRW_end                   disk
+     000013CB  _diskOpenWrite                     disk
+     000013CB  _diskOpenWrite_start               disk
+     00001419  _diskOpenWrite_end                 disk
+     00001419  _diskWrite                         disk
+     00001419  _diskWrite_start                   disk
+     00001464  _diskStop                          disk
+     00001464  _diskStop_start                    disk
+     00001464  _diskWrite_end                     disk
+     000014AB  _diskStop_end                      disk
+     000014AB  _fat_init                          fat
+     000014AB  _fat_init_start                    fat
+     000016B1  _fat_init_end                      fat
+     000016BE  _fat_cache_read_dat                fat
+     000016BE  _fat_cache_read_dat_start          fat
+     00001726  _fat_cache_read_dat_end            fat
+     00001726  _fat_cache_read_tab                fat
+     00001726  _fat_cache_read_tab_start          fat
+     000017C2  _fat_cache_read_tab_end            fat
+     000017C2  _fat_get_type                      fat
+     000017C2  _fat_get_type_start                fat
+     00001808  _fat_get_type_end                  fat
+     0000180C  _fat_bytes_to_short                fat
+     0000180C  _fat_bytes_to_short_start          fat
+     00001829  _fat_bytes_to_short_end            fat
+     00001829  _fat_load_dir                      fat
+     00001829  _fat_load_dir_start                fat
+     00001B2E  _fat_filter_cover_records          fat
+     00001B2E  _fat_filter_cover_records_start    fat
+     00001B2E  _fat_load_dir_end                  fat
+     00001CD3  _fat_filter_cover_records_end      fat
+     00001CD8  _fat_cluster_to_sector             fat
+     00001CD8  _fat_cluster_to_sector_start       fat
+     00001D62  _fat_cluster_to_sector_end         fat
+     00001D62  _fat_sector_to_cluster             fat
+     00001D62  _fat_sector_to_cluster_start       fat
+     00001DE8  _fat_in_cluster_addr               fat
+     00001DE8  _fat_in_cluster_addr_start         fat
+     00001DE8  _fat_sector_to_cluster_end         fat
+     00001E31  _fat_get_table_record              fat
+     00001E31  _fat_get_table_record_start        fat
+     00001E31  _fat_in_cluster_addr_end           fat
+     00001E91  _fat_get_next_cluster              fat
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001E91  _fat_get_next_cluster_start        fat
+     00001E91  _fat_get_table_record_end          fat
+     00001EB2  _fat_get_full_record               fat
+     00001EB2  _fat_get_full_record_start         fat
+     00001EB2  _fat_get_next_cluster_end          fat
+     00002312  _fat_get_full_record_end           fat
+     00002312  _fat_open_file                     fat
+     00002312  _fat_open_file_start               fat
+     000024EC  _fat_open_file_end                 fat
+     000024EC  _fat_skip_sectors                  fat
+     000024EC  _fat_skip_sectors_start            fat
+     00002599  _fat_read                          fat
+     00002599  _fat_read_start                    fat
+     00002599  _fat_skip_sectors_end              fat
+     00002776  _fat_make_path_name                fat
+     00002776  _fat_make_path_name_start          fat
+     00002776  _fat_read_end                      fat
+     000027BF  _fat_make_path_name_end            fat
+     000027C1  _fat_make_sync_name                fat
+     000027C1  _fat_make_sync_name_start          fat
+     0000284A  _fat_make_sync_name_end            fat
+     0000284A  _fat_open_file_by_name             fat
+     0000284A  _fat_open_file_by_name_start       fat
+     0000291F  _fat_open_file_by_name_end         fat
+     0000291F  _fat_seek_record                   fat
+     0000291F  _fat_seek_record_start             fat
+     00002B84  _fat_bytes_to_int_le               fat
+     00002B84  _fat_bytes_to_int_le_start         fat
+     00002B84  _fat_seek_record_end               fat
+     00002BB6  _fat_bytes_to_int_le_end           fat
+     00002BB6  _fat_int_to_bytes_le               fat
+     00002BB6  _fat_int_to_bytes_le_start         fat
+     00002BC7  _fat_int_to_bytes_le_end           fat
+     00002BC7  _fat_seek_free_cluster             fat
+     00002BC7  _fat_seek_free_cluster_start       fat
+     00002D8E  _fat_cache_save_tab                fat
+     00002D8E  _fat_cache_save_tab_start          fat
+     00002D8E  _fat_seek_free_cluster_end         fat
+     00002E0C  _fat_cache_save_data               fat
+     00002E0C  _fat_cache_save_data_start         fat
+     00002E0C  _fat_cache_save_tab_end            fat
+     00002E24  _fat_cache_save_data_end           fat
+     00002E24  _fat_catch_clusters                fat
+     00002E24  _fat_catch_clusters_start          fat
+     00002F5D  _fat_catch_clusters_end            fat
+     00002F5D  _fat_resize_file                   fat
+     00002F5D  _fat_resize_file_start             fat
+     000031CE  _fat_resize_file_end               fat
+     000031CE  _fat_seek_rec_end                  fat
+     000031CE  _fat_seek_rec_end_start            fat
+     0000320E  _fat_join                          fat
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000320E  _fat_join_start                    fat
+     0000320E  _fat_seek_rec_end_end              fat
+     00003296  _fat_join_end                      fat
+     00003296  _fat_write_file                    fat
+     00003296  _fat_write_file_start              fat
+     00003425  _fat_expand                        fat
+     00003425  _fat_expand_start                  fat
+     00003425  _fat_write_file_end                fat
+     000034E7  _fat_clean_cluster                 fat
+     000034E7  _fat_clean_cluster_start           fat
+     000034E7  _fat_expand_end                    fat
+     000035C4  _fat_clean_cluster_end             fat
+     000035C4  _fat_make_hdr                      fat
+     000035C4  _fat_make_hdr_start                fat
+     00003721  _fat_make_hdr_end                  fat
+     00003721  _fat_make_lfn                      fat
+     00003721  _fat_make_lfn_start                fat
+     000037E0  _fat_make_lfn_end                  fat
+     000037E0  _fat_next_dir_sector               fat
+     000037E0  _fat_next_dir_sector_start         fat
+     0000395E  _fat_make_dos_name                 fat
+     0000395E  _fat_make_dos_name_start           fat
+     0000395E  _fat_next_dir_sector_end           fat
+     00003AD5  _fat_make_dos_name_end             fat
+     00003AD5  _fat_make_record                   fat
+     00003AD5  _fat_make_record_start             fat
+     00003EF9  _fat_make_dir                      fat
+     00003EF9  _fat_make_dir_start                fat
+     00003EF9  _fat_make_record_end               fat
+     00004075  _fat_make_dir_end                  fat
+     00004081  _main                              main
+     00004081  _main_start                        main
+     000040AA  _main_end                          main
+     000040AA  _vb                                main
+     000040AA  _vb_start                          main
+     000040AB  _hb                                main
+     000040AB  _hb_start                          main
+     000040AB  _vb_end                            main
+     000040AC  _hb_end                            main
+     000040AC  _in                                main
+     000040AC  _in_start                          main
+     000040AD  _in_end                            main
+     000040AD  _osInit                            os_msed
+     000040AD  _osInit_start                      os_msed
+     0000417E  _osInit_end                        os_msed
+     000041BB  _osUsbListene2r                    os_msed
+     000041BB  _osUsbListene2r_start              os_msed
+     000041BE  _osUsbListene2r_end                os_msed
+     000041BE  _osUsbListener                     os_msed
+     000041BE  _osUsbListener_start               os_msed
+     00004213  _osRomMenu                         os_msed
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004213  _osRomMenu_start                   os_msed
+     00004213  _osUsbListener_end                 os_msed
+     000042BF  _osRomMenu_end                     os_msed
+     0000430C  _osFileMenu                        os_msed
+     0000430C  _osFileMenu_start                  os_msed
+     000043F7  _osFileMenu_end                    os_msed
+     00004439  _osMallocRam                       os_msed
+     00004439  _osMallocRam_start                 os_msed
+     00004478  _osMallocRam_end                   os_msed
+     00004478  _osReleaseRam                      os_msed
+     00004478  _osReleaseRam_start                os_msed
+     000044AD  _osMainMenu                        os_msed
+     000044AD  _osMainMenu_start                  os_msed
+     000044AD  _osReleaseRam_end                  os_msed
+     0000452D  _osMainMenu_end                    os_msed
+     0000456A  _osExitBrowser                     os_msed
+     0000456A  _osExitBrowser_start               os_msed
+     00004570  _osExitBrowser_end                 os_msed
+     00004570  _osGetDate                         os_msed
+     00004570  _osGetDate_start                   os_msed
+     00004574  _osGetDate_end                     os_msed
+     00004574  _osGetTime                         os_msed
+     00004574  _osGetTime_start                   os_msed
+     00004578  _osGetTime_end                     os_msed
+     00004578  _osSysInfo                         os_msed
+     00004578  _osSysInfo_start                   os_msed
+     00004618  _osSysInfo_end                     os_msed
+     0000467E  _osAbout                           os_msed
+     0000467E  _osAbout_start                     os_msed
+     0000476D  _osAbout_end                       os_msed
+     0000487F  _osStartGame                       os_msed
+     0000487F  _osStartGame_start                 os_msed
+     000048CB  _osSetRomCfg                       os_msed
+     000048CB  _osSetRomCfg_start                 os_msed
+     000048CB  _osStartGame_end                   os_msed
+     00004A00  _osSetRomCfg_end                   os_msed
+     00004A04  _osSelectGame                      os_msed
+     00004A04  _osSelectGame_start                os_msed
+     00004BDD  _osSelectGame_end                  os_msed
+     00004C51  __osSaveSram                       os_msed
+     00004C51  __osSaveSram_start                 os_msed
+     00004D6C  __osSaveSram_end                   os_msed
+     00004D8F  _osSaveSram                        os_msed
+     00004D8F  _osSaveSram_start                  os_msed
+     00004DAC  __osLoadSram                       os_msed
+     00004DAC  __osLoadSram_start                 os_msed
+     00004DAC  _osSaveSram_end                    os_msed
+     00004E79  __osLoadSram_end                   os_msed
+     00004E94  _osLoadSram                        os_msed
+     00004E94  _osLoadSram_start                  os_msed
+     00004EB1  _osCLeanGameSram                   os_msed
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004EB1  _osCLeanGameSram_start             os_msed
+     00004EB1  _osLoadSram_end                    os_msed
+     00004ECF  _osCLeanGameSram_end               os_msed
+     00004ECF  _osSaveRamMenu                     os_msed
+     00004ECF  _osSaveRamMenu_start               os_msed
+     00004F7E  _osSaveRamMenu_end                 os_msed
+     00004FBC  _osFileToSram                      os_msed
+     00004FBC  _osFileToSram_start                os_msed
+     00005068  _osFileToSram_end                  os_msed
+     00005068  _osSramToFile                      os_msed
+     00005068  _osSramToFile_start                os_msed
+     00005124  _osSramToFile_end                  os_msed
+     00005124  _osUpdateMenu                      os_msed
+     00005124  _osUpdateMenu_start                os_msed
+     00005179  _osUpdateMenu_end                  os_msed
+     000051A6  _osUpdate                          os_msed
+     000051A6  _osUpdate_start                    os_msed
+     000052BE  _osUpdate_end                      os_msed
+     000052DC  _osSelectGameUsb                   os_msed
+     000052DC  _osSelectGameUsb_start             os_msed
+     000053E4  _osSelectGameUsb_end               os_msed
+     00005422  _osUpdateUsb                       os_msed
+     00005422  _osUpdateUsb_start                 os_msed
+     0000547A  _osUpdateUsb_end                   os_msed
+     00005489  _str_cmp_len                       str
+     00005489  _str_cmp_len_start                 str
+     000054CC  _str_cmp_len_end                   str
+     000054CC  _str_length                        str
+     000054CC  _str_length_start                  str
+     000054DC  _str_extension                     str
+     000054DC  _str_extension_start               str
+     000054DC  _str_length_end                    str
+     00005534  _str_extension_end                 str
+     00005534  _str_extension_list                str
+     00005534  _str_extension_list_start          str
+     0000555F  _str_eq_ncase                      str
+     0000555F  _str_eq_ncase_start                str
+     0000555F  _str_extension_list_end            str
+     000055CE  _str_copy                          str
+     000055CE  _str_copy_start                    str
+     000055CE  _str_eq_ncase_end                  str
+     000055F0  _str_append                        str
+     000055F0  _str_append_start                  str
+     000055F0  _str_copy_end                      str
+     00005619  _str_append_end                    str
+     00005619  _str_append_hex8                   str
+     00005619  _str_append_hex8_start             str
+     0000567B  _str_append_hex16                  str
+     0000567B  _str_append_hex16_start            str
+     0000567B  _str_append_hex8_end               str
+     000056BA  _str_append_hex16_end              str
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000056BA  _str_append_hex32                  str
+     000056BA  _str_append_hex32_start            str
+     000056FF  _str_append_hex32_end              str
+     000056FF  _str_contains                      str
+     000056FF  _str_contains_start                str
+     0000576B  _str_append_num                    str
+     0000576B  _str_append_num_start              str
+     0000576B  _str_contains_end                  str
+     00005800  _gDrawString                       sys
+     00005800  _gDrawString_start                 sys
+     00005800  _str_append_num_end                str
+     0000581C  _gDrawStringCx                     sys
+     0000581C  _gDrawStringCx_start               sys
+     0000581C  _gDrawString_end                   sys
+     0000585A  _gAppendNum                        sys
+     0000585A  _gAppendNum_start                  sys
+     0000585A  _gDrawStringCx_end                 sys
+     000058E8  _gAppendHex8                       sys
+     000058E8  _gAppendHex8_start                 sys
+     000058E8  _gAppendNum_end                    sys
+     00005938  _gAppendHex16                      sys
+     00005938  _gAppendHex16_start                sys
+     00005938  _gAppendHex8_end                   sys
+     0000595B  _gAppendHex16SW                    sys
+     0000595B  _gAppendHex16SW_start              sys
+     0000595B  _gAppendHex16_end                  sys
+     0000597E  _gAppendHex16SW_end                sys
+     0000597E  _gAppendHex32                      sys
+     0000597E  _gAppendHex32_start                sys
+     000059B3  _gAppendHex32_end                  sys
+     000059B3  _gDrawStringMl                     sys
+     000059B3  _gDrawStringMl_start               sys
+     000059DB  _gDrawNum                          sys
+     000059DB  _gDrawNum_start                    sys
+     000059DB  _gDrawStringMl_end                 sys
+     00005A07  _gDrawNum_end                      sys
+     00005A07  _sysDrawFileSize                   sys
+     00005A07  _sysDrawFileSize_start             sys
+     00005AD2  _gDrawCursor                       sys
+     00005AD2  _gDrawCursor_start                 sys
+     00005AD2  _sysDrawFileSize_end               sys
+     00005B1C  _gDrawCursor_end                   sys
+     00005B1E  _sysInit                           sys_sms
+     00005B1E  _sysInit_start                     sys_sms
+     00005B78  _pal_sms                           sys_sms
+     00005B78  _sysInit_end                       sys_sms
+     00005B98  _pal_gg                            sys_sms
+     00005BD8  _pal_sg                            sys_sms
+     00005C18  _gSetSGpal                         sys_sms
+     00005C18  _gSetSGpal_start                   sys_sms
+     00005C26  _gSetSGpal_end                     sys_sms
+ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00005C26  _sysJoyWait                        sys_sms
+     00005C26  _sysJoyWait_start                  sys_sms
+     00005C35  _sysJoyRead                        sys_sms
+     00005C35  _sysJoyRead_start                  sys_sms
+     00005C35  _sysJoyWait_end                    sys_sms
+     00005C8D  _gSetFont                          sys_sms
+     00005C8D  _gSetFont_start                    sys_sms
+     00005C8D  _sysJoyRead_end                    sys_sms
+     00005D70  _gCleanScreen                      sys_sms
+     00005D70  _gCleanScreen_start                sys_sms
+     00005D70  _gSetFont_end                      sys_sms
+     00005D82  _gCleanScreen_end                  sys_sms
+     00005D82  _gFillRect                         sys_sms
+     00005D82  _gFillRect_start                   sys_sms
+     00005DFF  _gAppendString                     sys_sms
+     00005DFF  _gAppendString_start               sys_sms
+     00005DFF  _gFillRect_end                     sys_sms
+     00005E62  _gAppendString_end                 sys_sms
+     00005E62  _gConsPrint                        sys_sms
+     00005E62  _gConsPrint_start                  sys_sms
+     00005E9F  _gConsPrint_end                    sys_sms
+     00005E9F  _gSetXY                            sys_sms
+     00005E9F  _gSetXY_start                      sys_sms
+     00005EC5  _gMoveXY                           sys_sms
+     00005EC5  _gMoveXY_start                     sys_sms
+     00005EC5  _gSetXY_end                        sys_sms
+     00005EF3  _gAppendChar                       sys_sms
+     00005EF3  _gAppendChar_start                 sys_sms
+     00005EF3  _gMoveXY_end                       sys_sms
+     00005F29  _gAppendChar_end                   sys_sms
+     00005F29  _gCopyActiveToRam                  sys_sms
+     00005F29  _gCopyActiveToRam_start            sys_sms
+     00005F2A  _gCopyActiveToRam_end              sys_sms
+     00005F2A  _gCopyRamToBack                    sys_sms
+     00005F2A  _gCopyRamToBack_start              sys_sms
+     00005F2B  _gCopyRamToBack_end                sys_sms
+     00005F2B  _guiPrintError                     sys_sms
+     00005F2B  _guiPrintError_start               sys_sms
+     00005F76  _guiPrintError_end                 sys_sms
+     00005FAA  _guiDrawBrowser                    sys_sms
+     00005FAA  _guiDrawBrowser_start              sys_sms
+     000063A6  _guiDrawBrowser_end                sys_sms
+     000063E2  _guiDrawCover                      sys_sms
+     000063E2  _guiDrawCover_start                sys_sms
+     0000653B  _guiDrawCover_end                  sys_sms
+     00006540  _guiMakeCoverName                  sys_sms
+     00006540  _guiMakeCoverName_start            sys_sms
+     000065FF  _guiFindCover                      sys_sms
+     000065FF  _guiFindCover_start                sys_sms
+     000065FF  _guiMakeCoverName_end              sys_sms
+     00006680  _guiFindCover_end                  sys_sms
+ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00006680  _guiLoadCover                      sys_sms
+     00006680  _guiLoadCover_start                sys_sms
+     000069F6  _guiClearCover                     sys_sms
+     000069F6  _guiClearCover_start               sys_sms
+     000069F6  _guiLoadCover_end                  sys_sms
+     00006A1C  _guiClearCover_end                 sys_sms
+     00006A1C  _guiPutCoverMap                    sys_sms
+     00006A1C  _guiPutCoverMap_start              sys_sms
+     00006AC1  _guiPutCoverMap_end                sys_sms
+     00006AC1  _guiResetCoverCache                sys_sms
+     00006AC1  _guiResetCoverCache_start          sys_sms
+     00006AD3  _guiGetCoverMiss                   sys_sms
+     00006AD3  _guiGetCoverMiss_start             sys_sms
+     00006AD3  _guiResetCoverCache_end            sys_sms
+     00006B14  _guiGetCoverMiss_end               sys_sms
+     00006B14  _guiSetCoverMiss                   sys_sms
+     00006B14  _guiSetCoverMiss_start             sys_sms
+     00006B55  _guiDrawMenu                       sys_sms
+     00006B55  _guiDrawMenu_start                 sys_sms
+     00006B55  _guiSetCoverMiss_end               sys_sms
+     00006DCC  _guiDrawForm                       sys_sms
+     00006DCC  _guiDrawForm_start                 sys_sms
+     00006DCC  _guiDrawMenu_end                   sys_sms
+     00006E26  _guiDrawForm_end                   sys_sms
+     00006E26  _guiHexView                        sys_sms
+     00006E26  _guiHexView_start                  sys_sms
+     000072FE  _guiHexView_end                    sys_sms
+     00007328  _guiGetMaxRows                     sys_sms
+     00007328  _guiGetMaxRows_start               sys_sms
+     00007330  _guiGetMaxRows_end                 sys_sms
+     00007330  _sysGetRomRegion                   sys_sms
+     00007330  _sysGetRomRegion_start             sys_sms
+     00007333  _gScreenW                          sys_sms
+     00007333  _gScreenW_start                    sys_sms
+     00007333  _sysGetRomRegion_end               sys_sms
+     00007336  _gScreenH                          sys_sms
+     00007336  _gScreenH_start                    sys_sms
+     00007336  _gScreenW_end                      sys_sms
+     00007339  _gScreenH_end                      sys_sms
+     00007339  _gSetPal                           sys_sms
+     00007339  _gSetPal_start                     sys_sms
+     0000736F  _gAppendStringMl                   sys_sms
+     0000736F  _gAppendStringMl_start             sys_sms
+     0000736F  _gSetPal_end                       sys_sms
+     000073FD  __moduchar_rrx_s                   
+     000073FD  _gAppendStringMl_end               sys_sms
+     00007404  __moduchar_rrx_hds                 
+     00007409  __moduint_rrx_s                    
+     0000740F  __moduint_rrx_hds                  
+     00007414  __divuint_rrx_s                    
+     0000741C  __divuchar_rrx_s                   
+ASxxxx Linker V03.00 + NoICE + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00007423  __divu8                            
+     00007423  __divuchar_rrx_hds                 
+     00007426  __divu16                           
+     00007426  __divuint_rrx_hds                  
+     00007455  __mulint_rrx_s                     
+     0000745B  __mulint_rrx_hds                   
+     0000745B  __muluchar_rrx_hds                 
+     0000745D  __mul16                            
+     00007471  __mullong_rrf_s                    
+     00007471  __mullong_rrx_s                    
+     00007474  __modslong_rrf_s                   
+     00007474  __modslong_rrx_s                   
+     00007477  __modulong_rrf_s                   
+     00007477  __modulong_rrx_s                   
+     0000747A  __divslong_rrf_s                   
+     0000747A  __divslong_rrx_s                   
+     0000747D  __divulong_rrf_s                   
+     0000747D  __divulong_rrx_s                   
+     00007480  __mulint_rrf_s                     
+     00007486  __divsint_rrf_s                    
+     0000748C  __divuint_rrf_s                    
+     00007492  __mulschar_rrf_s                   
+     00007498  __divschar_rrf_s                   
+     0000749E  __modschar_rrf_s                   
+     000074A4  __muluchar_rrf_s                   
+     000074AA  __divuchar_rrf_s                   
+     000074B0  __moduchar_rrf_s                   
+     000074B6  __mulsuchar_rrf_s                  
+     000074BC  __divsuchar_rrf_s                  
+     000074C2  __modsuchar_rrf_s                  
+     000074C8  __muluschar_rrf_s                  
+     000074CE  __divuschar_rrf_s                  
+     000074D4  __moduschar_rrf_s                  
+     000074DA  __modsint_rrf_s                    
+     000074E0  __moduint_rrf_s                    
+     000074E6  __mullong                          _mullong
+     000074E6  __mullong_start                    _mullong
+     0000773B  __modschar_rrx_s                   
+     0000773B  __mullong_end                      _mullong
+     00007742  __modschar_rrx_hds                 
+     00007748  __modsint_rrx_s                    
+     0000774E  __modsint_rrx_hds                  
+     00007754  __divsint_rrx_s                    
+     0000775D  __divschar_rrx_s                   
+     00007764  __div8                             
+     00007764  __divschar_rrx_hds                 
+     00007768  __div_signexte                     
+     0000776C  __div16                            
+     0000776C  __divsint_rrx_hds                  
+     00007792  __get_remainder                    
+     0000779C  __modsuchar_rrx_s                  
+ASxxxx Linker V03.00 + NoICE + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    000078BD =       30909. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000077AB  __moduschar_rrx_s                  
+     000077BD  __divsuchar_rrx_s                  
+     000077C9  __divuschar_rrx_s                  
+     000077D8  __muluchar_rrx_s                   
+     000077EA  __mulsuchar_rrx_s                  
+     000077F4  __muluschar_rrx_s                  
+     000077FE  __mulschar_rrx_s                   
+     00007805  __mulschar_rrx_hds                 
+     00007811  __modslong                         _modslong
+     00007811  __modslong_start                   _modslong
+     000078BF  __modslong_end                     _modslong
+     000078BF  __modulong                         _modulong
+     000078BF  __modulong_start                   _modulong
+     0000797C  __divslong                         _divslong
+     0000797C  __divslong_start                   _divslong
+     0000797C  __modulong_end                     _modulong
+     00007A3E  __divslong_end                     _divslong
+     00007A3E  __divulong                         _divulong
+     00007A3E  __divulong_start                   _divulong
+     00007ABD  __divulong_end                     _divulong
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER0                            00000000    00000003 =           3. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 14.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER1                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 15.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER2                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER3                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 17.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER4                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 18.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER5                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 19.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER6                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 20.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER7                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 21.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER8                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 22.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER9                            00000000    00000004 =           4. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 23.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               0000C000    00001D2A =        7466. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000C000  _br_rec                            browser
+     0000C0E5  _sel_stack                         browser
+     0000C125  _disk_addr                         disk
+     0000C129  _disk_init_ok                      disk
+     0000C12A  _fat_clust_num                     fat
+     0000C12E  _fat_entry                         fat
+     0000C132  _fat_pbr_entry                     fat
+     0000C136  _fat_dat_sector                    fat
+     0000C13A  _fat_tab_sector                    fat
+     0000C13E  _fat_sectors_per_fat               fat
+     0000C142  _fat_root_entry                    fat
+     0000C146  _fat_data_entry                    fat
+     0000C14A  _fat_reserved_sectors              fat
+     0000C14C  _fat_cluster_size                  fat
+     0000C14D  _fat_type                          fat
+     0000C14E  _fat_cluster_size_pow              fat
+     0000C14F  _fat_first_free_clust              fat
+     0000C153  _fat_sub_dir_clust                 fat
+     0000C157  _fat_dir_size                      fat
+     0000C159  _fat_cov_dir_size                  fat
+     0000C15B  _fat_dir_is_root                   fat
+     0000C15C  _fat_dat                           fat
+     0000C15E  _fat_tab                           fat
+     0000C160  _fat_dir                           fat
+     0000C162  _fat_cov_dir_buff                  fat
+     0000C362  _fat_cov_dir                       fat
+     0000C364  _file                              fat
+     0000C37C  _tmp                               main
+     0000C37D  _cart_3e                           os_msed
+     0000C37E  _joy                               os_msed
+     0000C380  _bi_card_type                      os_msed
+     0000C381  _ram_ptr                           os_msed
+     0000C383  _os_ram                            os_msed
+     0000D383  _flash_erase_code                  os_msed
+     0000D403  _spi_to_rom_code                   os_msed
+     0000D483  _usb_to_rom_code                   os_msed
+     0000D503  _rom_inf                           os_msed
+     0000D507  _SYS_BR_ROWS                       sys_sms
+     0000D508  _g_ptr                             sys_sms
+     0000D50A  _g_current_pal                     sys_sms
+     0000D50C  _g_cons_border                     sys_sms
+     0000D50D  _gfx_buff                          sys_sms
+     0000DC0D  _cover_name                        sys_sms
+     0000DCE1  _cover_loaded_w                    sys_sms
+     0000DCE2  _cover_loaded_h                    sys_sms
+     0000DCE3  _cover_miss                        sys_sms
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 24.
+
+Files Linked                              [ module(s) ]
+
+bios_msed_sms.rel                         [  ]
+sys_sms_a_sms.rel                         [  ]
+browser_sms.rel                           [ browser ]
+disk_sms.rel                              [ disk ]
+fat_sms.rel                               [ fat ]
+main_sms.rel                              [ main ]
+os_msed_sms.rel                           [ os_msed ]
+str_sms.rel                               [ str ]
+sys_sms.rel                               [ sys ]
+sys_sms_sms.rel                           [ sys_sms ]
+
+
+Libraries Linked                          [ object file ]
+
+C:\SDCC\bin\..\lib\z80/z80.lib            [ modunsigned.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ divunsigned.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ mul.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ stubs.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ _mullong.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ modsigned.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ divsigned.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ modmixed.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ divmixed.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ mulchar.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ _modslong.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ _modulong.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ _divslong.rel ]
+C:\SDCC\bin\..\lib\z80/z80.lib            [ _divulong.rel ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 25.
+
+User Base Address Definitions
+
+_CODE = 0x0200
+_DATA = 0xc000
+
+

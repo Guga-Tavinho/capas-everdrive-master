@@ -1,0 +1,202 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+  1 _SYS_BR_ROWS                                                   0000 GR
+    __divuint_rrx_s                                                **** GX
+    __moduint_rrx_s                                                **** GX
+    __mulint_rrx_s                                                 **** GX
+  0 __str_0                                                        0458 R
+  0 __str_1                                                        0464 R
+  0 __str_10                                                       17E9 R
+  0 __str_2                                                        047B R
+  0 __str_3                                                        0888 R
+  0 __str_4                                                        0890 R
+  0 __str_5                                                        0895 R
+  0 __str_6                                                        08AF R
+  0 __str_7                                                        08C2 R
+  0 __str_8                                                        0A1D R
+  0 __str_9                                                        17E0 R
+    _bi_is_gg_cart                                                 **** GX
+  1 _cover_loaded_h                                                07DB GR
+  1 _cover_loaded_w                                                07DA GR
+  1 _cover_miss                                                    07DC GR
+  1 _cover_name                                                    0706 GR
+    _diskReadToRam                                                 **** GX
+    _fat_cluster_to_sector                                         **** GX
+    _fat_cov_dir                                                   **** GX
+    _fat_cov_dir_size                                              **** GX
+    _fat_dir                                                       **** GX
+    _fat_dir_size                                                  **** GX
+    _fat_get_full_record                                           **** GX
+    _fat_open_file                                                 **** GX
+    _fat_read                                                      **** GX
+    _file                                                          **** GX
+  0 _gAppendChar                                                   03D5 GR
+  0 _gAppendChar_end                                               040B GR
+  0 _gAppendChar_start                                             03D5 GR
+    _gAppendHex16SW                                                **** GX
+    _gAppendHex32                                                  **** GX
+    _gAppendHex8                                                   **** GX
+    _gAppendNum                                                    **** GX
+  0 _gAppendString                                                 02E1 GR
+  0 _gAppendStringMl                                               1851 GR
+  0 _gAppendStringMl_end                                           18DF GR
+  0 _gAppendStringMl_start                                         1851 GR
+  0 _gAppendString_end                                             0344 GR
+  0 _gAppendString_start                                           02E1 GR
+  0 _gCleanScreen                                                  0252 GR
+  0 _gCleanScreen_end                                              0264 GR
+  0 _gCleanScreen_start                                            0252 GR
+  0 _gConsPrint                                                    0344 GR
+  0 _gConsPrint_end                                                0381 GR
+  0 _gConsPrint_start                                              0344 GR
+  0 _gCopyActiveToRam                                              040B GR
+  0 _gCopyActiveToRam_end                                          040C GR
+  0 _gCopyActiveToRam_start                                        040B GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+Symbol Table
+
+  0 _gCopyRamToBack                                                040C GR
+  0 _gCopyRamToBack_end                                            040D GR
+  0 _gCopyRamToBack_start                                          040C GR
+    _gDrawString                                                   **** GX
+    _gDrawStringCx                                                 **** GX
+    _gDrawStringMl                                                 **** GX
+  0 _gFillRect                                                     0264 GR
+  0 _gFillRect_end                                                 02E1 GR
+  0 _gFillRect_start                                               0264 GR
+  0 _gMoveXY                                                       03A7 GR
+  0 _gMoveXY_end                                                   03D5 GR
+  0 _gMoveXY_start                                                 03A7 GR
+    _gRepaint                                                      **** GX
+  0 _gScreenH                                                      1818 GR
+  0 _gScreenH_end                                                  181B GR
+  0 _gScreenH_start                                                1818 GR
+  0 _gScreenW                                                      1815 GR
+  0 _gScreenW_end                                                  1818 GR
+  0 _gScreenW_start                                                1815 GR
+  0 _gSetFont                                                      016F GR
+  0 _gSetFont_end                                                  0252 GR
+  0 _gSetFont_start                                                016F GR
+  0 _gSetPal                                                       181B GR
+  0 _gSetPal_end                                                   1851 GR
+  0 _gSetPal_start                                                 181B GR
+  0 _gSetSGpal                                                     00FA GR
+  0 _gSetSGpal_end                                                 0108 GR
+  0 _gSetSGpal_start                                               00FA GR
+  0 _gSetXY                                                        0381 GR
+  0 _gSetXY_end                                                    03A7 GR
+  0 _gSetXY_start                                                  0381 GR
+    _gVsync                                                        **** GX
+  1 _g_cons_border                                                 0005 GR
+  1 _g_current_pal                                                 0003 GR
+  1 _g_ptr                                                         0001 GR
+    _g_set_pal                                                     **** GX
+    _g_set_vdp_reg                                                 **** GX
+    _g_vdp_init                                                    **** GX
+    _g_vram_wr                                                     **** GX
+  1 _gfx_buff                                                      0006 GR
+  0 _guiClearCover                                                 0ED8 GR
+  0 _guiClearCover_end                                             0EFE GR
+  0 _guiClearCover_start                                           0ED8 GR
+  0 _guiDrawBrowser                                                048C GR
+  0 _guiDrawBrowser_end                                            0888 GR
+  1 _guiDrawBrowser_old_selector_1_123                             081D R
+  0 _guiDrawBrowser_start                                          048C GR
+  0 _guiDrawCover                                                  08C4 GR
+  0 _guiDrawCover_end                                              0A1D GR
+  1 _guiDrawCover_old_found_1_135                                  0822 R
+  1 _guiDrawCover_old_selector_1_135                               081F R
+  1 _guiDrawCover_old_valid_1_135                                  0821 R
+  0 _guiDrawCover_start                                            08C4 GR
+  0 _guiDrawForm                                                   12AE GR
+  0 _guiDrawForm_end                                               1308 GR
+  0 _guiDrawForm_start                                             12AE GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+
+Symbol Table
+
+  0 _guiDrawMenu                                                   1037 GR
+  0 _guiDrawMenu_end                                               12AE GR
+  0 _guiDrawMenu_start                                             1037 GR
+  0 _guiFindCover                                                  0AE1 GR
+  0 _guiFindCover_end                                              0B62 GR
+  0 _guiFindCover_start                                            0AE1 GR
+  0 _guiGetCoverMiss                                               0FB5 GR
+  0 _guiGetCoverMiss_end                                           0FF6 GR
+  0 _guiGetCoverMiss_start                                         0FB5 GR
+  0 _guiGetMaxRows                                                 180A GR
+  0 _guiGetMaxRows_end                                             1812 GR
+  0 _guiGetMaxRows_start                                           180A GR
+  0 _guiHexView                                                    1308 GR
+  0 _guiHexView_end                                                17E0 GR
+  0 _guiHexView_start                                              1308 GR
+  0 _guiLoadCover                                                  0B62 GR
+  0 _guiLoadCover_end                                              0ED8 GR
+  0 _guiLoadCover_start                                            0B62 GR
+  0 _guiMakeCoverName                                              0A22 GR
+  0 _guiMakeCoverName_end                                          0AE1 GR
+  0 _guiMakeCoverName_start                                        0A22 GR
+  0 _guiPrintError                                                 040D GR
+  0 _guiPrintError_end                                             0458 GR
+  0 _guiPrintError_start                                           040D GR
+  0 _guiPutCoverMap                                                0EFE GR
+  0 _guiPutCoverMap_end                                            0FA3 GR
+  0 _guiPutCoverMap_start                                          0EFE GR
+  0 _guiResetCoverCache                                            0FA3 GR
+  0 _guiResetCoverCache_end                                        0FB5 GR
+  0 _guiResetCoverCache_start                                      0FA3 GR
+  0 _guiSetCoverMiss                                               0FF6 GR
+  0 _guiSetCoverMiss_end                                           1037 GR
+  0 _guiSetCoverMiss_start                                         0FF6 GR
+    _joy                                                           **** GX
+    _osMallocRam                                                   **** GX
+    _osReleaseRam                                                  **** GX
+    _osUsbListener                                                 **** GX
+  0 _pal_gg                                                        007A GR
+  0 _pal_sg                                                        00BA GR
+  0 _pal_sms                                                       005A GR
+    _str_eq_ncase                                                  **** GX
+    _str_extension                                                 **** GX
+    _str_length                                                    **** GX
+  0 _sysGetRomRegion                                               1812 GR
+  0 _sysGetRomRegion_end                                           1815 GR
+  0 _sysGetRomRegion_start                                         1812 GR
+  0 _sysInit                                                       0000 GR
+  0 _sysInit_end                                                   005A GR
+  0 _sysInit_start                                                 0000 GR
+  0 _sysJoyRead                                                    0117 GR
+  0 _sysJoyRead_end                                                016F GR
+  1 _sysJoyRead_joy_ctr_1_91                                       081C R
+  0 _sysJoyRead_start                                              0117 GR
+  0 _sysJoyWait                                                    0108 GR
+  0 _sysJoyWait_end                                                0117 GR
+  0 _sysJoyWait_start                                              0108 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+
+Symbol Table
+
+    _sysMemSet                                                     **** GX
+    _sys_joy_read                                                  **** GX
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+
+Area Table
+
+   0 _CODE                                      size 18DF   flags    0
+   1 _DATA                                      size  823   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

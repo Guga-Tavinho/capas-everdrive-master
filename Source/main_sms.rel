@@ -1,0 +1,79 @@
+XL
+H 9 areas 12 global symbols
+M main
+O -mz80
+S _osInit Ref0000
+S .__.ABS. Def0000
+S _browser Ref0000
+S _osUsbListener Ref0000
+S _guiPrintError Ref0000
+A _CODE size 2C flags 0 addr 0
+S _in_start Def002B
+S _vb_start Def0029
+S _main Def0000
+S _in_end Def002C
+S _vb_end Def002A
+S _main_start Def0000
+S _main_end Def0029
+S _hb Def002A
+S _hb_start Def002A
+S _in Def002B
+S _vb Def0029
+S _hb_end Def002B
+A _DATA size 1 flags 0 addr 0
+S _tmp Def0000
+A _INITIALIZED size 0 flags 0 addr 0
+A _DABS size 0 flags 8 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _INITIALIZER size 0 flags 0 addr 0
+A _CABS size 0 flags 8 addr 0
+T 00 00
+R 00 00 01 00
+T 00 00
+R 00 00 01 00
+T 00 00
+R 00 00 00 00
+T 00 00
+R 00 00 00 00
+T 00 00 D5 CD 00 00 D1 55 7A B7 28 0F D5 D5 33 CD
+R 00 00 00 00 02 04 00 00
+T 0E 00 00 00 33 D1
+R 00 00 00 00 02 02 04 00
+T 12 00
+R 00 00 00 00
+T 12 00 D5 CD 00 00 D1 18 F9
+R 00 00 00 00 02 04 03 00
+T 19 00
+R 00 00 00 00
+T 19 00 D5 CD 00 00 D1 55 D5 D5 33 CD 00 00 33 D1
+R 00 00 00 00 02 04 02 00 02 0C 04 00
+T 27 00 18 F0
+R 00 00 00 00
+T 29 00
+R 00 00 00 00
+T 29 00
+R 00 00 00 00
+T 29 00
+R 00 00 00 00
+T 29 00 C9
+R 00 00 00 00
+T 2A 00
+R 00 00 00 00
+T 2A 00
+R 00 00 00 00
+T 2A 00
+R 00 00 00 00
+T 2A 00 C9
+R 00 00 00 00
+T 2B 00
+R 00 00 00 00
+T 2B 00
+R 00 00 00 00
+T 2B 00
+R 00 00 00 00
+T 2B 00 C9
+R 00 00 00 00
+T 2C 00
+R 00 00 00 00

@@ -1,0 +1,18 @@
+-mjwx
+-i MSOS.IHX
+-b _CODE = 0x0200
+-b _DATA = 0xc000
+-k C:\SDCC\bin\..\lib\z80
+-l z80
+bios_msed_sms.rel
+sys_sms_a_sms.rel
+browser_sms.rel
+disk_sms.rel
+fat_sms.rel
+main_sms.rel
+os_msed_sms.rel
+str_sms.rel
+sys_sms.rel
+sys_sms_sms.rel
+
+-e

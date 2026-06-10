@@ -1,0 +1,192 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+    __divuchar_rrx_s                                               **** GX
+    __divuint_rrx_s                                                **** GX
+    __moduchar_rrx_s                                               **** GX
+    __moduint_rrx_s                                                **** GX
+  0 __str_0                                                        035D R
+  0 __str_1                                                        0828 R
+  0 __str_2                                                        1314 R
+  0 __str_3                                                        2BCA R
+    _diskReadToRam                                                 **** GX
+    _diskReadToRom                                                 **** GX
+    _diskWrite                                                     **** GX
+  0 _fat_bytes_to_int_le                                           16D9 GR
+  0 _fat_bytes_to_int_le_end                                       170B GR
+  0 _fat_bytes_to_int_le_start                                     16D9 GR
+  0 _fat_bytes_to_short                                            0361 GR
+  0 _fat_bytes_to_short_end                                        037E GR
+  0 _fat_bytes_to_short_start                                      0361 GR
+  0 _fat_cache_read_dat                                            0213 GR
+  0 _fat_cache_read_dat_end                                        027B GR
+  0 _fat_cache_read_dat_start                                      0213 GR
+  0 _fat_cache_read_tab                                            027B GR
+  0 _fat_cache_read_tab_end                                        0317 GR
+  0 _fat_cache_read_tab_start                                      027B GR
+  0 _fat_cache_save_data                                           1961 GR
+  0 _fat_cache_save_data_end                                       1979 GR
+  0 _fat_cache_save_data_start                                     1961 GR
+  0 _fat_cache_save_tab                                            18E3 GR
+  0 _fat_cache_save_tab_end                                        1961 GR
+  0 _fat_cache_save_tab_start                                      18E3 GR
+  0 _fat_catch_clusters                                            1979 GR
+  0 _fat_catch_clusters_end                                        1AB2 GR
+  0 _fat_catch_clusters_start                                      1979 GR
+  0 _fat_clean_cluster                                             203C GR
+  0 _fat_clean_cluster_end                                         2119 GR
+  0 _fat_clean_cluster_start                                       203C GR
+  1 _fat_clust_num                                                 0000 GR
+  1 _fat_cluster_size                                              0022 GR
+  1 _fat_cluster_size_pow                                          0024 GR
+  0 _fat_cluster_to_sector                                         082D GR
+  0 _fat_cluster_to_sector_end                                     08B7 GR
+  0 _fat_cluster_to_sector_start                                   082D GR
+  1 _fat_cluster_to_sector_val_1_113                               024A R
+  1 _fat_cov_dir                                                   0238 GR
+  1 _fat_cov_dir_buff                                              0038 GR
+  1 _fat_cov_dir_size                                              002F GR
+  1 _fat_dat                                                       0032 GR
+  1 _fat_dat_sector                                                000C GR
+  1 _fat_data_entry                                                001C GR
+  1 _fat_dir                                                       0036 GR
+  1 _fat_dir_is_root                                               0031 GR
+  1 _fat_dir_size                                                  002D GR
+  1 _fat_entry                                                     0004 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+Symbol Table
+
+  0 _fat_expand                                                    1F7A GR
+  0 _fat_expand_end                                                203C GR
+  0 _fat_expand_start                                              1F7A GR
+  0 _fat_filter_cover_records                                      0683 GR
+  0 _fat_filter_cover_records_end                                  0828 GR
+  0 _fat_filter_cover_records_start                                0683 GR
+  1 _fat_first_free_clust                                          0025 GR
+  0 _fat_get_full_record                                           0A07 GR
+  0 _fat_get_full_record_end                                       0E67 GR
+  0 _fat_get_full_record_start                                     0A07 GR
+  0 _fat_get_next_cluster                                          09E6 GR
+  0 _fat_get_next_cluster_end                                      0A07 GR
+  0 _fat_get_next_cluster_start                                    09E6 GR
+  0 _fat_get_table_record                                          0986 GR
+  0 _fat_get_table_record_end                                      09E6 GR
+  0 _fat_get_table_record_start                                    0986 GR
+  0 _fat_get_type                                                  0317 GR
+  0 _fat_get_type_end                                              035D GR
+  0 _fat_get_type_start                                            0317 GR
+  0 _fat_in_cluster_addr                                           093D GR
+  0 _fat_in_cluster_addr_end                                       0986 GR
+  0 _fat_in_cluster_addr_start                                     093D GR
+  0 _fat_init                                                      0000 GR
+  0 _fat_init_end                                                  0206 GR
+  0 _fat_init_start                                                0000 GR
+  0 _fat_int_to_bytes_le                                           170B GR
+  0 _fat_int_to_bytes_le_end                                       171C GR
+  0 _fat_int_to_bytes_le_start                                     170B GR
+  0 _fat_join                                                      1D63 GR
+  0 _fat_join_end                                                  1DEB GR
+  0 _fat_join_start                                                1D63 GR
+  0 _fat_load_dir                                                  037E GR
+  0 _fat_load_dir_end                                              0683 GR
+  0 _fat_load_dir_start                                            037E GR
+  0 _fat_make_dir                                                  2A4E GR
+  0 _fat_make_dir_end                                              2BCA GR
+  0 _fat_make_dir_start                                            2A4E GR
+  0 _fat_make_dos_name                                             24B3 GR
+  0 _fat_make_dos_name_end                                         262A GR
+  0 _fat_make_dos_name_start                                       24B3 GR
+  0 _fat_make_hdr                                                  2119 GR
+  0 _fat_make_hdr_end                                              2276 GR
+  0 _fat_make_hdr_start                                            2119 GR
+  0 _fat_make_lfn                                                  2276 GR
+  0 _fat_make_lfn_end                                              2335 GR
+  0 _fat_make_lfn_start                                            2276 GR
+  0 _fat_make_path_name                                            12CB GR
+  0 _fat_make_path_name_end                                        1314 GR
+  0 _fat_make_path_name_start                                      12CB GR
+  0 _fat_make_record                                               262A GR
+  0 _fat_make_record_end                                           2A4E GR
+  0 _fat_make_record_start                                         262A GR
+  0 _fat_make_sync_name                                            1316 GR
+  0 _fat_make_sync_name_end                                        139F GR
+  0 _fat_make_sync_name_start                                      1316 GR
+  0 _fat_next_dir_sector                                           2335 GR
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
+
+Symbol Table
+
+  0 _fat_next_dir_sector_end                                       24B3 GR
+  0 _fat_next_dir_sector_start                                     2335 GR
+  0 _fat_open_file                                                 0E67 GR
+  0 _fat_open_file_by_name                                         139F GR
+  0 _fat_open_file_by_name_end                                     1474 GR
+  0 _fat_open_file_by_name_start                                   139F GR
+  0 _fat_open_file_end                                             1041 GR
+  0 _fat_open_file_start                                           0E67 GR
+  1 _fat_pbr_entry                                                 0008 GR
+  0 _fat_read                                                      10EE GR
+  0 _fat_read_end                                                  12CB GR
+  0 _fat_read_start                                                10EE GR
+  1 _fat_reserved_sectors                                          0020 GR
+  0 _fat_resize_file                                               1AB2 GR
+  0 _fat_resize_file_end                                           1D23 GR
+  0 _fat_resize_file_start                                         1AB2 GR
+  1 _fat_root_entry                                                0018 GR
+  0 _fat_sector_to_cluster                                         08B7 GR
+  0 _fat_sector_to_cluster_end                                     093D GR
+  0 _fat_sector_to_cluster_start                                   08B7 GR
+  1 _fat_sector_to_cluster_val_1_115                               024E R
+  1 _fat_sectors_per_fat                                           0014 GR
+  0 _fat_seek_free_cluster                                         171C GR
+  0 _fat_seek_free_cluster_end                                     18E3 GR
+  0 _fat_seek_free_cluster_start                                   171C GR
+  0 _fat_seek_rec_end                                              1D23 GR
+  0 _fat_seek_rec_end_end                                          1D63 GR
+  0 _fat_seek_rec_end_start                                        1D23 GR
+  0 _fat_seek_record                                               1474 GR
+  0 _fat_seek_record_end                                           16D9 GR
+  0 _fat_seek_record_start                                         1474 GR
+  0 _fat_skip_sectors                                              1041 GR
+  0 _fat_skip_sectors_end                                          10EE GR
+  0 _fat_skip_sectors_start                                        1041 GR
+  1 _fat_sub_dir_clust                                             0029 GR
+  1 _fat_tab                                                       0034 GR
+  1 _fat_tab_sector                                                0010 GR
+  1 _fat_type                                                      0023 GR
+  0 _fat_write_file                                                1DEB GR
+  0 _fat_write_file_end                                            1F7A GR
+  0 _fat_write_file_start                                          1DEB GR
+  1 _file                                                          023A GR
+  0 _lfn_char_struct                                               0206 R
+    _osGetDate                                                     **** GX
+    _osGetTime                                                     **** GX
+    _osMallocRam                                                   **** GX
+    _osReleaseRam                                                  **** GX
+    _str_append                                                    **** GX
+    _str_cmp_len                                                   **** GX
+    _str_extension                                                 **** GX
+    _str_length                                                    **** GX
+    _sysMemCopy                                                    **** GX
+    _sysMemSet                                                     **** GX
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+
+Area Table
+
+   0 _CODE                                      size 2BD6   flags    0
+   1 _DATA                                      size  252   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

@@ -1,0 +1,69 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+    _bi_card_type                                                  **** GX
+    _bi_ram_to_spi                                                 **** GX
+    _bi_spi                                                        **** GX
+    _bi_spi_q                                                      **** GX
+    _bi_spi_qq                                                     **** GX
+    _bi_spi_speed_on                                               **** GX
+    _bi_spi_to_ram                                                 **** GX
+    _bi_spi_to_rom                                                 **** GX
+    _bi_ss_off                                                     **** GX
+    _bi_ss_on                                                      **** GX
+  0 _diskCloseRW                                                   06D0 GR
+  0 _diskCloseRW_end                                               0714 GR
+  0 _diskCloseRW_start                                             06D0 GR
+  0 _diskCmd                                                       009F GR
+  0 _diskCmdFast                                                   020A GR
+  0 _diskCmdFast_end                                               02DF GR
+  0 _diskCmdFast_start                                             020A GR
+  0 _diskCmd_end                                                   020A GR
+  0 _diskCmd_start                                                 009F GR
+  0 _diskCrc7                                                      0000 GR
+  0 _diskCrc7_end                                                  009F GR
+  0 _diskCrc7_start                                                0000 GR
+  0 _diskInit                                                      02DF GR
+  0 _diskInit_end                                                  0518 GR
+  0 _diskInit_start                                                02DF GR
+  0 _diskOpenRead                                                  0518 GR
+  0 _diskOpenRead_end                                              0566 GR
+  0 _diskOpenRead_start                                            0518 GR
+  0 _diskOpenWrite                                                 0714 GR
+  0 _diskOpenWrite_end                                             0762 GR
+  0 _diskOpenWrite_start                                           0714 GR
+  0 _diskReadToRam                                                 0566 GR
+  0 _diskReadToRam_end                                             061B GR
+  0 _diskReadToRam_start                                           0566 GR
+  0 _diskReadToRom                                                 061B GR
+  0 _diskReadToRom_end                                             06D0 GR
+  0 _diskReadToRom_start                                           061B GR
+  0 _diskStop                                                      07AD GR
+  0 _diskStop_end                                                  07F4 GR
+  0 _diskStop_start                                                07AD GR
+  0 _diskWrite                                                     0762 GR
+  0 _diskWrite_end                                                 07AD GR
+  0 _diskWrite_start                                               0762 GR
+  1 _disk_addr                                                     0000 GR
+  1 _disk_init_ok                                                  0004 GR
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+Area Table
+
+   0 _CODE                                      size  7F4   flags    0
+   1 _DATA                                      size    5   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

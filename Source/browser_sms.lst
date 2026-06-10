@@ -1,0 +1,736 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.3.0 #8604 (May 11 2013) (MINGW64)
+                              4 ; This file was generated Wed Jun 10 08:26:35 2026
+                              5 ;--------------------------------------------------------
+                              6 	.module browser
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _browser
+                             13 	.globl _guiGetMaxRows
+                             14 	.globl _guiDrawBrowser
+                             15 	.globl _sysJoyWait
+                             16 	.globl _osExitBrowser
+                             17 	.globl _osMainMenu
+                             18 	.globl _osStartGame
+                             19 	.globl _osFileMenu
+                             20 	.globl _fat_get_full_record
+                             21 	.globl _fat_load_dir
+                             22 	.globl _sel_stack
+                             23 	.globl _br_rec
+                             24 ;--------------------------------------------------------
+                             25 ; special function registers
+                             26 ;--------------------------------------------------------
+                             27 ;--------------------------------------------------------
+                             28 ; ram data
+                             29 ;--------------------------------------------------------
+                             30 	.area _DATA
+   0000                      31 _br_rec::
+   0000                      32 	.ds 229
+   00E5                      33 _sel_stack::
+   00E5                      34 	.ds 64
+                             35 ;--------------------------------------------------------
+                             36 ; ram data
+                             37 ;--------------------------------------------------------
+                             38 	.area _INITIALIZED
+                             39 ;--------------------------------------------------------
+                             40 ; absolute external ram data
+                             41 ;--------------------------------------------------------
+                             42 	.area _DABS (ABS)
+                             43 ;--------------------------------------------------------
+                             44 ; global & static initialisations
+                             45 ;--------------------------------------------------------
+                             46 	.area _HOME
+                             47 	.area _GSINIT
+                             48 	.area _GSFINAL
+                             49 	.area _GSINIT
+                             50 ;--------------------------------------------------------
+                             51 ; Home
+                             52 ;--------------------------------------------------------
+                             53 	.area _HOME
+                             54 	.area _HOME
+                             55 ;--------------------------------------------------------
+                             56 ; code
+                             57 ;--------------------------------------------------------
+                             58 	.area _CODE
+                             59 ;browser.c:13: u8 browser() {
+                             60 ;	---------------------------------
+                             61 ; Function browser
+                             62 ; ---------------------------------
+   0000                      63 _browser_start::
+   0000                      64 _browser:
+   0000 DD E5         [15]   65 	push	ix
+   0002 DD 21 00 00   [14]   66 	ld	ix,#0
+   0006 DD 39         [15]   67 	add	ix,sp
+   0008 21 E4 FF      [10]   68 	ld	hl,#-28
+   000B 39            [11]   69 	add	hl,sp
+   000C F9            [ 6]   70 	ld	sp,hl
+                             71 ;browser.c:26: selector = 0;
+   000D DD 36 E9 00   [19]   72 	ld	-23 (ix),#0x00
+   0011 DD 36 EA 00   [19]   73 	ld	-22 (ix),#0x00
+                             74 ;browser.c:27: rows = guiGetMaxRows();
+   0015 CDr00r00      [17]   75 	call	_guiGetMaxRows
+   0018 DD 75 E5      [19]   76 	ld	-27 (ix),l
+                             77 ;browser.c:28: full_repaint = 2;
+   001B DD 36 E6 02   [19]   78 	ld	-26 (ix),#0x02
+                             79 ;browser.c:29: current_dir = 0;
+   001F AF            [ 4]   80 	xor	a, a
+   0020 DD 77 EF      [19]   81 	ld	-17 (ix),a
+   0023 DD 77 F0      [19]   82 	ld	-16 (ix),a
+   0026 DD 77 F1      [19]   83 	ld	-15 (ix),a
+   0029 DD 77 F2      [19]   84 	ld	-14 (ix),a
+                             85 ;browser.c:30: sel_stack_ptr = 0;
+   002C DD 36 EB 00   [19]   86 	ld	-21 (ix),#0x00
+   0030 DD 36 EC 00   [19]   87 	ld	-20 (ix),#0x00
+   0034                      88 00163$:
+                             89 ;browser.c:34: if (full_repaint == 2) {
+   0034 DD 7E E6      [19]   90 	ld	a,-26 (ix)
+   0037 D6 02         [ 7]   91 	sub	a, #0x02
+   0039 20 20         [12]   92 	jr	NZ,00104$
+                             93 ;browser.c:35: resp = fat_load_dir(current_dir);
+   003B DD 6E F1      [19]   94 	ld	l,-15 (ix)
+   003E DD 66 F2      [19]   95 	ld	h,-14 (ix)
+   0041 E5            [11]   96 	push	hl
+   0042 DD 6E EF      [19]   97 	ld	l,-17 (ix)
+   0045 DD 66 F0      [19]   98 	ld	h,-16 (ix)
+   0048 E5            [11]   99 	push	hl
+   0049 CDr00r00      [17]  100 	call	_fat_load_dir
+   004C F1            [10]  101 	pop	af
+   004D F1            [10]  102 	pop	af
+                            103 ;browser.c:36: if (resp)return resp;
+   004E DD 75 E4      [19]  104 	ld	-28 (ix), l
+   0051 7D            [ 4]  105 	ld	a, l
+   0052 B7            [ 4]  106 	or	a, a
+   0053 28 06         [12]  107 	jr	Z,00104$
+   0055 DD 6E E4      [19]  108 	ld	l,-28 (ix)
+   0058 C3r4Fr05      [10]  109 	jp	00164$
+   005B                     110 00104$:
+                            111 ;browser.c:39: resp = guiDrawBrowser(full_repaint, selector);
+   005B DD 6E E9      [19]  112 	ld	l,-23 (ix)
+   005E DD 66 EA      [19]  113 	ld	h,-22 (ix)
+   0061 E5            [11]  114 	push	hl
+   0062 DD 7E E6      [19]  115 	ld	a,-26 (ix)
+   0065 F5            [11]  116 	push	af
+   0066 33            [ 6]  117 	inc	sp
+   0067 CDr00r00      [17]  118 	call	_guiDrawBrowser
+   006A F1            [10]  119 	pop	af
+   006B 33            [ 6]  120 	inc	sp
+                            121 ;browser.c:40: if (resp)return resp;
+   006C DD 75 E4      [19]  122 	ld	-28 (ix), l
+   006F 7D            [ 4]  123 	ld	a, l
+   0070 B7            [ 4]  124 	or	a, a
+   0071 28 06         [12]  125 	jr	Z,00106$
+   0073 DD 6E E4      [19]  126 	ld	l,-28 (ix)
+   0076 C3r4Fr05      [10]  127 	jp	00164$
+   0079                     128 00106$:
+                            129 ;browser.c:41: full_repaint = 0;
+   0079 DD 36 E6 00   [19]  130 	ld	-26 (ix),#0x00
+                            131 ;browser.c:42: sysJoyWait();
+   007D CDr00r00      [17]  132 	call	_sysJoyWait
+                            133 ;browser.c:44: if ((joy & JOY_U) == JOY_U) {
+   0080 3Ar00r00      [13]  134 	ld	a,(#_joy + 0)
+   0083 E6 01         [ 7]  135 	and	a, #0x01
+   0085 57            [ 4]  136 	ld	d,a
+   0086 1E 00         [ 7]  137 	ld	e,#0x00
+                            138 ;browser.c:45: page = selector / rows * rows;
+   0088 DD 7E E5      [19]  139 	ld	a,-27 (ix)
+   008B DD 77 FA      [19]  140 	ld	-6 (ix),a
+   008E DD 36 FB 00   [19]  141 	ld	-5 (ix),#0x00
+                            142 ;browser.c:47: sub_sel = sub_sel == 0 ? rows - 1 : sub_sel - 1;
+   0092 DD 7E E5      [19]  143 	ld	a,-27 (ix)
+   0095 DD 77 F7      [19]  144 	ld	-9 (ix),a
+   0098 DD 36 F8 00   [19]  145 	ld	-8 (ix),#0x00
+                            146 ;browser.c:49: if (selector >= fat_dir_size && fat_dir_size > 0)selector = fat_dir_size - 1;
+   009C 3Ar00r00      [13]  147 	ld	a,(#_fat_dir_size + 0)
+   009F C6 FF         [ 7]  148 	add	a,#0xFF
+   00A1 DD 77 FC      [19]  149 	ld	-4 (ix),a
+   00A4 3Ar01r00      [13]  150 	ld	a,(#_fat_dir_size + 1)
+   00A7 CE FF         [ 7]  151 	adc	a,#0xFF
+   00A9 DD 77 FD      [19]  152 	ld	-3 (ix),a
+                            153 ;browser.c:45: page = selector / rows * rows;
+   00AC D5            [11]  154 	push	de
+   00AD DD 6E FA      [19]  155 	ld	l,-6 (ix)
+   00B0 DD 66 FB      [19]  156 	ld	h,-5 (ix)
+   00B3 E5            [11]  157 	push	hl
+   00B4 DD 6E E9      [19]  158 	ld	l,-23 (ix)
+   00B7 DD 66 EA      [19]  159 	ld	h,-22 (ix)
+   00BA E5            [11]  160 	push	hl
+   00BB CDr00r00      [17]  161 	call	__divuint_rrx_s
+   00BE F1            [10]  162 	pop	af
+   00BF F1            [10]  163 	pop	af
+   00C0 DD 4E FA      [19]  164 	ld	c,-6 (ix)
+   00C3 DD 46 FB      [19]  165 	ld	b,-5 (ix)
+   00C6 C5            [11]  166 	push	bc
+   00C7 E5            [11]  167 	push	hl
+                            168 ;browser.c:44: if ((joy & JOY_U) == JOY_U) {
+   00C8 CDr00r00      [17]  169 	call	__mulint_rrx_s
+   00CB F1            [10]  170 	pop	af
+   00CC F1            [10]  171 	pop	af
+   00CD DD 74 FF      [19]  172 	ld	-1 (ix),h
+   00D0 DD 75 FE      [19]  173 	ld	-2 (ix),l
+   00D3 D1            [10]  174 	pop	de
+   00D4 15            [ 4]  175 	dec	d
+   00D5 C2r57r01      [10]  176 	jp	NZ,00111$
+   00D8 7B            [ 4]  177 	ld	a,e
+   00D9 B7            [ 4]  178 	or	a, a
+   00DA 20 7B         [12]  179 	jr	NZ,00111$
+                            180 ;browser.c:45: page = selector / rows * rows;
+   00DC DD 7E FE      [19]  181 	ld	a,-2 (ix)
+   00DF DD 77 ED      [19]  182 	ld	-19 (ix),a
+   00E2 DD 7E FF      [19]  183 	ld	a,-1 (ix)
+   00E5 DD 77 EE      [19]  184 	ld	-18 (ix),a
+                            185 ;browser.c:46: sub_sel = selector - page;
+   00E8 DD 7E E9      [19]  186 	ld	a,-23 (ix)
+   00EB DD 96 ED      [19]  187 	sub	a, -19 (ix)
+   00EE 6F            [ 4]  188 	ld	l,a
+   00EF DD 7E EA      [19]  189 	ld	a,-22 (ix)
+   00F2 DD 9E EE      [19]  190 	sbc	a, -18 (ix)
+   00F5 DD 75 E7      [19]  191 	ld	-25 (ix), l
+                            192 ;browser.c:47: sub_sel = sub_sel == 0 ? rows - 1 : sub_sel - 1;
+   00F8 DD 77 E8      [19]  193 	ld	-24 (ix), a
+   00FB DD B6 E7      [19]  194 	or	a, -25 (ix)
+   00FE D6 01         [ 7]  195 	sub	a,#0x01
+   0100 3E 00         [ 7]  196 	ld	a,#0x00
+   0102 17            [ 4]  197 	rla
+   0103 B7            [ 4]  198 	or	a, a
+   0104 28 09         [12]  199 	jr	Z,00166$
+   0106 DD 5E F7      [19]  200 	ld	e,-9 (ix)
+   0109 DD 56 F8      [19]  201 	ld	d,-8 (ix)
+   010C 1B            [ 6]  202 	dec	de
+   010D 18 07         [12]  203 	jr	00167$
+   010F                     204 00166$:
+   010F DD 5E E7      [19]  205 	ld	e,-25 (ix)
+   0112 DD 56 E8      [19]  206 	ld	d,-24 (ix)
+   0115 1B            [ 6]  207 	dec	de
+   0116                     208 00167$:
+   0116 DD 73 E7      [19]  209 	ld	-25 (ix),e
+   0119 DD 72 E8      [19]  210 	ld	-24 (ix),d
+                            211 ;browser.c:48: selector = page + sub_sel;
+   011C DD 7E ED      [19]  212 	ld	a,-19 (ix)
+   011F DD 86 E7      [19]  213 	add	a, -25 (ix)
+   0122 67            [ 4]  214 	ld	h,a
+   0123 DD 7E EE      [19]  215 	ld	a,-18 (ix)
+   0126 DD 8E E8      [19]  216 	adc	a, -24 (ix)
+   0129 DD 74 E9      [19]  217 	ld	-23 (ix), h
+   012C DD 77 EA      [19]  218 	ld	-22 (ix), a
+                            219 ;browser.c:49: if (selector >= fat_dir_size && fat_dir_size > 0)selector = fat_dir_size - 1;
+   012F 21r00r00      [10]  220 	ld	hl,#_fat_dir_size
+   0132 DD 7E E9      [19]  221 	ld	a,-23 (ix)
+   0135 96            [ 7]  222 	sub	a, (hl)
+   0136 DD 7E EA      [19]  223 	ld	a,-22 (ix)
+   0139 23            [ 6]  224 	inc	hl
+   013A 9E            [ 7]  225 	sbc	a, (hl)
+   013B DAr34r00      [10]  226 	jp	C,00163$
+   013E 3Ar01r00      [13]  227 	ld	a,(#_fat_dir_size + 1)
+   0141 21r00r00      [10]  228 	ld	hl,#_fat_dir_size + 0
+   0144 B6            [ 7]  229 	or	a,(hl)
+   0145 CAr34r00      [10]  230 	jp	Z,00163$
+   0148 DD 7E FC      [19]  231 	ld	a,-4 (ix)
+   014B DD 77 E9      [19]  232 	ld	-23 (ix),a
+   014E DD 7E FD      [19]  233 	ld	a,-3 (ix)
+   0151 DD 77 EA      [19]  234 	ld	-22 (ix),a
+                            235 ;browser.c:50: continue;
+   0154 C3r34r00      [10]  236 	jp	00163$
+   0157                     237 00111$:
+                            238 ;browser.c:53: if ((joy & JOY_D) == JOY_D) {
+   0157 3Ar00r00      [13]  239 	ld	a,(#_joy + 0)
+   015A E6 02         [ 7]  240 	and	a, #0x02
+   015C 67            [ 4]  241 	ld	h,a
+   015D 2E 00         [ 7]  242 	ld	l,#0x00
+   015F 7C            [ 4]  243 	ld	a,h
+   0160 D6 02         [ 7]  244 	sub	a,#0x02
+   0162 20 71         [12]  245 	jr	NZ,00117$
+   0164 B5            [ 4]  246 	or	a,l
+   0165 20 6E         [12]  247 	jr	NZ,00117$
+                            248 ;browser.c:54: page = selector / rows * rows;
+   0167 DD 7E FE      [19]  249 	ld	a,-2 (ix)
+   016A DD 77 ED      [19]  250 	ld	-19 (ix),a
+   016D DD 7E FF      [19]  251 	ld	a,-1 (ix)
+   0170 DD 77 EE      [19]  252 	ld	-18 (ix),a
+                            253 ;browser.c:55: sub_sel = selector - page;
+   0173 DD 7E E9      [19]  254 	ld	a,-23 (ix)
+   0176 DD 96 ED      [19]  255 	sub	a, -19 (ix)
+   0179 67            [ 4]  256 	ld	h,a
+   017A DD 7E EA      [19]  257 	ld	a,-22 (ix)
+   017D DD 9E EE      [19]  258 	sbc	a, -18 (ix)
+   0180 DD 74 E7      [19]  259 	ld	-25 (ix), h
+   0183 DD 77 E8      [19]  260 	ld	-24 (ix), a
+                            261 ;browser.c:56: sub_sel++;
+   0186 DD 34 E7      [23]  262 	inc	-25 (ix)
+   0189 20 03         [12]  263 	jr	NZ,00273$
+   018B DD 34 E8      [23]  264 	inc	-24 (ix)
+   018E                     265 00273$:
+                            266 ;browser.c:57: if (sub_sel >= rows)sub_sel = 0;
+   018E DD 7E E7      [19]  267 	ld	a,-25 (ix)
+   0191 DD 96 FA      [19]  268 	sub	a, -6 (ix)
+   0194 DD 7E E8      [19]  269 	ld	a,-24 (ix)
+   0197 DD 9E FB      [19]  270 	sbc	a, -5 (ix)
+   019A 38 08         [12]  271 	jr	C,00113$
+   019C DD 36 E7 00   [19]  272 	ld	-25 (ix),#0x00
+   01A0 DD 36 E8 00   [19]  273 	ld	-24 (ix),#0x00
+   01A4                     274 00113$:
+                            275 ;browser.c:58: selector = page + sub_sel;
+   01A4 DD 7E ED      [19]  276 	ld	a,-19 (ix)
+   01A7 DD 86 E7      [19]  277 	add	a, -25 (ix)
+   01AA 67            [ 4]  278 	ld	h,a
+   01AB DD 7E EE      [19]  279 	ld	a,-18 (ix)
+   01AE DD 8E E8      [19]  280 	adc	a, -24 (ix)
+   01B1 DD 74 E9      [19]  281 	ld	-23 (ix), h
+   01B4 DD 77 EA      [19]  282 	ld	-22 (ix), a
+                            283 ;browser.c:59: if (selector >= fat_dir_size)selector = page;
+   01B7 21r00r00      [10]  284 	ld	hl,#_fat_dir_size
+   01BA DD 7E E9      [19]  285 	ld	a,-23 (ix)
+   01BD 96            [ 7]  286 	sub	a, (hl)
+   01BE DD 7E EA      [19]  287 	ld	a,-22 (ix)
+   01C1 23            [ 6]  288 	inc	hl
+   01C2 9E            [ 7]  289 	sbc	a, (hl)
+   01C3 DAr34r00      [10]  290 	jp	C,00163$
+   01C6 DD 7E ED      [19]  291 	ld	a,-19 (ix)
+   01C9 DD 77 E9      [19]  292 	ld	-23 (ix),a
+   01CC DD 7E EE      [19]  293 	ld	a,-18 (ix)
+   01CF DD 77 EA      [19]  294 	ld	-22 (ix),a
+                            295 ;browser.c:60: continue;
+   01D2 C3r34r00      [10]  296 	jp	00163$
+   01D5                     297 00117$:
+                            298 ;browser.c:63: if ((joy & JOY_R) == JOY_R) {
+   01D5 3Ar00r00      [13]  299 	ld	a,(#_joy + 0)
+   01D8 E6 08         [ 7]  300 	and	a, #0x08
+   01DA 57            [ 4]  301 	ld	d,a
+   01DB 1E 00         [ 7]  302 	ld	e,#0x00
+                            303 ;browser.c:64: if (fat_dir_size <= rows)continue;
+   01DD DD 7E FA      [19]  304 	ld	a,-6 (ix)
+   01E0 FD 21r00r00   [14]  305 	ld	iy,#_fat_dir_size
+   01E4 FD 96 00      [19]  306 	sub	a, 0 (iy)
+   01E7 DD 7E FB      [19]  307 	ld	a,-5 (ix)
+   01EA FD 21r00r00   [14]  308 	ld	iy,#_fat_dir_size
+   01EE FD 9E 01      [19]  309 	sbc	a, 1 (iy)
+   01F1 3E 00         [ 7]  310 	ld	a,#0x00
+   01F3 17            [ 4]  311 	rla
+   01F4 DD 77 F9      [19]  312 	ld	-7 (ix),a
+                            313 ;browser.c:67: page += rows;
+                            314 ;browser.c:63: if ((joy & JOY_R) == JOY_R) {
+   01F7 7A            [ 4]  315 	ld	a,d
+   01F8 D6 08         [ 7]  316 	sub	a,#0x08
+   01FA C2r80r02      [10]  317 	jp	NZ,00125$
+   01FD B3            [ 4]  318 	or	a,e
+   01FE C2r80r02      [10]  319 	jp	NZ,00125$
+                            320 ;browser.c:64: if (fat_dir_size <= rows)continue;
+   0201 DD 7E F9      [19]  321 	ld	a,-7 (ix)
+   0204 B7            [ 4]  322 	or	a, a
+   0205 CAr34r00      [10]  323 	jp	Z,00163$
+                            324 ;browser.c:65: page = selector / rows * rows;
+   0208 DD 7E FE      [19]  325 	ld	a,-2 (ix)
+   020B DD 77 ED      [19]  326 	ld	-19 (ix),a
+   020E DD 7E FF      [19]  327 	ld	a,-1 (ix)
+   0211 DD 77 EE      [19]  328 	ld	-18 (ix),a
+                            329 ;browser.c:66: sub_sel = selector - page;
+   0214 DD 7E E9      [19]  330 	ld	a,-23 (ix)
+   0217 DD 96 ED      [19]  331 	sub	a, -19 (ix)
+   021A 67            [ 4]  332 	ld	h,a
+   021B DD 7E EA      [19]  333 	ld	a,-22 (ix)
+   021E DD 9E EE      [19]  334 	sbc	a, -18 (ix)
+   0221 DD 74 E7      [19]  335 	ld	-25 (ix), h
+   0224 DD 77 E8      [19]  336 	ld	-24 (ix), a
+                            337 ;browser.c:67: page += rows;
+   0227 DD 7E ED      [19]  338 	ld	a,-19 (ix)
+   022A DD 86 F7      [19]  339 	add	a, -9 (ix)
+   022D DD 77 ED      [19]  340 	ld	-19 (ix),a
+   0230 DD 7E EE      [19]  341 	ld	a,-18 (ix)
+   0233 DD 8E F8      [19]  342 	adc	a, -8 (ix)
+   0236 DD 77 EE      [19]  343 	ld	-18 (ix),a
+                            344 ;browser.c:68: if (page >= fat_dir_size)page = 0;
+   0239 21r00r00      [10]  345 	ld	hl,#_fat_dir_size
+   023C DD 7E ED      [19]  346 	ld	a,-19 (ix)
+   023F 96            [ 7]  347 	sub	a, (hl)
+   0240 DD 7E EE      [19]  348 	ld	a,-18 (ix)
+   0243 23            [ 6]  349 	inc	hl
+   0244 9E            [ 7]  350 	sbc	a, (hl)
+   0245 38 08         [12]  351 	jr	C,00121$
+   0247 DD 36 ED 00   [19]  352 	ld	-19 (ix),#0x00
+   024B DD 36 EE 00   [19]  353 	ld	-18 (ix),#0x00
+   024F                     354 00121$:
+                            355 ;browser.c:69: selector = page + sub_sel;
+   024F DD 7E ED      [19]  356 	ld	a,-19 (ix)
+   0252 DD 86 E7      [19]  357 	add	a, -25 (ix)
+   0255 67            [ 4]  358 	ld	h,a
+   0256 DD 7E EE      [19]  359 	ld	a,-18 (ix)
+   0259 DD 8E E8      [19]  360 	adc	a, -24 (ix)
+   025C DD 74 E9      [19]  361 	ld	-23 (ix), h
+   025F DD 77 EA      [19]  362 	ld	-22 (ix), a
+                            363 ;browser.c:70: if (selector >= fat_dir_size)selector = fat_dir_size - 1;
+   0262 21r00r00      [10]  364 	ld	hl,#_fat_dir_size
+   0265 DD 7E E9      [19]  365 	ld	a,-23 (ix)
+   0268 96            [ 7]  366 	sub	a, (hl)
+   0269 DD 7E EA      [19]  367 	ld	a,-22 (ix)
+   026C 23            [ 6]  368 	inc	hl
+   026D 9E            [ 7]  369 	sbc	a, (hl)
+   026E 38 0C         [12]  370 	jr	C,00123$
+   0270 DD 7E FC      [19]  371 	ld	a,-4 (ix)
+   0273 DD 77 E9      [19]  372 	ld	-23 (ix),a
+   0276 DD 7E FD      [19]  373 	ld	a,-3 (ix)
+   0279 DD 77 EA      [19]  374 	ld	-22 (ix),a
+   027C                     375 00123$:
+                            376 ;browser.c:71: full_repaint = 1;
+   027C DD 36 E6 01   [19]  377 	ld	-26 (ix),#0x01
+   0280                     378 00125$:
+                            379 ;browser.c:77: if ((joy & JOY_L) == JOY_L) {
+   0280 3Ar00r00      [13]  380 	ld	a,(#_joy + 0)
+   0283 E6 04         [ 7]  381 	and	a, #0x04
+   0285 67            [ 4]  382 	ld	h,a
+   0286 2E 00         [ 7]  383 	ld	l,#0x00
+   0288 7C            [ 4]  384 	ld	a,h
+   0289 D6 04         [ 7]  385 	sub	a,#0x04
+   028B C2r7Fr03      [10]  386 	jp	NZ,00134$
+   028E B5            [ 4]  387 	or	a,l
+   028F C2r7Fr03      [10]  388 	jp	NZ,00134$
+                            389 ;browser.c:78: if (fat_dir_size <= rows)continue;
+   0292 DD 7E F9      [19]  390 	ld	a,-7 (ix)
+   0295 B7            [ 4]  391 	or	a, a
+   0296 CAr34r00      [10]  392 	jp	Z,00163$
+                            393 ;browser.c:79: page = selector / rows * rows;
+   0299 DD 6E FA      [19]  394 	ld	l,-6 (ix)
+   029C DD 66 FB      [19]  395 	ld	h,-5 (ix)
+   029F E5            [11]  396 	push	hl
+   02A0 DD 6E E9      [19]  397 	ld	l,-23 (ix)
+   02A3 DD 66 EA      [19]  398 	ld	h,-22 (ix)
+   02A6 E5            [11]  399 	push	hl
+   02A7 CDr00r00      [17]  400 	call	__divuint_rrx_s
+   02AA F1            [10]  401 	pop	af
+   02AB F1            [10]  402 	pop	af
+   02AC DD 74 FF      [19]  403 	ld	-1 (ix),h
+   02AF DD 75 FE      [19]  404 	ld	-2 (ix),l
+   02B2 DD 6E FA      [19]  405 	ld	l,-6 (ix)
+   02B5 DD 66 FB      [19]  406 	ld	h,-5 (ix)
+   02B8 E5            [11]  407 	push	hl
+   02B9 DD 6E FE      [19]  408 	ld	l,-2 (ix)
+   02BC DD 66 FF      [19]  409 	ld	h,-1 (ix)
+   02BF E5            [11]  410 	push	hl
+   02C0 CDr00r00      [17]  411 	call	__mulint_rrx_s
+   02C3 F1            [10]  412 	pop	af
+   02C4 F1            [10]  413 	pop	af
+   02C5 DD 74 FF      [19]  414 	ld	-1 (ix),h
+   02C8 DD 75 FE      [19]  415 	ld	-2 (ix), l
+   02CB DD 75 ED      [19]  416 	ld	-19 (ix), l
+   02CE DD 7E FF      [19]  417 	ld	a,-1 (ix)
+   02D1 DD 77 EE      [19]  418 	ld	-18 (ix),a
+                            419 ;browser.c:80: sub_sel = selector - page;
+   02D4 DD 7E E9      [19]  420 	ld	a,-23 (ix)
+   02D7 DD 96 ED      [19]  421 	sub	a, -19 (ix)
+   02DA DD 77 FE      [19]  422 	ld	-2 (ix),a
+   02DD DD 7E EA      [19]  423 	ld	a,-22 (ix)
+   02E0 DD 9E EE      [19]  424 	sbc	a, -18 (ix)
+   02E3 DD 77 FF      [19]  425 	ld	-1 (ix),a
+   02E6 DD 7E FE      [19]  426 	ld	a,-2 (ix)
+   02E9 DD 77 E7      [19]  427 	ld	-25 (ix),a
+   02EC DD 7E FF      [19]  428 	ld	a,-1 (ix)
+   02EF DD 77 E8      [19]  429 	ld	-24 (ix),a
+                            430 ;browser.c:81: if (selector < rows) {
+   02F2 DD 7E E9      [19]  431 	ld	a,-23 (ix)
+   02F5 DD 96 FA      [19]  432 	sub	a, -6 (ix)
+   02F8 DD 7E EA      [19]  433 	ld	a,-22 (ix)
+   02FB DD 9E FB      [19]  434 	sbc	a, -5 (ix)
+   02FE 30 69         [12]  435 	jr	NC,00131$
+                            436 ;browser.c:82: selector = fat_dir_size / rows * rows + sub_sel;
+   0300 DD 6E FA      [19]  437 	ld	l,-6 (ix)
+   0303 DD 66 FB      [19]  438 	ld	h,-5 (ix)
+   0306 E5            [11]  439 	push	hl
+   0307 2Ar00r00      [16]  440 	ld	hl,(_fat_dir_size)
+   030A E5            [11]  441 	push	hl
+   030B CDr00r00      [17]  442 	call	__divuint_rrx_s
+   030E F1            [10]  443 	pop	af
+   030F F1            [10]  444 	pop	af
+   0310 DD 74 FF      [19]  445 	ld	-1 (ix),h
+   0313 DD 75 FE      [19]  446 	ld	-2 (ix),l
+   0316 DD 6E FA      [19]  447 	ld	l,-6 (ix)
+   0319 DD 66 FB      [19]  448 	ld	h,-5 (ix)
+   031C E5            [11]  449 	push	hl
+   031D DD 6E FE      [19]  450 	ld	l,-2 (ix)
+   0320 DD 66 FF      [19]  451 	ld	h,-1 (ix)
+   0323 E5            [11]  452 	push	hl
+   0324 CDr00r00      [17]  453 	call	__mulint_rrx_s
+   0327 F1            [10]  454 	pop	af
+   0328 F1            [10]  455 	pop	af
+   0329 DD 74 FF      [19]  456 	ld	-1 (ix),h
+   032C DD 75 FE      [19]  457 	ld	-2 (ix),l
+   032F DD 7E E7      [19]  458 	ld	a,-25 (ix)
+   0332 DD 86 FE      [19]  459 	add	a, -2 (ix)
+   0335 DD 77 FE      [19]  460 	ld	-2 (ix),a
+   0338 DD 7E E8      [19]  461 	ld	a,-24 (ix)
+   033B DD 8E FF      [19]  462 	adc	a, -1 (ix)
+   033E DD 77 FF      [19]  463 	ld	-1 (ix),a
+   0341 DD 7E FE      [19]  464 	ld	a,-2 (ix)
+   0344 DD 77 E9      [19]  465 	ld	-23 (ix),a
+   0347 DD 7E FF      [19]  466 	ld	a,-1 (ix)
+   034A DD 77 EA      [19]  467 	ld	-22 (ix),a
+                            468 ;browser.c:83: if (selector >= fat_dir_size) selector = fat_dir_size - 1;
+   034D 21r00r00      [10]  469 	ld	hl,#_fat_dir_size
+   0350 DD 7E E9      [19]  470 	ld	a,-23 (ix)
+   0353 96            [ 7]  471 	sub	a, (hl)
+   0354 DD 7E EA      [19]  472 	ld	a,-22 (ix)
+   0357 23            [ 6]  473 	inc	hl
+   0358 9E            [ 7]  474 	sbc	a, (hl)
+   0359 38 20         [12]  475 	jr	C,00132$
+   035B DD 7E FC      [19]  476 	ld	a,-4 (ix)
+   035E DD 77 E9      [19]  477 	ld	-23 (ix),a
+   0361 DD 7E FD      [19]  478 	ld	a,-3 (ix)
+   0364 DD 77 EA      [19]  479 	ld	-22 (ix),a
+   0367 18 12         [12]  480 	jr	00132$
+   0369                     481 00131$:
+                            482 ;browser.c:85: selector -= rows;
+   0369 DD 7E E9      [19]  483 	ld	a,-23 (ix)
+   036C DD 96 F7      [19]  484 	sub	a, -9 (ix)
+   036F DD 77 E9      [19]  485 	ld	-23 (ix),a
+   0372 DD 7E EA      [19]  486 	ld	a,-22 (ix)
+   0375 DD 9E F8      [19]  487 	sbc	a, -8 (ix)
+   0378 DD 77 EA      [19]  488 	ld	-22 (ix),a
+   037B                     489 00132$:
+                            490 ;browser.c:87: full_repaint = 1;
+   037B DD 36 E6 01   [19]  491 	ld	-26 (ix),#0x01
+   037F                     492 00134$:
+                            493 ;browser.c:92: if ((joy & JOY_B) == JOY_B && fat_dir_size != 0) {
+   037F 3Ar00r00      [13]  494 	ld	a,(#_joy + 0)
+   0382 E6 10         [ 7]  495 	and	a, #0x10
+   0384 67            [ 4]  496 	ld	h,a
+   0385 2E 00         [ 7]  497 	ld	l,#0x00
+   0387 7C            [ 4]  498 	ld	a,h
+   0388 D6 10         [ 7]  499 	sub	a,#0x10
+   038A C2r97r04      [10]  500 	jp	NZ,00145$
+   038D B5            [ 4]  501 	or	a,l
+   038E C2r97r04      [10]  502 	jp	NZ,00145$
+   0391 3Ar01r00      [13]  503 	ld	a,(#_fat_dir_size + 1)
+   0394 21r00r00      [10]  504 	ld	hl,#_fat_dir_size + 0
+   0397 B6            [ 7]  505 	or	a,(hl)
+   0398 CAr97r04      [10]  506 	jp	Z,00145$
+                            507 ;browser.c:93: resp = fat_get_full_record(fat_dir[selector], &br_rec);
+   039B DD 7E E9      [19]  508 	ld	a,-23 (ix)
+   039E DD 77 FE      [19]  509 	ld	-2 (ix),a
+   03A1 DD 7E EA      [19]  510 	ld	a,-22 (ix)
+   03A4 DD 77 FF      [19]  511 	ld	-1 (ix),a
+   03A7 3E 03         [ 7]  512 	ld	a,#0x02+1
+   03A9 18 08         [12]  513 	jr	00281$
+   03AB                     514 00280$:
+   03AB DD CB FE 26   [23]  515 	sla	-2 (ix)
+   03AF DD CB FF 16   [23]  516 	rl	-1 (ix)
+   03B3                     517 00281$:
+   03B3 3D            [ 4]  518 	dec	a
+   03B4 20 F5         [12]  519 	jr	NZ,00280$
+   03B6 3Ar00r00      [13]  520 	ld	a,(#_fat_dir + 0)
+   03B9 DD 86 FE      [19]  521 	add	a, -2 (ix)
+   03BC DD 77 FE      [19]  522 	ld	-2 (ix),a
+   03BF FD 21r00r00   [14]  523 	ld	iy,#_fat_dir
+   03C3 FD 7E 01      [19]  524 	ld	a,1 (iy)
+   03C6 DD 8E FF      [19]  525 	adc	a, -1 (ix)
+   03C9 DD 77 FF      [19]  526 	ld	-1 (ix),a
+   03CC DD 5E FE      [19]  527 	ld	e,-2 (ix)
+   03CF DD 56 FF      [19]  528 	ld	d,-1 (ix)
+   03D2 21 0F 00      [10]  529 	ld	hl, #0x000F
+   03D5 39            [11]  530 	add	hl, sp
+   03D6 EB            [ 4]  531 	ex	de, hl
+   03D7 01 04 00      [10]  532 	ld	bc, #0x0004
+   03DA ED B0         [21]  533 	ldir
+   03DC 21r00r00      [10]  534 	ld	hl,#_br_rec
+   03DF E5            [11]  535 	push	hl
+   03E0 DD 6E F5      [19]  536 	ld	l,-11 (ix)
+   03E3 DD 66 F6      [19]  537 	ld	h,-10 (ix)
+   03E6 E5            [11]  538 	push	hl
+   03E7 DD 6E F3      [19]  539 	ld	l,-13 (ix)
+   03EA DD 66 F4      [19]  540 	ld	h,-12 (ix)
+   03ED E5            [11]  541 	push	hl
+   03EE CDr00r00      [17]  542 	call	_fat_get_full_record
+   03F1 F1            [10]  543 	pop	af
+   03F2 F1            [10]  544 	pop	af
+   03F3 F1            [10]  545 	pop	af
+   03F4 DD 75 F3      [19]  546 	ld	-13 (ix), l
+   03F7 7D            [ 4]  547 	ld	a, l
+                            548 ;browser.c:94: if (resp)return resp;
+   03F8 DD 77 E4      [19]  549 	ld	-28 (ix), a
+   03FB B7            [ 4]  550 	or	a, a
+   03FC 28 06         [12]  551 	jr	Z,00136$
+   03FE DD 6E E4      [19]  552 	ld	l,-28 (ix)
+   0401 C3r4Fr05      [10]  553 	jp	00164$
+   0404                     554 00136$:
+                            555 ;browser.c:96: if (br_rec.is_dir) {
+   0404 3ArE4r00      [13]  556 	ld	a,(#_br_rec + 228)
+   0407 DD 77 F3      [19]  557 	ld	-13 (ix), a
+   040A B7            [ 4]  558 	or	a, a
+   040B 28 70         [12]  559 	jr	Z,00142$
+                            560 ;browser.c:97: if (sel_stack_ptr >= MAX_SEL_STACK_DEEP)continue;
+   040D DD 7E EB      [19]  561 	ld	a,-21 (ix)
+   0410 D6 20         [ 7]  562 	sub	a, #0x20
+   0412 DD 7E EC      [19]  563 	ld	a,-20 (ix)
+   0415 DE 00         [ 7]  564 	sbc	a, #0x00
+   0417 D2r34r00      [10]  565 	jp	NC,00163$
+                            566 ;browser.c:98: current_dir = br_rec.data_clsut;
+   041A 11rDCr00      [10]  567 	ld	de, #_br_rec + 220
+   041D 21 0B 00      [10]  568 	ld	hl, #0x000B
+   0420 39            [11]  569 	add	hl, sp
+   0421 EB            [ 4]  570 	ex	de, hl
+   0422 01 04 00      [10]  571 	ld	bc, #0x0004
+   0425 ED B0         [21]  572 	ldir
+                            573 ;browser.c:99: full_repaint = 2;
+   0427 DD 36 E6 02   [19]  574 	ld	-26 (ix),#0x02
+                            575 ;browser.c:100: sel_stack[sel_stack_ptr++] = selector;
+   042B DD 7E EB      [19]  576 	ld	a,-21 (ix)
+   042E DD 77 F3      [19]  577 	ld	-13 (ix),a
+   0431 DD 7E EC      [19]  578 	ld	a,-20 (ix)
+   0434 DD 77 F4      [19]  579 	ld	-12 (ix),a
+   0437 DD 34 EB      [23]  580 	inc	-21 (ix)
+   043A 20 03         [12]  581 	jr	NZ,00282$
+   043C DD 34 EC      [23]  582 	inc	-20 (ix)
+   043F                     583 00282$:
+   043F DD 7E F3      [19]  584 	ld	a,-13 (ix)
+   0442 DD 77 F3      [19]  585 	ld	-13 (ix),a
+   0445 DD 7E F4      [19]  586 	ld	a,-12 (ix)
+   0448 DD 77 F4      [19]  587 	ld	-12 (ix),a
+   044B DD CB F3 26   [23]  588 	sla	-13 (ix)
+   044F DD CB F4 16   [23]  589 	rl	-12 (ix)
+   0453 3ErE5         [ 7]  590 	ld	a,#<(_sel_stack)
+   0455 DD 86 F3      [19]  591 	add	a, -13 (ix)
+   0458 DD 77 F3      [19]  592 	ld	-13 (ix),a
+   045B 3Es00         [ 7]  593 	ld	a,#>(_sel_stack)
+   045D DD 8E F4      [19]  594 	adc	a, -12 (ix)
+   0460 DD 77 F4      [19]  595 	ld	-12 (ix),a
+   0463 DD 6E F3      [19]  596 	ld	l,-13 (ix)
+   0466 DD 66 F4      [19]  597 	ld	h,-12 (ix)
+   0469 DD 7E E9      [19]  598 	ld	a,-23 (ix)
+   046C 77            [ 7]  599 	ld	(hl),a
+   046D 23            [ 6]  600 	inc	hl
+   046E DD 7E EA      [19]  601 	ld	a,-22 (ix)
+   0471 77            [ 7]  602 	ld	(hl),a
+                            603 ;browser.c:101: selector = 0;
+   0472 DD 36 E9 00   [19]  604 	ld	-23 (ix),#0x00
+   0476 DD 36 EA 00   [19]  605 	ld	-22 (ix),#0x00
+   047A C3r34r00      [10]  606 	jp	00163$
+   047D                     607 00142$:
+                            608 ;browser.c:103: full_repaint = 2;
+   047D DD 36 E6 02   [19]  609 	ld	-26 (ix),#0x02
+                            610 ;browser.c:104: resp = osFileMenu(&br_rec);
+   0481 21r00r00      [10]  611 	ld	hl,#_br_rec
+   0484 E5            [11]  612 	push	hl
+   0485 CDr00r00      [17]  613 	call	_osFileMenu
+   0488 F1            [10]  614 	pop	af
+                            615 ;browser.c:105: if (resp)return resp;
+   0489 DD 75 E4      [19]  616 	ld	-28 (ix), l
+   048C 7D            [ 4]  617 	ld	a, l
+   048D B7            [ 4]  618 	or	a, a
+   048E CAr34r00      [10]  619 	jp	Z,00163$
+   0491 DD 6E E4      [19]  620 	ld	l,-28 (ix)
+   0494 C3r4Fr05      [10]  621 	jp	00164$
+                            622 ;browser.c:108: continue;
+   0497                     623 00145$:
+                            624 ;browser.c:111: if ((joy & JOY_A) == JOY_A && sel_stack_ptr == 0) {
+   0497 3Ar00r00      [13]  625 	ld	a,(#_joy + 0)
+   049A E6 20         [ 7]  626 	and	a, #0x20
+   049C 67            [ 4]  627 	ld	h,a
+   049D 2E 00         [ 7]  628 	ld	l,#0x00
+   049F 7C            [ 4]  629 	ld	a,h
+   04A0 D6 20         [ 7]  630 	sub	a,#0x20
+   04A2 20 1F         [12]  631 	jr	NZ,00150$
+   04A4 B5            [ 4]  632 	or	a,l
+   04A5 20 1C         [12]  633 	jr	NZ,00150$
+   04A7 DD 7E EC      [19]  634 	ld	a,-20 (ix)
+   04AA DD B6 EB      [19]  635 	or	a,-21 (ix)
+   04AD 20 14         [12]  636 	jr	NZ,00150$
+                            637 ;browser.c:112: full_repaint = 2;
+   04AF DD 36 E6 02   [19]  638 	ld	-26 (ix),#0x02
+                            639 ;browser.c:113: resp = osExitBrowser();
+   04B3 CDr00r00      [17]  640 	call	_osExitBrowser
+                            641 ;browser.c:114: if (resp)return resp;
+   04B6 DD 75 E4      [19]  642 	ld	-28 (ix), l
+   04B9 7D            [ 4]  643 	ld	a, l
+   04BA B7            [ 4]  644 	or	a, a
+   04BB 28 06         [12]  645 	jr	Z,00150$
+   04BD DD 6E E4      [19]  646 	ld	l,-28 (ix)
+   04C0 C3r4Fr05      [10]  647 	jp	00164$
+   04C3                     648 00150$:
+                            649 ;browser.c:117: if ((joy & JOY_A) == JOY_A && sel_stack_ptr != 0) {
+   04C3 FD 21r00r00   [14]  650 	ld	iy,#_joy
+   04C7 FD 7E 00      [19]  651 	ld	a,0 (iy)
+   04CA E6 20         [ 7]  652 	and	a, #0x20
+   04CC 67            [ 4]  653 	ld	h,a
+   04CD 2E 00         [ 7]  654 	ld	l,#0x00
+   04CF 7C            [ 4]  655 	ld	a,h
+   04D0 D6 20         [ 7]  656 	sub	a,#0x20
+   04D2 20 40         [12]  657 	jr	NZ,00153$
+   04D4 B5            [ 4]  658 	or	a,l
+   04D5 20 3D         [12]  659 	jr	NZ,00153$
+   04D7 DD 7E EC      [19]  660 	ld	a,-20 (ix)
+   04DA DD B6 EB      [19]  661 	or	a,-21 (ix)
+   04DD 28 35         [12]  662 	jr	Z,00153$
+                            663 ;browser.c:119: current_dir = fat_sub_dir_clust;
+   04DF 21 0B 00      [10]  664 	ld	hl, #11
+   04E2 39            [11]  665 	add	hl, sp
+   04E3 EB            [ 4]  666 	ex	de, hl
+   04E4 21r00r00      [10]  667 	ld	hl, #_fat_sub_dir_clust
+   04E7 01 04 00      [10]  668 	ld	bc, #4
+   04EA ED B0         [21]  669 	ldir
+                            670 ;browser.c:120: full_repaint = 2;
+   04EC DD 36 E6 02   [19]  671 	ld	-26 (ix),#0x02
+                            672 ;browser.c:121: selector = sel_stack[--sel_stack_ptr];
+   04F0 DD 6E EB      [19]  673 	ld	l,-21 (ix)
+   04F3 DD 66 EC      [19]  674 	ld	h,-20 (ix)
+   04F6 2B            [ 6]  675 	dec	hl
+   04F7 DD 75 EB      [19]  676 	ld	-21 (ix),l
+   04FA DD 74 EC      [19]  677 	ld	-20 (ix),h
+   04FD DD 6E EB      [19]  678 	ld	l,-21 (ix)
+   0500 DD 66 EC      [19]  679 	ld	h,-20 (ix)
+   0503 29            [11]  680 	add	hl, hl
+   0504 11rE5r00      [10]  681 	ld	de,#_sel_stack
+   0507 19            [11]  682 	add	hl,de
+   0508 7E            [ 7]  683 	ld	a,(hl)
+   0509 DD 77 E9      [19]  684 	ld	-23 (ix),a
+   050C 23            [ 6]  685 	inc	hl
+   050D 7E            [ 7]  686 	ld	a,(hl)
+   050E DD 77 EA      [19]  687 	ld	-22 (ix),a
+                            688 ;browser.c:122: continue;
+   0511 C3r34r00      [10]  689 	jp	00163$
+   0514                     690 00153$:
+                            691 ;browser.c:129: if ((joy & JOY_SEL) == JOY_SEL) {
+   0514 21r00r00      [10]  692 	ld	hl,#_joy + 0
+   0517 66            [ 7]  693 	ld	h, (hl)
+   0518 CB 84         [ 8]  694 	res	0, h
+   051A 2E 00         [ 7]  695 	ld	l,#0x00
+   051C 7C            [ 4]  696 	ld	a,h
+   051D D6 FE         [ 7]  697 	sub	a,#0xFE
+   051F 20 19         [12]  698 	jr	NZ,00158$
+   0521 B5            [ 4]  699 	or	a,l
+   0522 20 16         [12]  700 	jr	NZ,00158$
+                            701 ;browser.c:130: resp = osMainMenu();
+   0524 CDr00r00      [17]  702 	call	_osMainMenu
+                            703 ;browser.c:131: if (resp)return resp;
+   0527 DD 75 E4      [19]  704 	ld	-28 (ix), l
+   052A 7D            [ 4]  705 	ld	a, l
+   052B B7            [ 4]  706 	or	a, a
+   052C 28 05         [12]  707 	jr	Z,00156$
+   052E DD 6E E4      [19]  708 	ld	l,-28 (ix)
+   0531 18 1C         [12]  709 	jr	00164$
+   0533                     710 00156$:
+                            711 ;browser.c:132: full_repaint = 2;
+   0533 DD 36 E6 02   [19]  712 	ld	-26 (ix),#0x02
+                            713 ;browser.c:133: continue;
+   0537 C3r34r00      [10]  714 	jp	00163$
+   053A                     715 00158$:
+                            716 ;browser.c:138: if ((joy & JOY_STA) == JOY_STA) {
+   053A 21r00r00      [10]  717 	ld	hl,#_joy + 0
+   053D 66            [ 7]  718 	ld	h, (hl)
+   053E 2E 00         [ 7]  719 	ld	l,#0x00
+   0540 24            [ 4]  720 	inc	h
+   0541 C2r34r00      [10]  721 	jp	NZ,00163$
+   0544 7D            [ 4]  722 	ld	a,l
+   0545 B7            [ 4]  723 	or	a, a
+   0546 C2r34r00      [10]  724 	jp	NZ,00163$
+                            725 ;browser.c:139: resp = osStartGame();
+   0549 CDr00r00      [17]  726 	call	_osStartGame
+                            727 ;browser.c:140: return resp;
+   054C DD 75 E4      [19]  728 	ld	-28 (ix), l
+   054F                     729 00164$:
+   054F DD F9         [10]  730 	ld	sp,ix
+   0551 DD E1         [14]  731 	pop	ix
+   0553 C9            [10]  732 	ret
+   0554                     733 _browser_end::
+                            734 	.area _CODE
+                            735 	.area _INITIALIZER
+                            736 	.area _CABS (ABS)

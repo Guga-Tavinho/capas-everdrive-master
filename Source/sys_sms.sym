@@ -1,0 +1,66 @@
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 1.
+
+Symbol Table
+
+    .__.$$$.                                                    =  2710 L
+    .__.ABS.                                                    =  0000 G
+    .__.CPU.                                                    =  0000 L
+    .__.H$L.                                                    =  0000 L
+    __divulong_rrx_s                                               **** GX
+    __modulong_rrx_s                                               **** GX
+  0 __str_0                                                        031C R
+    _gAppendChar                                                   **** GX
+  0 _gAppendHex16                                                  0138 GR
+  0 _gAppendHex16SW                                                015B GR
+  0 _gAppendHex16SW_end                                            017E GR
+  0 _gAppendHex16SW_start                                          015B GR
+  0 _gAppendHex16_end                                              015B GR
+  0 _gAppendHex16_start                                            0138 GR
+  0 _gAppendHex32                                                  017E GR
+  0 _gAppendHex32_end                                              01B3 GR
+  0 _gAppendHex32_start                                            017E GR
+  0 _gAppendHex8                                                   00E8 GR
+  0 _gAppendHex8_end                                               0138 GR
+  0 _gAppendHex8_start                                             00E8 GR
+  0 _gAppendNum                                                    005A GR
+  0 _gAppendNum_end                                                00E8 GR
+  0 _gAppendNum_start                                              005A GR
+    _gAppendString                                                 **** GX
+    _gAppendStringMl                                               **** GX
+  0 _gDrawCursor                                                   02D2 GR
+  1 _gDrawCursor_cursor_strobe_1_75                                0000 R
+  0 _gDrawCursor_end                                               031C GR
+  0 _gDrawCursor_start                                             02D2 GR
+  0 _gDrawNum                                                      01DB GR
+  0 _gDrawNum_end                                                  0207 GR
+  0 _gDrawNum_start                                                01DB GR
+  0 _gDrawString                                                   0000 GR
+  0 _gDrawStringCx                                                 001C GR
+  0 _gDrawStringCx_end                                             005A GR
+  0 _gDrawStringCx_start                                           001C GR
+  0 _gDrawStringMl                                                 01B3 GR
+  0 _gDrawStringMl_end                                             01DB GR
+  0 _gDrawStringMl_start                                           01B3 GR
+  0 _gDrawString_end                                               001C GR
+  0 _gDrawString_start                                             0000 GR
+    _gScreenW                                                      **** GX
+    _gSetXY                                                        **** GX
+  0 _sysDrawFileSize                                               0207 GR
+  0 _sysDrawFileSize_end                                           02D2 GR
+  0 _sysDrawFileSize_start                                         0207 GR
+
+
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
+
+Area Table
+
+   0 _CODE                                      size  31E   flags    0
+   1 _DATA                                      size    2   flags    0
+   2 _INITIALIZED                               size    0   flags    0
+   3 _DABS                                      size    0   flags    8
+   4 _HOME                                      size    0   flags    0
+   5 _GSINIT                                    size    0   flags    0
+   6 _GSFINAL                                   size    0   flags    0
+   7 _INITIALIZER                               size    0   flags    0
+   8 _CABS                                      size    0   flags    8
+

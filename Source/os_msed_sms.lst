@@ -1,0 +1,3267 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.3.0 #8604 (May 11 2013) (MINGW64)
+                              4 ; This file was generated Wed Jun 10 08:26:43 2026
+                              5 ;--------------------------------------------------------
+                              6 	.module os_msed
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl __osLoadSram
+                             13 	.globl __osSaveSram
+                             14 	.globl _osSetRomCfg
+                             15 	.globl _g_set_vdp_reg
+                             16 	.globl _osRomMenu
+                             17 	.globl _osUsbListene2r
+                             18 	.globl _bi_install_os
+                             19 	.globl _bi_set_ram_bank
+                             20 	.globl _bi_set_rom_bank
+                             21 	.globl _str_copy
+                             22 	.globl _str_extension_list
+                             23 	.globl _str_extension
+                             24 	.globl _str_cmp_len
+                             25 	.globl _diskInit
+                             26 	.globl _bi_is_gg_cart
+                             27 	.globl _bi_usb_wr_byte
+                             28 	.globl _bi_usb_rd_byte
+                             29 	.globl _bi_usb_rd_busy
+                             30 	.globl _bi_usb_to_rom
+                             31 	.globl _bi_start_game
+                             32 	.globl _bi_flash_erase
+                             33 	.globl _bi_get_cpld_ver
+                             34 	.globl _bi_init
+                             35 	.globl _guiHexView
+                             36 	.globl _guiDrawMenu
+                             37 	.globl _guiPrintError
+                             38 	.globl _gAppendChar
+                             39 	.globl _gAppendNum
+                             40 	.globl _gDrawStringCx
+                             41 	.globl _gSetXY
+                             42 	.globl _gDrawString
+                             43 	.globl _gConsPrint
+                             44 	.globl _gAppendString
+                             45 	.globl _gCleanScreen
+                             46 	.globl _gRepaint
+                             47 	.globl _gSetFont
+                             48 	.globl _sysJoyWait
+                             49 	.globl _gSetSGpal
+                             50 	.globl _sysInit
+                             51 	.globl _gSetPal
+                             52 	.globl _fat_make_dir
+                             53 	.globl _fat_write_file
+                             54 	.globl _fat_open_file_by_name
+                             55 	.globl _fat_make_sync_name
+                             56 	.globl _fat_read
+                             57 	.globl _fat_skip_sectors
+                             58 	.globl _fat_open_file
+                             59 	.globl _fat_init
+                             60 	.globl _rom_inf
+                             61 	.globl _usb_to_rom_code
+                             62 	.globl _spi_to_rom_code
+                             63 	.globl _flash_erase_code
+                             64 	.globl _os_ram
+                             65 	.globl _ram_ptr
+                             66 	.globl _bi_card_type
+                             67 	.globl _joy
+                             68 	.globl _cart_3e
+                             69 	.globl _osInit
+                             70 	.globl _osUsbListener
+                             71 	.globl _osFileMenu
+                             72 	.globl _osMallocRam
+                             73 	.globl _osReleaseRam
+                             74 	.globl _osMainMenu
+                             75 	.globl _osExitBrowser
+                             76 	.globl _osGetDate
+                             77 	.globl _osGetTime
+                             78 	.globl _osSysInfo
+                             79 	.globl _osAbout
+                             80 	.globl _osStartGame
+                             81 	.globl _osSelectGame
+                             82 	.globl _osSaveSram
+                             83 	.globl _osLoadSram
+                             84 	.globl _osCLeanGameSram
+                             85 	.globl _osSaveRamMenu
+                             86 	.globl _osFileToSram
+                             87 	.globl _osSramToFile
+                             88 	.globl _osUpdateMenu
+                             89 	.globl _osUpdate
+                             90 	.globl _osSelectGameUsb
+                             91 	.globl _osUpdateUsb
+                             92 ;--------------------------------------------------------
+                             93 ; special function registers
+                             94 ;--------------------------------------------------------
+                             95 ;--------------------------------------------------------
+                             96 ; ram data
+                             97 ;--------------------------------------------------------
+                             98 	.area _DATA
+   0000                      99 _cart_3e::
+   0000                     100 	.ds 1
+   0001                     101 _joy::
+   0001                     102 	.ds 2
+   0003                     103 _bi_card_type::
+   0003                     104 	.ds 1
+   0004                     105 _ram_ptr::
+   0004                     106 	.ds 2
+   0006                     107 _os_ram::
+   0006                     108 	.ds 4096
+   1006                     109 _flash_erase_code::
+   1006                     110 	.ds 128
+   1086                     111 _spi_to_rom_code::
+   1086                     112 	.ds 128
+   1106                     113 _usb_to_rom_code::
+   1106                     114 	.ds 128
+   1186                     115 _rom_inf::
+   1186                     116 	.ds 2
+                            117 ;--------------------------------------------------------
+                            118 ; ram data
+                            119 ;--------------------------------------------------------
+                            120 	.area _INITIALIZED
+                            121 ;--------------------------------------------------------
+                            122 ; absolute external ram data
+                            123 ;--------------------------------------------------------
+                            124 	.area _DABS (ABS)
+                            125 ;--------------------------------------------------------
+                            126 ; global & static initialisations
+                            127 ;--------------------------------------------------------
+                            128 	.area _HOME
+                            129 	.area _GSINIT
+                            130 	.area _GSFINAL
+                            131 	.area _GSINIT
+                            132 ;--------------------------------------------------------
+                            133 ; Home
+                            134 ;--------------------------------------------------------
+                            135 	.area _HOME
+                            136 	.area _HOME
+                            137 ;--------------------------------------------------------
+                            138 ; code
+                            139 ;--------------------------------------------------------
+                            140 	.area _CODE
+                            141 ;os_msed.c:68: u8 osInit() {
+                            142 ;	---------------------------------
+                            143 ; Function osInit
+                            144 ; ---------------------------------
+   0000                     145 _osInit_start::
+   0000                     146 _osInit:
+   0000 DD E5         [15]  147 	push	ix
+   0002 DD 21 00 00   [14]  148 	ld	ix,#0
+   0006 DD 39         [15]  149 	add	ix,sp
+   0008 3B            [ 6]  150 	dec	sp
+                            151 ;os_msed.c:71: rom_inf = (RomInfo *) 0x8000;
+   0009 21r86r11      [10]  152 	ld	hl,#_rom_inf + 0
+   000C 36 00         [10]  153 	ld	(hl), #0x00
+   000E 21r87r11      [10]  154 	ld	hl,#_rom_inf + 1
+   0011 36 80         [10]  155 	ld	(hl), #0x80
+                            156 ;os_msed.c:74: bi_init();
+   0013 CDr00r00      [17]  157 	call	_bi_init
+                            158 ;os_msed.c:75: sysInit();
+   0016 CDr00r00      [17]  159 	call	_sysInit
+                            160 ;os_msed.c:77: ram_ptr = OS_RAM_SIZE;
+   0019 21r04r00      [10]  161 	ld	hl,#_ram_ptr + 0
+   001C 36 00         [10]  162 	ld	(hl), #0x00
+   001E 21r05r00      [10]  163 	ld	hl,#_ram_ptr + 1
+   0021 36 10         [10]  164 	ld	(hl), #0x10
+                            165 ;os_msed.c:79: gSetFont((u8 *) 0x8000 - 1024);
+   0023 21 00 7C      [10]  166 	ld	hl,#0x7C00
+   0026 E5            [11]  167 	push	hl
+   0027 CDr00r00      [17]  168 	call	_gSetFont
+   002A F1            [10]  169 	pop	af
+                            170 ;os_msed.c:81: gCleanScreen();
+   002B CDr00r00      [17]  171 	call	_gCleanScreen
+                            172 ;os_msed.c:82: gDrawStringCx("Sistema iniciando...", 12);
+   002E 11rD1r00      [10]  173 	ld	de,#__str_0
+   0031 3E 0C         [ 7]  174 	ld	a,#0x0C
+   0033 F5            [11]  175 	push	af
+   0034 33            [ 6]  176 	inc	sp
+   0035 D5            [11]  177 	push	de
+   0036 CDr00r00      [17]  178 	call	_gDrawStringCx
+   0039 F1            [10]  179 	pop	af
+   003A 33            [ 6]  180 	inc	sp
+                            181 ;os_msed.c:83: gRepaint();
+   003B CDr00r00      [17]  182 	call	_gRepaint
+                            183 ;os_msed.c:85: bi_set_ram_bank(1);
+   003E 3E 01         [ 7]  184 	ld	a,#0x01
+   0040 F5            [11]  185 	push	af
+   0041 33            [ 6]  186 	inc	sp
+   0042 CDr00r00      [17]  187 	call	_bi_set_ram_bank
+   0045 33            [ 6]  188 	inc	sp
+                            189 ;os_msed.c:86: if (rom_inf->crc != 0xaa55) {
+   0046 ED 5Br86r11   [20]  190 	ld	de,(_rom_inf)
+   004A 6B            [ 4]  191 	ld	l, e
+   004B 62            [ 4]  192 	ld	h, d
+   004C 01 01 02      [10]  193 	ld	bc, #0x0201
+   004F 09            [11]  194 	add	hl, bc
+   0050 46            [ 7]  195 	ld	b,(hl)
+   0051 23            [ 6]  196 	inc	hl
+   0052 66            [ 7]  197 	ld	h,(hl)
+   0053 78            [ 4]  198 	ld	a,b
+   0054 D6 55         [ 7]  199 	sub	a, #0x55
+   0056 20 05         [12]  200 	jr	NZ,00118$
+   0058 7C            [ 4]  201 	ld	a,h
+   0059 D6 AA         [ 7]  202 	sub	a, #0xAA
+   005B 28 48         [12]  203 	jr	Z,00102$
+   005D                     204 00118$:
+                            205 ;os_msed.c:88: rom_inf->run_cfg = 0;
+   005D 21 00 02      [10]  206 	ld	hl,#0x0200
+   0060 19            [11]  207 	add	hl,de
+   0061 36 00         [10]  208 	ld	(hl),#0x00
+                            209 ;os_msed.c:89: rom_inf->crc = 0xaa55;
+   0063 2Ar86r11      [16]  210 	ld	hl,(_rom_inf)
+   0066 01 01 02      [10]  211 	ld	bc,#0x0201
+   0069 09            [11]  212 	add	hl,bc
+   006A 36 55         [10]  213 	ld	(hl),#0x55
+   006C 23            [ 6]  214 	inc	hl
+   006D 36 AA         [10]  215 	ld	(hl),#0xAA
+                            216 ;os_msed.c:90: rom_inf->file_name[0] = 0;
+   006F 2Ar86r11      [16]  217 	ld	hl,(_rom_inf)
+   0072 36 00         [10]  218 	ld	(hl),#0x00
+                            219 ;os_msed.c:91: osCLeanGameSram();
+   0074 CDr04r0E      [17]  220 	call	_osCLeanGameSram
+                            221 ;os_msed.c:93: gCleanScreen();
+   0077 CDr00r00      [17]  222 	call	_gCleanScreen
+                            223 ;os_msed.c:94: gDrawStringCx("Settings reset to default", 10);
+   007A 11rE6r00      [10]  224 	ld	de,#__str_1
+   007D 3E 0A         [ 7]  225 	ld	a,#0x0A
+   007F F5            [11]  226 	push	af
+   0080 33            [ 6]  227 	inc	sp
+   0081 D5            [11]  228 	push	de
+   0082 CDr00r00      [17]  229 	call	_gDrawStringCx
+   0085 F1            [10]  230 	pop	af
+   0086 33            [ 6]  231 	inc	sp
+                            232 ;os_msed.c:95: gDrawStringCx("Press any key", 12);
+   0087 11r00r01      [10]  233 	ld	de,#__str_2
+   008A 3E 0C         [ 7]  234 	ld	a,#0x0C
+   008C F5            [11]  235 	push	af
+   008D 33            [ 6]  236 	inc	sp
+   008E D5            [11]  237 	push	de
+   008F CDr00r00      [17]  238 	call	_gDrawStringCx
+   0092 F1            [10]  239 	pop	af
+   0093 33            [ 6]  240 	inc	sp
+                            241 ;os_msed.c:96: gRepaint();
+   0094 CDr00r00      [17]  242 	call	_gRepaint
+                            243 ;os_msed.c:97: sysJoyWait();
+   0097 CDr00r00      [17]  244 	call	_sysJoyWait
+                            245 ;os_msed.c:98: gCleanScreen();
+   009A CDr00r00      [17]  246 	call	_gCleanScreen
+                            247 ;os_msed.c:99: gSetXY(0, 0);
+   009D 21 00 00      [10]  248 	ld	hl,#0x0000
+   00A0 E5            [11]  249 	push	hl
+   00A1 CDr00r00      [17]  250 	call	_gSetXY
+   00A4 F1            [10]  251 	pop	af
+   00A5                     252 00102$:
+                            253 ;os_msed.c:101: bi_set_rom_bank(1);
+   00A5 3E 01         [ 7]  254 	ld	a,#0x01
+   00A7 F5            [11]  255 	push	af
+   00A8 33            [ 6]  256 	inc	sp
+   00A9 CDr00r00      [17]  257 	call	_bi_set_rom_bank
+   00AC 33            [ 6]  258 	inc	sp
+                            259 ;os_msed.c:103: resp = diskInit();
+   00AD CDr00r00      [17]  260 	call	_diskInit
+                            261 ;os_msed.c:104: if (resp)return resp;
+   00B0 DD 75 FF      [19]  262 	ld	-1 (ix), l
+   00B3 7D            [ 4]  263 	ld	a, l
+   00B4 B7            [ 4]  264 	or	a, a
+   00B5 28 05         [12]  265 	jr	Z,00104$
+   00B7 DD 6E FF      [19]  266 	ld	l,-1 (ix)
+   00BA 18 11         [12]  267 	jr	00107$
+   00BC                     268 00104$:
+                            269 ;os_msed.c:106: resp = fat_init();
+   00BC CDr00r00      [17]  270 	call	_fat_init
+                            271 ;os_msed.c:107: if (resp)return resp;
+   00BF DD 75 FF      [19]  272 	ld	-1 (ix), l
+   00C2 7D            [ 4]  273 	ld	a, l
+   00C3 B7            [ 4]  274 	or	a, a
+   00C4 28 05         [12]  275 	jr	Z,00106$
+   00C6 DD 6E FF      [19]  276 	ld	l,-1 (ix)
+   00C9 18 02         [12]  277 	jr	00107$
+   00CB                     278 00106$:
+                            279 ;os_msed.c:109: return 0;
+   00CB 2E 00         [ 7]  280 	ld	l,#0x00
+   00CD                     281 00107$:
+   00CD 33            [ 6]  282 	inc	sp
+   00CE DD E1         [14]  283 	pop	ix
+   00D0 C9            [10]  284 	ret
+   00D1                     285 _osInit_end::
+   00D1                     286 __str_0:
+   00D1 53 69 73 74 65 6D   287 	.ascii "Sistema iniciando..."
+        61 20 69 6E 69 63
+        69 61 6E 64 6F 2E
+        2E 2E
+   00E5 00                  288 	.db 0x00
+   00E6                     289 __str_1:
+   00E6 53 65 74 74 69 6E   290 	.ascii "Settings reset to default"
+        67 73 20 72 65 73
+        65 74 20 74 6F 20
+        64 65 66 61 75 6C
+        74
+   00FF 00                  291 	.db 0x00
+   0100                     292 __str_2:
+   0100 50 72 65 73 73 20   293 	.ascii "Press any key"
+        61 6E 79 20 6B 65
+        79
+   010D 00                  294 	.db 0x00
+                            295 ;os_msed.c:112: u8 osUsbListene2r() {
+                            296 ;	---------------------------------
+                            297 ; Function osUsbListene2r
+                            298 ; ---------------------------------
+   010E                     299 _osUsbListene2r_start::
+   010E                     300 _osUsbListene2r:
+                            301 ;os_msed.c:113: return 0;
+   010E 2E 00         [ 7]  302 	ld	l,#0x00
+   0110 C9            [10]  303 	ret
+   0111                     304 _osUsbListene2r_end::
+                            305 ;os_msed.c:116: void osUsbListener() {
+                            306 ;	---------------------------------
+                            307 ; Function osUsbListener
+                            308 ; ---------------------------------
+   0111                     309 _osUsbListener_start::
+   0111                     310 _osUsbListener:
+   0111 3B            [ 6]  311 	dec	sp
+                            312 ;os_msed.c:122: if (bi_usb_rd_busy())return;
+   0112 CDr00r00      [17]  313 	call	_bi_usb_rd_busy
+   0115 7D            [ 4]  314 	ld	a,l
+   0116 B7            [ 4]  315 	or	a, a
+   0117 20 4B         [12]  316 	jr	NZ,00111$
+                            317 ;os_msed.c:125: cmd = bi_usb_rd_byte();
+   0119 CDr00r00      [17]  318 	call	_bi_usb_rd_byte
+   011C FD 21 00 00   [14]  319 	ld	iy,#0
+   0120 FD 39         [15]  320 	add	iy,sp
+   0122 FD 75 00      [19]  321 	ld	0 (iy),l
+                            322 ;os_msed.c:126: if (cmd != (u8) '+')return;
+   0125 FD 7E 00      [19]  323 	ld	a,0 (iy)
+   0128 D6 2B         [ 7]  324 	sub	a, #0x2B
+   012A 20 38         [12]  325 	jr	NZ,00111$
+                            326 ;os_msed.c:128: cmd = bi_usb_rd_byte();
+   012C CDr00r00      [17]  327 	call	_bi_usb_rd_byte
+   012F FD 21 00 00   [14]  328 	ld	iy,#0
+   0133 FD 39         [15]  329 	add	iy,sp
+   0135 FD 75 00      [19]  330 	ld	0 (iy),l
+                            331 ;os_msed.c:130: switch (cmd) {
+   0138 FD 7E 00      [19]  332 	ld	a, 0 (iy)
+   013B FE 66         [ 7]  333 	cp	a,#0x66
+   013D 28 25         [12]  334 	jr	Z,00111$
+   013F FE 67         [ 7]  335 	cp	a,#0x67
+   0141 28 16         [12]  336 	jr	Z,00106$
+   0143 FE 6F         [ 7]  337 	cp	a,#0x6F
+   0145 28 1A         [12]  338 	jr	Z,00107$
+   0147 FE 73         [ 7]  339 	cp	a,#0x73
+   0149 28 19         [12]  340 	jr	Z,00111$
+   014B D6 74         [ 7]  341 	sub	a, #0x74
+   014D 20 15         [12]  342 	jr	NZ,00111$
+                            343 ;os_msed.c:133: bi_usb_wr_byte((u8) 'k');
+   014F 3E 6B         [ 7]  344 	ld	a,#0x6B
+   0151 F5            [11]  345 	push	af
+   0152 33            [ 6]  346 	inc	sp
+   0153 CDr00r00      [17]  347 	call	_bi_usb_wr_byte
+   0156 33            [ 6]  348 	inc	sp
+                            349 ;os_msed.c:134: break;
+   0157 18 0B         [12]  350 	jr	00111$
+                            351 ;os_msed.c:135: case 'g':
+   0159                     352 00106$:
+                            353 ;os_msed.c:136: osSelectGameUsb();
+   0159 CDr2Fr12      [17]  354 	call	_osSelectGameUsb
+                            355 ;os_msed.c:137: osStartGame();
+   015C CDrD2r07      [17]  356 	call	_osStartGame
+                            357 ;os_msed.c:138: break;
+   015F 18 03         [12]  358 	jr	00111$
+                            359 ;os_msed.c:139: case 'o':
+   0161                     360 00107$:
+                            361 ;os_msed.c:141: osUpdateUsb();
+   0161 CDr75r13      [17]  362 	call	_osUpdateUsb
+                            363 ;os_msed.c:151: }
+   0164                     364 00111$:
+   0164 33            [ 6]  365 	inc	sp
+   0165 C9            [10]  366 	ret
+   0166                     367 _osUsbListener_end::
+                            368 ;os_msed.c:155: u8 osRomMenu(FatFullRecord *rec) {
+                            369 ;	---------------------------------
+                            370 ; Function osRomMenu
+                            371 ; ---------------------------------
+   0166                     372 _osRomMenu_start::
+   0166                     373 _osRomMenu:
+   0166 DD E5         [15]  374 	push	ix
+   0168 DD 21 00 00   [14]  375 	ld	ix,#0
+   016C DD 39         [15]  376 	add	ix,sp
+   016E 21 F6 FF      [10]  377 	ld	hl,#-10
+   0171 39            [11]  378 	add	hl,sp
+   0172 F9            [ 6]  379 	ld	sp,hl
+                            380 ;os_msed.c:158: const u8 * rom_menu_str[] = {
+   0173 21 00 00      [10]  381 	ld	hl,#0x0000
+   0176 39            [11]  382 	add	hl,sp
+   0177 5D            [ 4]  383 	ld	e,l
+   0178 54            [ 4]  384 	ld	d,h
+   0179 36r12         [10]  385 	ld	(hl),#<(__str_3)
+   017B 23            [ 6]  386 	inc	hl
+   017C 36s02         [10]  387 	ld	(hl),#>(__str_3)
+   017E D5            [11]  388 	push	de
+   017F FD E1         [14]  389 	pop	iy
+   0181 FD 23         [10]  390 	inc	iy
+   0183 FD 23         [10]  391 	inc	iy
+   0185 FD 36 00r23   [19]  392 	ld	0 (iy),#<(__str_4)
+   0189 FD 36 01s02   [19]  393 	ld	1 (iy),#>(__str_4)
+   018D FD 21 04 00   [14]  394 	ld	iy,#0x0004
+   0191 FD 19         [15]  395 	add	iy, de
+   0193 FD 36 00r36   [19]  396 	ld	0 (iy),#<(__str_5)
+   0197 FD 36 01s02   [19]  397 	ld	1 (iy),#>(__str_5)
+   019B FD 21 06 00   [14]  398 	ld	iy,#0x0006
+   019F FD 19         [15]  399 	add	iy, de
+   01A1 FD 36 00r46   [19]  400 	ld	0 (iy),#<(__str_6)
+   01A5 FD 36 01s02   [19]  401 	ld	1 (iy),#>(__str_6)
+   01A9 21 08 00      [10]  402 	ld	hl,#0x0008
+   01AC 19            [11]  403 	add	hl,de
+   01AD AF            [ 4]  404 	xor	a, a
+   01AE 77            [ 7]  405 	ld	(hl), a
+   01AF 23            [ 6]  406 	inc	hl
+   01B0 77            [ 7]  407 	ld	(hl), a
+                            408 ;os_msed.c:162: resp = guiDrawMenu(rom_menu_str, 0);
+   01B1 C5            [11]  409 	push	bc
+   01B2 21 00 00      [10]  410 	ld	hl,#0x0000
+   01B5 E5            [11]  411 	push	hl
+   01B6 D5            [11]  412 	push	de
+   01B7 CDr00r00      [17]  413 	call	_guiDrawMenu
+   01BA F1            [10]  414 	pop	af
+   01BB F1            [10]  415 	pop	af
+   01BC C1            [10]  416 	pop	bc
+   01BD 4D            [ 4]  417 	ld	c,l
+                            418 ;os_msed.c:164: if (resp == 0) {
+   01BE 79            [ 4]  419 	ld	a,c
+   01BF B7            [ 4]  420 	or	a, a
+   01C0 20 22         [12]  421 	jr	NZ,00111$
+                            422 ;os_msed.c:165: resp = osSelectGame(rec);
+   01C2 C5            [11]  423 	push	bc
+   01C3 DD 6E 04      [19]  424 	ld	l,4 (ix)
+   01C6 DD 66 05      [19]  425 	ld	h,5 (ix)
+   01C9 E5            [11]  426 	push	hl
+   01CA CDr57r09      [17]  427 	call	_osSelectGame
+   01CD F1            [10]  428 	pop	af
+   01CE C1            [10]  429 	pop	bc
+   01CF 4D            [ 4]  430 	ld	c,l
+                            431 ;os_msed.c:166: if (resp)return resp;
+   01D0 79            [ 4]  432 	ld	a,c
+   01D1 B7            [ 4]  433 	or	a, a
+   01D2 28 03         [12]  434 	jr	Z,00102$
+   01D4 69            [ 4]  435 	ld	l,c
+   01D5 18 36         [12]  436 	jr	00113$
+   01D7                     437 00102$:
+                            438 ;os_msed.c:167: resp = osStartGame();
+   01D7 C5            [11]  439 	push	bc
+   01D8 CDrD2r07      [17]  440 	call	_osStartGame
+   01DB C1            [10]  441 	pop	bc
+   01DC 4D            [ 4]  442 	ld	c,l
+                            443 ;os_msed.c:168: if (resp)return resp;
+   01DD 79            [ 4]  444 	ld	a,c
+   01DE B7            [ 4]  445 	or	a, a
+   01DF 28 2A         [12]  446 	jr	Z,00112$
+   01E1 69            [ 4]  447 	ld	l,c
+   01E2 18 29         [12]  448 	jr	00113$
+   01E4                     449 00111$:
+                            450 ;os_msed.c:169: } else if (resp == 1) {
+   01E4 79            [ 4]  451 	ld	a,c
+   01E5 3D            [ 4]  452 	dec	a
+   01E6 20 0F         [12]  453 	jr	NZ,00108$
+                            454 ;os_msed.c:170: resp = osSelectGame(rec);
+   01E8 C5            [11]  455 	push	bc
+   01E9 DD 6E 04      [19]  456 	ld	l,4 (ix)
+   01EC DD 66 05      [19]  457 	ld	h,5 (ix)
+   01EF E5            [11]  458 	push	hl
+   01F0 CDr57r09      [17]  459 	call	_osSelectGame
+   01F3 F1            [10]  460 	pop	af
+   01F4 C1            [10]  461 	pop	bc
+                            462 ;os_msed.c:171: return resp;
+   01F5 18 16         [12]  463 	jr	00113$
+   01F7                     464 00108$:
+                            465 ;os_msed.c:172: } else if (resp == 2) {
+   01F7 79            [ 4]  466 	ld	a,c
+   01F8 D6 02         [ 7]  467 	sub	a, #0x02
+   01FA 20 0F         [12]  468 	jr	NZ,00112$
+                            469 ;os_msed.c:173: resp = guiHexView(rec);
+   01FC C5            [11]  470 	push	bc
+   01FD DD 6E 04      [19]  471 	ld	l,4 (ix)
+   0200 DD 66 05      [19]  472 	ld	h,5 (ix)
+   0203 E5            [11]  473 	push	hl
+   0204 CDr00r00      [17]  474 	call	_guiHexView
+   0207 F1            [10]  475 	pop	af
+   0208 C1            [10]  476 	pop	bc
+                            477 ;os_msed.c:174: return resp;
+   0209 18 02         [12]  478 	jr	00113$
+   020B                     479 00112$:
+                            480 ;os_msed.c:178: return 0;
+   020B 2E 00         [ 7]  481 	ld	l,#0x00
+   020D                     482 00113$:
+   020D DD F9         [10]  483 	ld	sp,ix
+   020F DD E1         [14]  484 	pop	ix
+   0211 C9            [10]  485 	ret
+   0212                     486 _osRomMenu_end::
+   0212                     487 __str_3:
+   0212 4D 65 6E 75 20 64   488 	.ascii "Menu de arquivos"
+        65 20 61 72 71 75
+        69 76 6F 73
+   0222 00                  489 	.db 0x00
+   0223                     490 __str_4:
+   0223 43 61 72 72 65 67   491 	.ascii "Carregar e iniciar"
+        61 72 20 65 20 69
+        6E 69 63 69 61 72
+   0235 00                  492 	.db 0x00
+   0236                     493 __str_5:
+   0236 41 70 65 6E 61 73   494 	.ascii "Apenas carregar"
+        20 63 61 72 72 65
+        67 61 72
+   0245 00                  495 	.db 0x00
+   0246                     496 __str_6:
+   0246 56 69 73 75 61 6C   497 	.ascii "Visualizacao hexadecimal"
+        69 7A 61 63 61 6F
+        20 68 65 78 61 64
+        65 63 69 6D 61 6C
+   025E 00                  498 	.db 0x00
+                            499 ;os_msed.c:181: u8 osFileMenu(FatFullRecord *rec) {
+                            500 ;	---------------------------------
+                            501 ; Function osFileMenu
+                            502 ; ---------------------------------
+   025F                     503 _osFileMenu_start::
+   025F                     504 _osFileMenu:
+   025F DD E5         [15]  505 	push	ix
+   0261 DD 21 00 00   [14]  506 	ld	ix,#0
+   0265 DD 39         [15]  507 	add	ix,sp
+   0267 21 EE FF      [10]  508 	ld	hl,#-18
+   026A 39            [11]  509 	add	hl,sp
+   026B F9            [ 6]  510 	ld	sp,hl
+                            511 ;os_msed.c:184: const u8 * zip_list[] = {"zip", "rar", "7z", "7z ", 0};
+   026C 21 06 00      [10]  512 	ld	hl,#0x0006
+   026F 39            [11]  513 	add	hl,sp
+   0270 4D            [ 4]  514 	ld	c,l
+   0271 44            [ 4]  515 	ld	b,h
+   0272 36r4A         [10]  516 	ld	(hl),#<(__str_7)
+   0274 23            [ 6]  517 	inc	hl
+   0275 36s03         [10]  518 	ld	(hl),#>(__str_7)
+   0277 69            [ 4]  519 	ld	l, c
+   0278 60            [ 4]  520 	ld	h, b
+   0279 23            [ 6]  521 	inc	hl
+   027A 23            [ 6]  522 	inc	hl
+   027B 11r4Er03      [10]  523 	ld	de,#__str_8
+   027E 73            [ 7]  524 	ld	(hl),e
+   027F 23            [ 6]  525 	inc	hl
+   0280 72            [ 7]  526 	ld	(hl),d
+   0281 21 04 00      [10]  527 	ld	hl,#0x0004
+   0284 09            [11]  528 	add	hl,bc
+   0285 11r52r03      [10]  529 	ld	de,#__str_9
+   0288 73            [ 7]  530 	ld	(hl),e
+   0289 23            [ 6]  531 	inc	hl
+   028A 72            [ 7]  532 	ld	(hl),d
+   028B 21 06 00      [10]  533 	ld	hl,#0x0006
+   028E 09            [11]  534 	add	hl,bc
+   028F 11r55r03      [10]  535 	ld	de,#__str_10
+   0292 73            [ 7]  536 	ld	(hl),e
+   0293 23            [ 6]  537 	inc	hl
+   0294 72            [ 7]  538 	ld	(hl),d
+   0295 21 08 00      [10]  539 	ld	hl,#0x0008
+   0298 09            [11]  540 	add	hl,bc
+   0299 AF            [ 4]  541 	xor	a, a
+   029A 77            [ 7]  542 	ld	(hl), a
+   029B 23            [ 6]  543 	inc	hl
+   029C 77            [ 7]  544 	ld	(hl), a
+                            545 ;os_msed.c:185: const u8 * zip_menu_str[] = {
+   029D 21 00 00      [10]  546 	ld	hl,#0x0000
+   02A0 39            [11]  547 	add	hl,sp
+   02A1 DD 75 FE      [19]  548 	ld	-2 (ix),l
+   02A4 DD 74 FF      [19]  549 	ld	-1 (ix),h
+   02A7 DD 6E FE      [19]  550 	ld	l,-2 (ix)
+   02AA DD 66 FF      [19]  551 	ld	h,-1 (ix)
+   02AD 36r59         [10]  552 	ld	(hl),#<(__str_11)
+   02AF 23            [ 6]  553 	inc	hl
+   02B0 36s03         [10]  554 	ld	(hl),#>(__str_11)
+   02B2 DD 6E FE      [19]  555 	ld	l,-2 (ix)
+   02B5 DD 66 FF      [19]  556 	ld	h,-1 (ix)
+   02B8 23            [ 6]  557 	inc	hl
+   02B9 23            [ 6]  558 	inc	hl
+   02BA 11r63r03      [10]  559 	ld	de,#__str_12
+   02BD 73            [ 7]  560 	ld	(hl),e
+   02BE 23            [ 6]  561 	inc	hl
+   02BF 72            [ 7]  562 	ld	(hl),d
+   02C0 DD 7E FE      [19]  563 	ld	a,-2 (ix)
+   02C3 C6 04         [ 7]  564 	add	a, #0x04
+   02C5 6F            [ 4]  565 	ld	l,a
+   02C6 DD 7E FF      [19]  566 	ld	a,-1 (ix)
+   02C9 CE 00         [ 7]  567 	adc	a, #0x00
+   02CB 67            [ 4]  568 	ld	h,a
+   02CC AF            [ 4]  569 	xor	a, a
+   02CD 77            [ 7]  570 	ld	(hl), a
+   02CE 23            [ 6]  571 	inc	hl
+   02CF 77            [ 7]  572 	ld	(hl), a
+                            573 ;os_msed.c:190: if (str_extension(".mso", rec->name)) {
+   02D0 DD 5E 04      [19]  574 	ld	e,4 (ix)
+   02D3 DD 56 05      [19]  575 	ld	d,5 (ix)
+   02D6 21r7Dr03      [10]  576 	ld	hl,#__str_13
+   02D9 C5            [11]  577 	push	bc
+   02DA D5            [11]  578 	push	de
+   02DB D5            [11]  579 	push	de
+   02DC E5            [11]  580 	push	hl
+   02DD CDr00r00      [17]  581 	call	_str_extension
+   02E0 F1            [10]  582 	pop	af
+   02E1 F1            [10]  583 	pop	af
+   02E2 7D            [ 4]  584 	ld	a,l
+   02E3 D1            [10]  585 	pop	de
+   02E4 C1            [10]  586 	pop	bc
+   02E5 B7            [ 4]  587 	or	a, a
+   02E6 28 07         [12]  588 	jr	Z,00111$
+                            589 ;os_msed.c:191: return osUpdateMenu(rec);
+   02E8 D5            [11]  590 	push	de
+   02E9 CDr77r10      [17]  591 	call	_osUpdateMenu
+   02EC F1            [10]  592 	pop	af
+   02ED 18 56         [12]  593 	jr	00113$
+   02EF                     594 00111$:
+                            595 ;os_msed.c:192: } else if (str_extension(".txt", rec->name)) {
+   02EF 21r82r03      [10]  596 	ld	hl,#__str_14
+   02F2 C5            [11]  597 	push	bc
+   02F3 D5            [11]  598 	push	de
+   02F4 D5            [11]  599 	push	de
+   02F5 E5            [11]  600 	push	hl
+   02F6 CDr00r00      [17]  601 	call	_str_extension
+   02F9 F1            [10]  602 	pop	af
+   02FA F1            [10]  603 	pop	af
+   02FB 7D            [ 4]  604 	ld	a,l
+   02FC D1            [10]  605 	pop	de
+   02FD C1            [10]  606 	pop	bc
+   02FE B7            [ 4]  607 	or	a, a
+   02FF 28 07         [12]  608 	jr	Z,00108$
+                            609 ;os_msed.c:193: return guiHexView(rec);
+   0301 D5            [11]  610 	push	de
+   0302 CDr00r00      [17]  611 	call	_guiHexView
+   0305 F1            [10]  612 	pop	af
+   0306 18 3D         [12]  613 	jr	00113$
+   0308                     614 00108$:
+                            615 ;os_msed.c:194: } else if (str_extension_list(zip_list, rec->name)) {
+   0308 D5            [11]  616 	push	de
+   0309 D5            [11]  617 	push	de
+   030A C5            [11]  618 	push	bc
+   030B CDr00r00      [17]  619 	call	_str_extension_list
+   030E F1            [10]  620 	pop	af
+   030F F1            [10]  621 	pop	af
+   0310 7D            [ 4]  622 	ld	a,l
+   0311 D1            [10]  623 	pop	de
+   0312 B7            [ 4]  624 	or	a, a
+   0313 28 14         [12]  625 	jr	Z,00105$
+                            626 ;os_msed.c:195: guiDrawMenu(zip_menu_str, 0);
+   0315 DD 6E FE      [19]  627 	ld	l,-2 (ix)
+   0318 DD 66 FF      [19]  628 	ld	h,-1 (ix)
+   031B 01 00 00      [10]  629 	ld	bc,#0x0000
+   031E C5            [11]  630 	push	bc
+   031F E5            [11]  631 	push	hl
+   0320 CDr00r00      [17]  632 	call	_guiDrawMenu
+   0323 F1            [10]  633 	pop	af
+   0324 F1            [10]  634 	pop	af
+                            635 ;os_msed.c:196: return 0;
+   0325 2E 00         [ 7]  636 	ld	l,#0x00
+   0327 18 1C         [12]  637 	jr	00113$
+   0329                     638 00105$:
+                            639 ;os_msed.c:197: } else if (str_extension(".srm", rec->name)) {
+   0329 21r87r03      [10]  640 	ld	hl,#__str_15
+   032C D5            [11]  641 	push	de
+   032D D5            [11]  642 	push	de
+   032E E5            [11]  643 	push	hl
+   032F CDr00r00      [17]  644 	call	_str_extension
+   0332 F1            [10]  645 	pop	af
+   0333 F1            [10]  646 	pop	af
+   0334 7D            [ 4]  647 	ld	a,l
+   0335 D1            [10]  648 	pop	de
+   0336 B7            [ 4]  649 	or	a, a
+   0337 28 07         [12]  650 	jr	Z,00102$
+                            651 ;os_msed.c:198: resp = osSaveRamMenu(rec);
+   0339 D5            [11]  652 	push	de
+   033A CDr22r0E      [17]  653 	call	_osSaveRamMenu
+   033D F1            [10]  654 	pop	af
+   033E 18 05         [12]  655 	jr	00109$
+   0340                     656 00102$:
+                            657 ;os_msed.c:200: resp = osRomMenu(rec);
+   0340 D5            [11]  658 	push	de
+   0341 CDr66r01      [17]  659 	call	_osRomMenu
+   0344 F1            [10]  660 	pop	af
+   0345                     661 00109$:
+                            662 ;os_msed.c:202: return resp;
+   0345                     663 00113$:
+   0345 DD F9         [10]  664 	ld	sp,ix
+   0347 DD E1         [14]  665 	pop	ix
+   0349 C9            [10]  666 	ret
+   034A                     667 _osFileMenu_end::
+   034A                     668 __str_7:
+   034A 7A 69 70            669 	.ascii "zip"
+   034D 00                  670 	.db 0x00
+   034E                     671 __str_8:
+   034E 72 61 72            672 	.ascii "rar"
+   0351 00                  673 	.db 0x00
+   0352                     674 __str_9:
+   0352 37 7A               675 	.ascii "7z"
+   0354 00                  676 	.db 0x00
+   0355                     677 __str_10:
+   0355 37 7A 20            678 	.ascii "7z "
+   0358 00                  679 	.db 0x00
+   0359                     680 __str_11:
+   0359 46 69 6C 65 20 4D   681 	.ascii "File Menu"
+        65 6E 75
+   0362 00                  682 	.db 0x00
+   0363                     683 __str_12:
+   0363 52 4F 4D 20 66 69   684 	.ascii "ROM file must be unzipped"
+        6C 65 20 6D 75 73
+        74 20 62 65 20 75
+        6E 7A 69 70 70 65
+        64
+   037C 00                  685 	.db 0x00
+   037D                     686 __str_13:
+   037D 2E 6D 73 6F         687 	.ascii ".mso"
+   0381 00                  688 	.db 0x00
+   0382                     689 __str_14:
+   0382 2E 74 78 74         690 	.ascii ".txt"
+   0386 00                  691 	.db 0x00
+   0387                     692 __str_15:
+   0387 2E 73 72 6D         693 	.ascii ".srm"
+   038B 00                  694 	.db 0x00
+                            695 ;os_msed.c:205: void *osMallocRam(u16 size) {
+                            696 ;	---------------------------------
+                            697 ; Function osMallocRam
+                            698 ; ---------------------------------
+   038C                     699 _osMallocRam_start::
+   038C                     700 _osMallocRam:
+                            701 ;os_msed.c:207: if (ram_ptr < size) {
+   038C 21 02 00      [10]  702 	ld	hl,#2
+   038F 39            [11]  703 	add	hl,sp
+   0390 3Ar04r00      [13]  704 	ld	a,(#_ram_ptr + 0)
+   0393 96            [ 7]  705 	sub	a, (hl)
+   0394 3Ar05r00      [13]  706 	ld	a,(#_ram_ptr + 1)
+   0397 23            [ 6]  707 	inc	hl
+   0398 9E            [ 7]  708 	sbc	a, (hl)
+   0399 30 0D         [12]  709 	jr	NC,00103$
+                            710 ;os_msed.c:208: guiPrintError(ERR_OUT_OF_RAM1);
+   039B 3E 35         [ 7]  711 	ld	a,#0x35
+   039D F5            [11]  712 	push	af
+   039E 33            [ 6]  713 	inc	sp
+   039F CDr00r00      [17]  714 	call	_guiPrintError
+   03A2 33            [ 6]  715 	inc	sp
+   03A3                     716 00104$:
+                            717 ;os_msed.c:209: for (;;)osUsbListener();
+   03A3 CDr11r01      [17]  718 	call	_osUsbListener
+   03A6 18 FB         [12]  719 	jr	00104$
+   03A8                     720 00103$:
+                            721 ;os_msed.c:212: ram_ptr -= size;
+   03A8 21 02 00      [10]  722 	ld	hl,#2
+   03AB 39            [11]  723 	add	hl,sp
+   03AC D5            [11]  724 	push	de
+   03AD FD 21r04r00   [14]  725 	ld	iy,#_ram_ptr
+   03B1 FD E5         [15]  726 	push	iy
+   03B3 D1            [10]  727 	pop	de
+   03B4 1A            [ 7]  728 	ld	a,(de)
+   03B5 96            [ 7]  729 	sub	a, (hl)
+   03B6 12            [ 7]  730 	ld	(de),a
+   03B7 13            [ 6]  731 	inc	de
+   03B8 1A            [ 7]  732 	ld	a,(de)
+   03B9 23            [ 6]  733 	inc	hl
+   03BA 9E            [ 7]  734 	sbc	a, (hl)
+   03BB 12            [ 7]  735 	ld	(de),a
+   03BC D1            [10]  736 	pop	de
+                            737 ;os_msed.c:213: return (void *) &os_ram[ram_ptr];
+   03BD 3Ar04r00      [13]  738 	ld	a,(#_ram_ptr + 0)
+   03C0 C6r06         [ 7]  739 	add	a, #<(_os_ram)
+   03C2 5F            [ 4]  740 	ld	e,a
+   03C3 3Ar05r00      [13]  741 	ld	a,(#_ram_ptr + 1)
+   03C6 CEs00         [ 7]  742 	adc	a, #>(_os_ram)
+   03C8 57            [ 4]  743 	ld	d,a
+   03C9 EB            [ 4]  744 	ex	de,hl
+   03CA C9            [10]  745 	ret
+   03CB                     746 _osMallocRam_end::
+                            747 ;os_msed.c:216: void osReleaseRam(u16 size) {
+                            748 ;	---------------------------------
+                            749 ; Function osReleaseRam
+                            750 ; ---------------------------------
+   03CB                     751 _osReleaseRam_start::
+   03CB                     752 _osReleaseRam:
+                            753 ;os_msed.c:218: ram_ptr += size;
+   03CB 21 02 00      [10]  754 	ld	hl,#2
+   03CE 39            [11]  755 	add	hl,sp
+   03CF D5            [11]  756 	push	de
+   03D0 FD 21r04r00   [14]  757 	ld	iy,#_ram_ptr
+   03D4 FD E5         [15]  758 	push	iy
+   03D6 D1            [10]  759 	pop	de
+   03D7 1A            [ 7]  760 	ld	a,(de)
+   03D8 86            [ 7]  761 	add	a, (hl)
+   03D9 12            [ 7]  762 	ld	(de),a
+   03DA 13            [ 6]  763 	inc	de
+   03DB 1A            [ 7]  764 	ld	a,(de)
+   03DC 23            [ 6]  765 	inc	hl
+   03DD 8E            [ 7]  766 	adc	a, (hl)
+   03DE 12            [ 7]  767 	ld	(de),a
+   03DF D1            [10]  768 	pop	de
+                            769 ;os_msed.c:219: if (ram_ptr > OS_RAM_SIZE) {
+   03E0 AF            [ 4]  770 	xor	a, a
+   03E1 FD 21r04r00   [14]  771 	ld	iy,#_ram_ptr
+   03E5 FD BE 00      [19]  772 	cp	a, 0 (iy)
+   03E8 3E 10         [ 7]  773 	ld	a,#0x10
+   03EA FD 21r04r00   [14]  774 	ld	iy,#_ram_ptr
+   03EE FD 9E 01      [19]  775 	sbc	a, 1 (iy)
+   03F1 D0            [11]  776 	ret	NC
+                            777 ;os_msed.c:220: guiPrintError(ERR_OUT_OF_RAM2);
+   03F2 3E 36         [ 7]  778 	ld	a,#0x36
+   03F4 F5            [11]  779 	push	af
+   03F5 33            [ 6]  780 	inc	sp
+   03F6 CDr00r00      [17]  781 	call	_guiPrintError
+   03F9 33            [ 6]  782 	inc	sp
+   03FA                     783 00104$:
+                            784 ;os_msed.c:221: for (;;)osUsbListener();
+   03FA CDr11r01      [17]  785 	call	_osUsbListener
+   03FD 18 FB         [12]  786 	jr	00104$
+   03FF C9            [10]  787 	ret
+   0400                     788 _osReleaseRam_end::
+                            789 ;os_msed.c:227: u8 osMainMenu() {
+                            790 ;	---------------------------------
+                            791 ; Function osMainMenu
+                            792 ; ---------------------------------
+   0400                     793 _osMainMenu_start::
+   0400                     794 _osMainMenu:
+   0400 DD E5         [15]  795 	push	ix
+   0402 DD 21 00 00   [14]  796 	ld	ix,#0
+   0406 DD 39         [15]  797 	add	ix,sp
+   0408 21 F4 FF      [10]  798 	ld	hl,#-12
+   040B 39            [11]  799 	add	hl,sp
+   040C F9            [ 6]  800 	ld	sp,hl
+                            801 ;os_msed.c:230: const u8 * menu_str[] = {
+   040D 21 00 00      [10]  802 	ld	hl,#0x0000
+   0410 39            [11]  803 	add	hl,sp
+   0411 5D            [ 4]  804 	ld	e,l
+   0412 54            [ 4]  805 	ld	d,h
+   0413 36r80         [10]  806 	ld	(hl),#<(__str_16)
+   0415 23            [ 6]  807 	inc	hl
+   0416 36s04         [10]  808 	ld	(hl),#>(__str_16)
+   0418 6B            [ 4]  809 	ld	l, e
+   0419 62            [ 4]  810 	ld	h, d
+   041A 23            [ 6]  811 	inc	hl
+   041B 23            [ 6]  812 	inc	hl
+   041C 01r8Fr04      [10]  813 	ld	bc,#__str_17
+   041F 71            [ 7]  814 	ld	(hl),c
+   0420 23            [ 6]  815 	inc	hl
+   0421 70            [ 7]  816 	ld	(hl),b
+   0422 21 04 00      [10]  817 	ld	hl,#0x0004
+   0425 19            [11]  818 	add	hl,de
+   0426 01r9Cr04      [10]  819 	ld	bc,#__str_18
+   0429 71            [ 7]  820 	ld	(hl),c
+   042A 23            [ 6]  821 	inc	hl
+   042B 70            [ 7]  822 	ld	(hl),b
+   042C 21 06 00      [10]  823 	ld	hl,#0x0006
+   042F 19            [11]  824 	add	hl,de
+   0430 01rB7r04      [10]  825 	ld	bc,#__str_19
+   0433 71            [ 7]  826 	ld	(hl),c
+   0434 23            [ 6]  827 	inc	hl
+   0435 70            [ 7]  828 	ld	(hl),b
+   0436 21 08 00      [10]  829 	ld	hl,#0x0008
+   0439 19            [11]  830 	add	hl,de
+   043A AF            [ 4]  831 	xor	a, a
+   043B 77            [ 7]  832 	ld	(hl), a
+   043C 23            [ 6]  833 	inc	hl
+   043D 77            [ 7]  834 	ld	(hl), a
+                            835 ;os_msed.c:235: selector = 0;
+   043E 2E 00         [ 7]  836 	ld	l,#0x00
+   0440 DD 73 FE      [19]  837 	ld	-2 (ix),e
+   0443 DD 72 FF      [19]  838 	ld	-1 (ix),d
+   0446                     839 00110$:
+                            840 ;os_msed.c:237: gCleanScreen();
+   0446 E5            [11]  841 	push	hl
+   0447 CDr00r00      [17]  842 	call	_gCleanScreen
+   044A E1            [10]  843 	pop	hl
+                            844 ;os_msed.c:238: selector = guiDrawMenu(menu_str, selector);
+   044B 26 00         [ 7]  845 	ld	h,#0x00
+   044D DD 5E FE      [19]  846 	ld	e,-2 (ix)
+   0450 DD 56 FF      [19]  847 	ld	d,-1 (ix)
+   0453 E5            [11]  848 	push	hl
+   0454 D5            [11]  849 	push	de
+   0455 CDr00r00      [17]  850 	call	_guiDrawMenu
+   0458 F1            [10]  851 	pop	af
+   0459 F1            [10]  852 	pop	af
+                            853 ;os_msed.c:239: if (selector == 0)osStartGame();
+   045A 7D            [ 4]  854 	ld	a,l
+   045B B7            [ 4]  855 	or	a, a
+   045C 20 05         [12]  856 	jr	NZ,00102$
+   045E E5            [11]  857 	push	hl
+   045F CDrD2r07      [17]  858 	call	_osStartGame
+   0462 E1            [10]  859 	pop	hl
+   0463                     860 00102$:
+                            861 ;os_msed.c:240: if (selector == 1)osSysInfo();
+   0463 7D            [ 4]  862 	ld	a,l
+   0464 3D            [ 4]  863 	dec	a
+   0465 20 05         [12]  864 	jr	NZ,00104$
+   0467 E5            [11]  865 	push	hl
+   0468 CDrCBr04      [17]  866 	call	_osSysInfo
+   046B E1            [10]  867 	pop	hl
+   046C                     868 00104$:
+                            869 ;os_msed.c:241: if (selector == 2)osAbout();
+   046C 7D            [ 4]  870 	ld	a,l
+   046D D6 02         [ 7]  871 	sub	a, #0x02
+   046F 20 05         [12]  872 	jr	NZ,00106$
+   0471 E5            [11]  873 	push	hl
+   0472 CDrD1r05      [17]  874 	call	_osAbout
+   0475 E1            [10]  875 	pop	hl
+   0476                     876 00106$:
+                            877 ;os_msed.c:242: if (selector == 0xff)break;
+   0476 7D            [ 4]  878 	ld	a,l
+                            879 ;os_msed.c:246: return 0;
+   0477 3C            [ 4]  880 	inc	a
+   0478 20 CC         [12]  881 	jr	NZ,00110$
+   047A 6F            [ 4]  882 	ld	l,a
+   047B DD F9         [10]  883 	ld	sp,ix
+   047D DD E1         [14]  884 	pop	ix
+   047F C9            [10]  885 	ret
+   0480                     886 _osMainMenu_end::
+   0480                     887 __str_16:
+   0480 4D 65 6E 75 20 70   888 	.ascii "Menu principal"
+        72 69 6E 63 69 70
+        61 6C
+   048E 00                  889 	.db 0x00
+   048F                     890 __str_17:
+   048F 49 6E 69 63 69 61   891 	.ascii "Iniciar jogo"
+        72 20 6A 6F 67 6F
+   049B 00                  892 	.db 0x00
+   049C                     893 __str_18:
+   049C 49 6E 66 6F 72 6D   894 	.ascii "Informacoes do dispositivo"
+        61 63 6F 65 73 20
+        64 6F 20 64 69 73
+        70 6F 73 69 74 69
+        76 6F
+   04B6 00                  895 	.db 0x00
+   04B7                     896 __str_19:
+   04B7 53 6F 62 72 65      897 	.ascii "Sobre"
+   04BC 00                  898 	.db 0x00
+                            899 ;os_msed.c:249: u8 osExitBrowser() {
+                            900 ;	---------------------------------
+                            901 ; Function osExitBrowser
+                            902 ; ---------------------------------
+   04BD                     903 _osExitBrowser_start::
+   04BD                     904 _osExitBrowser:
+                            905 ;os_msed.c:250: osMainMenu();
+   04BD CDr00r04      [17]  906 	call	_osMainMenu
+                            907 ;os_msed.c:251: return 0;
+   04C0 2E 00         [ 7]  908 	ld	l,#0x00
+   04C2 C9            [10]  909 	ret
+   04C3                     910 _osExitBrowser_end::
+                            911 ;os_msed.c:254: u16 osGetDate() {
+                            912 ;	---------------------------------
+                            913 ; Function osGetDate
+                            914 ; ---------------------------------
+   04C3                     915 _osGetDate_start::
+   04C3                     916 _osGetDate:
+                            917 ;os_msed.c:255: return 0;
+   04C3 21 00 00      [10]  918 	ld	hl,#0x0000
+   04C6 C9            [10]  919 	ret
+   04C7                     920 _osGetDate_end::
+                            921 ;os_msed.c:258: u16 osGetTime() {
+                            922 ;	---------------------------------
+                            923 ; Function osGetTime
+                            924 ; ---------------------------------
+   04C7                     925 _osGetTime_start::
+   04C7                     926 _osGetTime:
+                            927 ;os_msed.c:259: return 0;
+   04C7 21 00 00      [10]  928 	ld	hl,#0x0000
+   04CA C9            [10]  929 	ret
+   04CB                     930 _osGetTime_end::
+                            931 ;os_msed.c:262: void osSysInfo() {
+                            932 ;	---------------------------------
+                            933 ; Function osSysInfo
+                            934 ; ---------------------------------
+   04CB                     935 _osSysInfo_start::
+   04CB                     936 _osSysInfo:
+                            937 ;os_msed.c:267: gCleanScreen();
+   04CB CDr00r00      [17]  938 	call	_gCleanScreen
+                            939 ;os_msed.c:269: gSetPal(0);
+   04CE 21 00 00      [10]  940 	ld	hl,#0x0000
+   04D1 E5            [11]  941 	push	hl
+   04D2 CDr00r00      [17]  942 	call	_gSetPal
+   04D5 F1            [10]  943 	pop	af
+                            944 ;os_msed.c:271: gDrawString("Versao da CPLD: ", x, y);
+   04D6 11r6Br05      [10]  945 	ld	de,#__str_20
+   04D9 21 06 07      [10]  946 	ld	hl,#0x0706
+   04DC E5            [11]  947 	push	hl
+   04DD D5            [11]  948 	push	de
+   04DE CDr00r00      [17]  949 	call	_gDrawString
+   04E1 F1            [10]  950 	pop	af
+   04E2 F1            [10]  951 	pop	af
+                            952 ;os_msed.c:272: gAppendNum(bi_get_cpld_ver());
+   04E3 CDr00r00      [17]  953 	call	_bi_get_cpld_ver
+   04E6 26 00         [ 7]  954 	ld	h,#0x00
+   04E8 11 00 00      [10]  955 	ld	de,#0x0000
+   04EB D5            [11]  956 	push	de
+   04EC E5            [11]  957 	push	hl
+   04ED CDr00r00      [17]  958 	call	_gAppendNum
+   04F0 F1            [10]  959 	pop	af
+   04F1 F1            [10]  960 	pop	af
+                            961 ;os_msed.c:275: gDrawString("Versao do SO: ", x, y);
+   04F2 11r7Cr05      [10]  962 	ld	de,#__str_21
+   04F5 21 06 09      [10]  963 	ld	hl,#0x0906
+   04F8 E5            [11]  964 	push	hl
+   04F9 D5            [11]  965 	push	de
+   04FA CDr00r00      [17]  966 	call	_gDrawString
+   04FD F1            [10]  967 	pop	af
+   04FE F1            [10]  968 	pop	af
+                            969 ;os_msed.c:276: gAppendNum(os_ver);
+   04FF FD 21r00r00   [14]  970 	ld	iy,#_os_ver
+   0503 FD 6E 00      [19]  971 	ld	l,0 (iy)
+   0506 26 00         [ 7]  972 	ld	h,#0x00
+   0508 11 00 00      [10]  973 	ld	de,#0x0000
+   050B D5            [11]  974 	push	de
+   050C E5            [11]  975 	push	hl
+   050D CDr00r00      [17]  976 	call	_gAppendNum
+   0510 F1            [10]  977 	pop	af
+   0511 F1            [10]  978 	pop	af
+                            979 ;os_msed.c:279: gDrawString("Max. Diretorios: ", x, y);
+   0512 11r8Br05      [10]  980 	ld	de,#__str_22
+   0515 21 06 0B      [10]  981 	ld	hl,#0x0B06
+   0518 E5            [11]  982 	push	hl
+   0519 D5            [11]  983 	push	de
+   051A CDr00r00      [17]  984 	call	_gDrawString
+   051D F1            [10]  985 	pop	af
+                            986 ;os_msed.c:280: gAppendNum(OS_MAX_DIR_SIZE);
+   051E 21 00 00      [10]  987 	ld	hl, #0x0000
+   0521 E3            [19]  988 	ex	(sp),hl
+   0522 21 00 02      [10]  989 	ld	hl,#0x0200
+   0525 E5            [11]  990 	push	hl
+   0526 CDr00r00      [17]  991 	call	_gAppendNum
+   0529 F1            [10]  992 	pop	af
+   052A F1            [10]  993 	pop	af
+                            994 ;os_msed.c:283: gDrawString("Tipo de Cartucho: ", x, y);
+   052B 11r9Dr05      [10]  995 	ld	de,#__str_23
+   052E 21 06 0D      [10]  996 	ld	hl,#0x0D06
+   0531 E5            [11]  997 	push	hl
+   0532 D5            [11]  998 	push	de
+   0533 CDr00r00      [17]  999 	call	_gDrawString
+   0536 F1            [10] 1000 	pop	af
+   0537 F1            [10] 1001 	pop	af
+                           1002 ;os_msed.c:284: if (bi_is_gg_cart()) {
+   0538 CDr00r00      [17] 1003 	call	_bi_is_gg_cart
+   053B 7D            [ 4] 1004 	ld	a, l
+   053C B7            [ 4] 1005 	or	a, a
+   053D 28 0A         [12] 1006 	jr	Z,00102$
+                           1007 ;os_msed.c:285: gAppendString("GG");
+   053F 21rB0r05      [10] 1008 	ld	hl,#__str_24
+   0542 E5            [11] 1009 	push	hl
+   0543 CDr00r00      [17] 1010 	call	_gAppendString
+   0546 F1            [10] 1011 	pop	af
+   0547 18 08         [12] 1012 	jr	00103$
+   0549                    1013 00102$:
+                           1014 ;os_msed.c:287: gAppendString("SMS");
+   0549 21rB3r05      [10] 1015 	ld	hl,#__str_25
+   054C E5            [11] 1016 	push	hl
+   054D CDr00r00      [17] 1017 	call	_gAppendString
+   0550 F1            [10] 1018 	pop	af
+   0551                    1019 00103$:
+                           1020 ;os_msed.c:291: gDrawString("Dat. Firmware: 09/06/2026", x, y);
+   0551 11rB7r05      [10] 1021 	ld	de,#__str_26
+   0554 21 06 0F      [10] 1022 	ld	hl,#0x0F06
+   0557 E5            [11] 1023 	push	hl
+   0558 D5            [11] 1024 	push	de
+   0559 CDr00r00      [17] 1025 	call	_gDrawString
+   055C F1            [10] 1026 	pop	af
+                           1027 ;os_msed.c:293: bi_set_rom_bank(1);
+   055D 26 01         [ 7] 1028 	ld	h,#0x01
+   055F E3            [19] 1029 	ex	(sp),hl
+   0560 33            [ 6] 1030 	inc	sp
+   0561 CDr00r00      [17] 1031 	call	_bi_set_rom_bank
+   0564 33            [ 6] 1032 	inc	sp
+                           1033 ;os_msed.c:295: gRepaint();
+   0565 CDr00r00      [17] 1034 	call	_gRepaint
+                           1035 ;os_msed.c:296: sysJoyWait();
+   0568 C3r00r00      [10] 1036 	jp	_sysJoyWait
+   056B                    1037 _osSysInfo_end::
+   056B                    1038 __str_20:
+   056B 56 65 72 73 61 6F  1039 	.ascii "Versao da CPLD: "
+        20 64 61 20 43 50
+        4C 44 3A 20
+   057B 00                 1040 	.db 0x00
+   057C                    1041 __str_21:
+   057C 56 65 72 73 61 6F  1042 	.ascii "Versao do SO: "
+        20 64 6F 20 53 4F
+        3A 20
+   058A 00                 1043 	.db 0x00
+   058B                    1044 __str_22:
+   058B 4D 61 78 2E 20 44  1045 	.ascii "Max. Diretorios: "
+        69 72 65 74 6F 72
+        69 6F 73 3A 20
+   059C 00                 1046 	.db 0x00
+   059D                    1047 __str_23:
+   059D 54 69 70 6F 20 64  1048 	.ascii "Tipo de Cartucho: "
+        65 20 43 61 72 74
+        75 63 68 6F 3A 20
+   05AF 00                 1049 	.db 0x00
+   05B0                    1050 __str_24:
+   05B0 47 47              1051 	.ascii "GG"
+   05B2 00                 1052 	.db 0x00
+   05B3                    1053 __str_25:
+   05B3 53 4D 53           1054 	.ascii "SMS"
+   05B6 00                 1055 	.db 0x00
+   05B7                    1056 __str_26:
+   05B7 44 61 74 2E 20 46  1057 	.ascii "Dat. Firmware: 09/06/2026"
+        69 72 6D 77 61 72
+        65 3A 20 30 39 2F
+        30 36 2F 32 30 32
+        36
+   05D0 00                 1058 	.db 0x00
+                           1059 ;os_msed.c:299: void osAbout() {
+                           1060 ;	---------------------------------
+                           1061 ; Function osAbout
+                           1062 ; ---------------------------------
+   05D1                    1063 _osAbout_start::
+   05D1                    1064 _osAbout:
+   05D1 DD E5         [15] 1065 	push	ix
+   05D3 DD 21 00 00   [14] 1066 	ld	ix,#0
+   05D7 DD 39         [15] 1067 	add	ix,sp
+   05D9 3B            [ 6] 1068 	dec	sp
+                           1069 ;os_msed.c:301: u8 gg_cart = bi_is_gg_cart();
+   05DA CDr00r00      [17] 1070 	call	_bi_is_gg_cart
+   05DD DD 75 FF      [19] 1071 	ld	-1 (ix),l
+                           1072 ;os_msed.c:303: gCleanScreen();
+   05E0 CDr00r00      [17] 1073 	call	_gCleanScreen
+                           1074 ;os_msed.c:304: gSetXY(0, 2);
+   05E3 21 00 02      [10] 1075 	ld	hl,#0x0200
+   05E6 E5            [11] 1076 	push	hl
+   05E7 CDr00r00      [17] 1077 	call	_gSetXY
+                           1078 ;os_msed.c:305: gSetPal(4);
+   05EA 21 04 00      [10] 1079 	ld	hl, #0x0004
+   05ED E3            [19] 1080 	ex	(sp),hl
+   05EE CDr00r00      [17] 1081 	call	_gSetPal
+                           1082 ;os_msed.c:306: gConsPrint("");
+   05F1 21rC0r06      [10] 1083 	ld	hl, #__str_27
+   05F4 E3            [19] 1084 	ex	(sp),hl
+   05F5 CDr00r00      [17] 1085 	call	_gConsPrint
+   05F8 F1            [10] 1086 	pop	af
+                           1087 ;os_msed.c:307: if (gg_cart) {
+   05F9 DD 7E FF      [19] 1088 	ld	a,-1 (ix)
+   05FC B7            [ 4] 1089 	or	a, a
+   05FD 28 1F         [12] 1090 	jr	Z,00102$
+                           1091 ;os_msed.c:308: gConsPrint("EverDrive GG ");
+   05FF 21rC1r06      [10] 1092 	ld	hl,#__str_28
+   0602 E5            [11] 1093 	push	hl
+   0603 CDr00r00      [17] 1094 	call	_gConsPrint
+                           1095 ;os_msed.c:309: gConsPrint("Developed by:");
+   0606 21rCFr06      [10] 1096 	ld	hl, #__str_29
+   0609 E3            [19] 1097 	ex	(sp),hl
+   060A CDr00r00      [17] 1098 	call	_gConsPrint
+                           1099 ;os_msed.c:310: gSetPal(0);
+   060D 21 00 00      [10] 1100 	ld	hl, #0x0000
+   0610 E3            [19] 1101 	ex	(sp),hl
+   0611 CDr00r00      [17] 1102 	call	_gSetPal
+                           1103 ;os_msed.c:311: gConsPrint("I. Golubovskiy");
+   0614 21rDDr06      [10] 1104 	ld	hl, #__str_30
+   0617 E3            [19] 1105 	ex	(sp),hl
+   0618 CDr00r00      [17] 1106 	call	_gConsPrint
+   061B F1            [10] 1107 	pop	af
+   061C 18 16         [12] 1108 	jr	00103$
+   061E                    1109 00102$:
+                           1110 ;os_msed.c:313: gConsPrint("Firmware desenvolvida por:");
+   061E 21rECr06      [10] 1111 	ld	hl,#__str_31
+   0621 E5            [11] 1112 	push	hl
+   0622 CDr00r00      [17] 1113 	call	_gConsPrint
+                           1114 ;os_msed.c:314: gConsPrint("@tavinho.games");
+   0625 21r07r07      [10] 1115 	ld	hl, #__str_32
+   0628 E3            [19] 1116 	ex	(sp),hl
+   0629 CDr00r00      [17] 1117 	call	_gConsPrint
+                           1118 ;os_msed.c:315: gConsPrint("Agradecimentos: thalescamara e ludufre");
+   062C 21r16r07      [10] 1119 	ld	hl, #__str_33
+   062F E3            [19] 1120 	ex	(sp),hl
+   0630 CDr00r00      [17] 1121 	call	_gConsPrint
+   0633 F1            [10] 1122 	pop	af
+   0634                    1123 00103$:
+                           1124 ;os_msed.c:319: gSetPal(4);
+   0634 21 04 00      [10] 1125 	ld	hl,#0x0004
+   0637 E5            [11] 1126 	push	hl
+   0638 CDr00r00      [17] 1127 	call	_gSetPal
+                           1128 ;os_msed.c:320: gConsPrint("");
+   063B 21rC0r06      [10] 1129 	ld	hl, #__str_27
+   063E E3            [19] 1130 	ex	(sp),hl
+   063F CDr00r00      [17] 1131 	call	_gConsPrint
+                           1132 ;os_msed.c:322: gConsPrint("Suporte:");
+   0642 21r3Dr07      [10] 1133 	ld	hl, #__str_34
+   0645 E3            [19] 1134 	ex	(sp),hl
+   0646 CDr00r00      [17] 1135 	call	_gConsPrint
+                           1136 ;os_msed.c:323: gSetPal(0);
+   0649 21 00 00      [10] 1137 	ld	hl, #0x0000
+   064C E3            [19] 1138 	ex	(sp),hl
+   064D CDr00r00      [17] 1139 	call	_gSetPal
+                           1140 ;os_msed.c:324: gConsPrint("Instagram:");
+   0650 21r46r07      [10] 1141 	ld	hl, #__str_35
+   0653 E3            [19] 1142 	ex	(sp),hl
+   0654 CDr00r00      [17] 1143 	call	_gConsPrint
+                           1144 ;os_msed.c:325: gConsPrint("tavinho.games");
+   0657 21r51r07      [10] 1145 	ld	hl, #__str_36
+   065A E3            [19] 1146 	ex	(sp),hl
+   065B CDr00r00      [17] 1147 	call	_gConsPrint
+                           1148 ;os_msed.c:327: gConsPrint("");
+   065E 21rC0r06      [10] 1149 	ld	hl, #__str_27
+   0661 E3            [19] 1150 	ex	(sp),hl
+   0662 CDr00r00      [17] 1151 	call	_gConsPrint
+                           1152 ;os_msed.c:328: gSetPal(4);
+   0665 21 04 00      [10] 1153 	ld	hl, #0x0004
+   0668 E3            [19] 1154 	ex	(sp),hl
+   0669 CDr00r00      [17] 1155 	call	_gSetPal
+                           1156 ;os_msed.c:329: gConsPrint("Controles:");
+   066C 21r5Fr07      [10] 1157 	ld	hl, #__str_37
+   066F E3            [19] 1158 	ex	(sp),hl
+   0670 CDr00r00      [17] 1159 	call	_gConsPrint
+                           1160 ;os_msed.c:330: gSetPal(0);
+   0673 21 00 00      [10] 1161 	ld	hl, #0x0000
+   0676 E3            [19] 1162 	ex	(sp),hl
+   0677 CDr00r00      [17] 1163 	call	_gSetPal
+   067A F1            [10] 1164 	pop	af
+                           1165 ;os_msed.c:331: if (gg_cart) {
+   067B DD 7E FF      [19] 1166 	ld	a,-1 (ix)
+   067E B7            [ 4] 1167 	or	a, a
+   067F 28 0A         [12] 1168 	jr	Z,00105$
+                           1169 ;os_msed.c:332: gConsPrint("Esq/Dir - Alternar pagina");
+   0681 21r6Ar07      [10] 1170 	ld	hl,#__str_38
+   0684 E5            [11] 1171 	push	hl
+   0685 CDr00r00      [17] 1172 	call	_gConsPrint
+   0688 F1            [10] 1173 	pop	af
+   0689 18 08         [12] 1174 	jr	00106$
+   068B                    1175 00105$:
+                           1176 ;os_msed.c:334: gConsPrint("Esq/Dir - Alternar pagina");
+   068B 21r6Ar07      [10] 1177 	ld	hl,#__str_38
+   068E E5            [11] 1178 	push	hl
+   068F CDr00r00      [17] 1179 	call	_gConsPrint
+   0692 F1            [10] 1180 	pop	af
+   0693                    1181 00106$:
+                           1182 ;os_msed.c:336: gConsPrint("Bot. 1 - Menu de arquivos");
+   0693 21r84r07      [10] 1183 	ld	hl,#__str_39
+   0696 E5            [11] 1184 	push	hl
+   0697 CDr00r00      [17] 1185 	call	_gConsPrint
+                           1186 ;os_msed.c:337: gConsPrint("Bot. 2 - Voltar");
+   069A 21r9Er07      [10] 1187 	ld	hl, #__str_40
+   069D E3            [19] 1188 	ex	(sp),hl
+   069E CDr00r00      [17] 1189 	call	_gConsPrint
+                           1190 ;os_msed.c:338: gConsPrint("Bot. 2 na raiz - Menu principal");
+   06A1 21rAEr07      [10] 1191 	ld	hl, #__str_41
+   06A4 E3            [19] 1192 	ex	(sp),hl
+   06A5 CDr00r00      [17] 1193 	call	_gConsPrint
+   06A8 F1            [10] 1194 	pop	af
+                           1195 ;os_msed.c:341: gDrawString("SN:", 2, 23);
+   06A9 11rCEr07      [10] 1196 	ld	de,#__str_42
+   06AC 21 02 17      [10] 1197 	ld	hl,#0x1702
+   06AF E5            [11] 1198 	push	hl
+   06B0 D5            [11] 1199 	push	de
+   06B1 CDr00r00      [17] 1200 	call	_gDrawString
+   06B4 F1            [10] 1201 	pop	af
+   06B5 F1            [10] 1202 	pop	af
+                           1203 ;os_msed.c:343: gRepaint();
+   06B6 CDr00r00      [17] 1204 	call	_gRepaint
+                           1205 ;os_msed.c:345: sysJoyWait();
+   06B9 CDr00r00      [17] 1206 	call	_sysJoyWait
+   06BC 33            [ 6] 1207 	inc	sp
+   06BD DD E1         [14] 1208 	pop	ix
+   06BF C9            [10] 1209 	ret
+   06C0                    1210 _osAbout_end::
+   06C0                    1211 __str_27:
+   06C0 00                 1212 	.db 0x00
+   06C1                    1213 __str_28:
+   06C1 45 76 65 72 44 72  1214 	.ascii "EverDrive GG "
+        69 76 65 20 47 47
+        20
+   06CE 00                 1215 	.db 0x00
+   06CF                    1216 __str_29:
+   06CF 44 65 76 65 6C 6F  1217 	.ascii "Developed by:"
+        70 65 64 20 62 79
+        3A
+   06DC 00                 1218 	.db 0x00
+   06DD                    1219 __str_30:
+   06DD 49 2E 20 47 6F 6C  1220 	.ascii "I. Golubovskiy"
+        75 62 6F 76 73 6B
+        69 79
+   06EB 00                 1221 	.db 0x00
+   06EC                    1222 __str_31:
+   06EC 46 69 72 6D 77 61  1223 	.ascii "Firmware desenvolvida por:"
+        72 65 20 64 65 73
+        65 6E 76 6F 6C 76
+        69 64 61 20 70 6F
+        72 3A
+   0706 00                 1224 	.db 0x00
+   0707                    1225 __str_32:
+   0707 40 74 61 76 69 6E  1226 	.ascii "@tavinho.games"
+        68 6F 2E 67 61 6D
+        65 73
+   0715 00                 1227 	.db 0x00
+   0716                    1228 __str_33:
+   0716 41 67 72 61 64 65  1229 	.ascii "Agradecimentos: thalescamara e ludufre"
+        63 69 6D 65 6E 74
+        6F 73 3A 20 74 68
+        61 6C 65 73 63 61
+        6D 61 72 61 20 65
+        20 6C 75 64 75 66
+        72 65
+   073C 00                 1230 	.db 0x00
+   073D                    1231 __str_34:
+   073D 53 75 70 6F 72 74  1232 	.ascii "Suporte:"
+        65 3A
+   0745 00                 1233 	.db 0x00
+   0746                    1234 __str_35:
+   0746 49 6E 73 74 61 67  1235 	.ascii "Instagram:"
+        72 61 6D 3A
+   0750 00                 1236 	.db 0x00
+   0751                    1237 __str_36:
+   0751 74 61 76 69 6E 68  1238 	.ascii "tavinho.games"
+        6F 2E 67 61 6D 65
+        73
+   075E 00                 1239 	.db 0x00
+   075F                    1240 __str_37:
+   075F 43 6F 6E 74 72 6F  1241 	.ascii "Controles:"
+        6C 65 73 3A
+   0769 00                 1242 	.db 0x00
+   076A                    1243 __str_38:
+   076A 45 73 71 2F 44 69  1244 	.ascii "Esq/Dir - Alternar pagina"
+        72 20 2D 20 41 6C
+        74 65 72 6E 61 72
+        20 70 61 67 69 6E
+        61
+   0783 00                 1245 	.db 0x00
+   0784                    1246 __str_39:
+   0784 42 6F 74 2E 20 31  1247 	.ascii "Bot. 1 - Menu de arquivos"
+        20 2D 20 4D 65 6E
+        75 20 64 65 20 61
+        72 71 75 69 76 6F
+        73
+   079D 00                 1248 	.db 0x00
+   079E                    1249 __str_40:
+   079E 42 6F 74 2E 20 32  1250 	.ascii "Bot. 2 - Voltar"
+        20 2D 20 56 6F 6C
+        74 61 72
+   07AD 00                 1251 	.db 0x00
+   07AE                    1252 __str_41:
+   07AE 42 6F 74 2E 20 32  1253 	.ascii "Bot. 2 na raiz - Menu principal"
+        20 6E 61 20 72 61
+        69 7A 20 2D 20 4D
+        65 6E 75 20 70 72
+        69 6E 63 69 70 61
+        6C
+   07CD 00                 1254 	.db 0x00
+   07CE                    1255 __str_42:
+   07CE 53 4E 3A           1256 	.ascii "SN:"
+   07D1 00                 1257 	.db 0x00
+                           1258 ;os_msed.c:359: u8 osStartGame() {
+                           1259 ;	---------------------------------
+                           1260 ; Function osStartGame
+                           1261 ; ---------------------------------
+   07D2                    1262 _osStartGame_start::
+   07D2                    1263 _osStartGame:
+                           1264 ;os_msed.c:362: g_set_vdp_reg(1, 0);
+   07D2 21 01 00      [10] 1265 	ld	hl,#0x0001
+   07D5 E5            [11] 1266 	push	hl
+   07D6 CDr00r00      [17] 1267 	call	_g_set_vdp_reg
+   07D9 F1            [10] 1268 	pop	af
+                           1269 ;os_msed.c:364: if ((rom_inf->run_cfg & CFG_SMS_MODE)) {
+   07DA 2Ar86r11      [16] 1270 	ld	hl,(_rom_inf)
+   07DD 11 00 02      [10] 1271 	ld	de, #0x0200
+   07E0 19            [11] 1272 	add	hl, de
+   07E1 CB 76         [12] 1273 	bit	6,(hl)
+   07E3 28 08         [12] 1274 	jr	Z,00102$
+                           1275 ;os_msed.c:365: REG_CFG |= CFG_SMS_MODE;
+   07E5 3A F8 FF      [13] 1276 	ld	a,(#0xFFF8)
+   07E8 CB F7         [ 8] 1277 	set	6, a
+   07EA 32 F8 FF      [13] 1278 	ld	(#0xFFF8),a
+   07ED                    1279 00102$:
+                           1280 ;os_msed.c:368: if (bi_is_gg_cart()) {
+   07ED CDr00r00      [17] 1281 	call	_bi_is_gg_cart
+   07F0 7D            [ 4] 1282 	ld	a,l
+   07F1 B7            [ 4] 1283 	or	a, a
+   07F2 28 03         [12] 1284 	jr	Z,00104$
+                           1285 ;os_msed.c:369: gSetSGpal();
+   07F4 CDr00r00      [17] 1286 	call	_gSetSGpal
+   07F7                    1287 00104$:
+                           1288 ;os_msed.c:374: bi_set_ram_bank(1);
+   07F7 3E 01         [ 7] 1289 	ld	a,#0x01
+   07F9 F5            [11] 1290 	push	af
+   07FA 33            [ 6] 1291 	inc	sp
+   07FB CDr00r00      [17] 1292 	call	_bi_set_ram_bank
+   07FE 33            [ 6] 1293 	inc	sp
+                           1294 ;os_msed.c:375: cfg = CFG_ROM_WE_OFF | rom_inf->run_cfg;
+   07FF 2Ar86r11      [16] 1295 	ld	hl,(_rom_inf)
+   0802 11 00 02      [10] 1296 	ld	de, #0x0200
+   0805 19            [11] 1297 	add	hl, de
+   0806 7E            [ 7] 1298 	ld	a,(hl)
+   0807 CB EF         [ 8] 1299 	set	5, a
+   0809 6F            [ 4] 1300 	ld	l,a
+                           1301 ;os_msed.c:376: bi_set_rom_bank(1);
+   080A E5            [11] 1302 	push	hl
+   080B 3E 01         [ 7] 1303 	ld	a,#0x01
+   080D F5            [11] 1304 	push	af
+   080E 33            [ 6] 1305 	inc	sp
+   080F CDr00r00      [17] 1306 	call	_bi_set_rom_bank
+   0812 33            [ 6] 1307 	inc	sp
+   0813 E1            [10] 1308 	pop	hl
+                           1309 ;os_msed.c:380: bi_start_game(cfg);
+   0814 26 00         [ 7] 1310 	ld	h,#0x00
+   0816 E5            [11] 1311 	push	hl
+   0817 CDr00r00      [17] 1312 	call	_bi_start_game
+   081A F1            [10] 1313 	pop	af
+                           1314 ;os_msed.c:381: return 0;
+   081B 2E 00         [ 7] 1315 	ld	l,#0x00
+   081D C9            [10] 1316 	ret
+   081E                    1317 _osStartGame_end::
+                           1318 ;os_msed.c:384: void osSetRomCfg(u8 *name) {
+                           1319 ;	---------------------------------
+                           1320 ; Function osSetRomCfg
+                           1321 ; ---------------------------------
+   081E                    1322 _osSetRomCfg_start::
+   081E                    1323 _osSetRomCfg:
+   081E F5            [11] 1324 	push	af
+   081F F5            [11] 1325 	push	af
+                           1326 ;os_msed.c:387: volatile u8 codemasters = 1;
+   0820 FD 21 03 00   [14] 1327 	ld	iy,#3
+   0824 FD 39         [15] 1328 	add	iy,sp
+   0826 FD 36 00 01   [19] 1329 	ld	0 (iy),#0x01
+                           1330 ;os_msed.c:392: run_cfg = 0;
+   082A 16 00         [ 7] 1331 	ld	d,#0x00
+                           1332 ;os_msed.c:394: *(u8 *) 0xffff = 1;
+   082C 21 FF FF      [10] 1333 	ld	hl,#0xFFFF
+   082F 36 01         [10] 1334 	ld	(hl),#0x01
+                           1335 ;os_msed.c:395: bi_set_rom_bank(1);
+   0831 D5            [11] 1336 	push	de
+   0832 3E 01         [ 7] 1337 	ld	a,#0x01
+   0834 F5            [11] 1338 	push	af
+   0835 33            [ 6] 1339 	inc	sp
+   0836 CDr00r00      [17] 1340 	call	_bi_set_rom_bank
+   0839 33            [ 6] 1341 	inc	sp
+   083A D1            [10] 1342 	pop	de
+                           1343 ;os_msed.c:396: norm_size = *((u8 *) 0xbfff);
+   083B 3A FF BF      [13] 1344 	ld	a,(#0xBFFF)
+   083E FD 21 02 00   [14] 1345 	ld	iy,#2
+   0842 FD 39         [15] 1346 	add	iy,sp
+   0844 FD 77 00      [19] 1347 	ld	0 (iy),a
+                           1348 ;os_msed.c:397: norm_size &= 0xf;
+   0847 FD 7E 00      [19] 1349 	ld	a,0 (iy)
+   084A E6 0F         [ 7] 1350 	and	a, #0x0F
+   084C FD 77 00      [19] 1351 	ld	0 (iy),a
+                           1352 ;os_msed.c:401: if (norm_size == 0x0c)norm_size = 2;
+   084F FD 7E 00      [19] 1353 	ld	a,0 (iy)
+   0852 D6 0C         [ 7] 1354 	sub	a, #0x0C
+   0854 20 06         [12] 1355 	jr	NZ,00114$
+   0856 FD 36 00 02   [19] 1356 	ld	0 (iy),#0x02
+   085A 18 54         [12] 1357 	jr	00115$
+   085C                    1358 00114$:
+                           1359 ;os_msed.c:403: if (norm_size == 0x0e)norm_size = 4;
+   085C FD 21 02 00   [14] 1360 	ld	iy,#2
+   0860 FD 39         [15] 1361 	add	iy,sp
+   0862 FD 7E 00      [19] 1362 	ld	a,0 (iy)
+   0865 D6 0E         [ 7] 1363 	sub	a, #0x0E
+   0867 20 06         [12] 1364 	jr	NZ,00111$
+   0869 FD 36 00 04   [19] 1365 	ld	0 (iy),#0x04
+   086D 18 41         [12] 1366 	jr	00115$
+   086F                    1367 00111$:
+                           1368 ;os_msed.c:405: if (norm_size == 0x0f)norm_size = 8;
+   086F FD 21 02 00   [14] 1369 	ld	iy,#2
+   0873 FD 39         [15] 1370 	add	iy,sp
+   0875 FD 7E 00      [19] 1371 	ld	a,0 (iy)
+   0878 D6 0F         [ 7] 1372 	sub	a, #0x0F
+   087A 20 06         [12] 1373 	jr	NZ,00108$
+   087C FD 36 00 08   [19] 1374 	ld	0 (iy),#0x08
+   0880 18 2E         [12] 1375 	jr	00115$
+   0882                    1376 00108$:
+                           1377 ;os_msed.c:407: if (norm_size == 0x00)norm_size = 16;
+   0882 FD 21 02 00   [14] 1378 	ld	iy,#2
+   0886 FD 39         [15] 1379 	add	iy,sp
+   0888 FD 7E 00      [19] 1380 	ld	a,0 (iy)
+   088B B7            [ 4] 1381 	or	a, a
+   088C 20 06         [12] 1382 	jr	NZ,00105$
+   088E FD 36 00 10   [19] 1383 	ld	0 (iy),#0x10
+   0892 18 1C         [12] 1384 	jr	00115$
+   0894                    1385 00105$:
+                           1386 ;os_msed.c:409: if (norm_size == 0x01)norm_size = 32;
+   0894 FD 21 02 00   [14] 1387 	ld	iy,#2
+   0898 FD 39         [15] 1388 	add	iy,sp
+   089A FD 7E 00      [19] 1389 	ld	a,0 (iy)
+   089D 3D            [ 4] 1390 	dec	a
+   089E 20 06         [12] 1391 	jr	NZ,00102$
+   08A0 FD 36 00 20   [19] 1392 	ld	0 (iy),#0x20
+   08A4 18 0A         [12] 1393 	jr	00115$
+   08A6                    1394 00102$:
+                           1395 ;os_msed.c:411: norm_size = 64;
+   08A6 FD 21 02 00   [14] 1396 	ld	iy,#2
+   08AA FD 39         [15] 1397 	add	iy,sp
+   08AC FD 36 00 40   [19] 1398 	ld	0 (iy),#0x40
+   08B0                    1399 00115$:
+                           1400 ;os_msed.c:413: if (norm_size != *((u8 *) 0xbfe0) && norm_size != 2)codemasters = 0;
+   08B0 21 E0 BF      [10] 1401 	ld	hl,#0xBFE0
+   08B3 5E            [ 7] 1402 	ld	e,(hl)
+   08B4 FD 21 02 00   [14] 1403 	ld	iy,#2
+   08B8 FD 39         [15] 1404 	add	iy,sp
+   08BA FD 7E 00      [19] 1405 	ld	a,0 (iy)
+   08BD 93            [ 4] 1406 	sub	a, e
+   08BE 28 11         [12] 1407 	jr	Z,00117$
+   08C0 FD 7E 00      [19] 1408 	ld	a,0 (iy)
+   08C3 D6 02         [ 7] 1409 	sub	a, #0x02
+   08C5 28 0A         [12] 1410 	jr	Z,00117$
+   08C7 FD 21 03 00   [14] 1411 	ld	iy,#3
+   08CB FD 39         [15] 1412 	add	iy,sp
+   08CD FD 36 00 00   [19] 1413 	ld	0 (iy),#0x00
+   08D1                    1414 00117$:
+                           1415 ;os_msed.c:415: if (*rom_ptr++ == 0)codemasters = 0;
+   08D1 3A E9 BF      [13] 1416 	ld	a,(#0xBFE9)
+   08D4 B7            [ 4] 1417 	or	a, a
+   08D5 20 0A         [12] 1418 	jr	NZ,00144$
+   08D7 FD 21 03 00   [14] 1419 	ld	iy,#3
+   08DB FD 39         [15] 1420 	add	iy,sp
+   08DD FD 36 00 00   [19] 1421 	ld	0 (iy),#0x00
+                           1422 ;os_msed.c:416: for (i = 0; i < 6; i++) {
+   08E1                    1423 00144$:
+   08E1 0E 00         [ 7] 1424 	ld	c,#0x00
+   08E3 21 EA BF      [10] 1425 	ld	hl,#0xBFEA
+   08E6                    1426 00131$:
+                           1427 ;os_msed.c:417: if (*rom_ptr++ != 0)codemasters = 0;
+   08E6 7E            [ 7] 1428 	ld	a,(hl)
+   08E7 23            [ 6] 1429 	inc	hl
+   08E8 B7            [ 4] 1430 	or	a, a
+   08E9 28 0A         [12] 1431 	jr	Z,00132$
+   08EB FD 21 03 00   [14] 1432 	ld	iy,#3
+   08EF FD 39         [15] 1433 	add	iy,sp
+   08F1 FD 36 00 00   [19] 1434 	ld	0 (iy),#0x00
+   08F5                    1435 00132$:
+                           1436 ;os_msed.c:416: for (i = 0; i < 6; i++) {
+   08F5 0C            [ 4] 1437 	inc	c
+   08F6 79            [ 4] 1438 	ld	a,c
+   08F7 D6 06         [ 7] 1439 	sub	a, #0x06
+   08F9 38 EB         [12] 1440 	jr	C,00131$
+                           1441 ;os_msed.c:413: if (norm_size != *((u8 *) 0xbfe0) && norm_size != 2)codemasters = 0;
+   08FB 21 E0 BF      [10] 1442 	ld	hl,#0xBFE0
+   08FE 6E            [ 7] 1443 	ld	l,(hl)
+                           1444 ;os_msed.c:420: if (*((u8 *) 0xbfe0) < 8 || *((u8 *) 0xbfe0) > 32)codemasters = 0;
+   08FF 7D            [ 4] 1445 	ld	a,l
+   0900 D6 08         [ 7] 1446 	sub	a, #0x08
+   0902 38 05         [12] 1447 	jr	C,00124$
+   0904 3E 20         [ 7] 1448 	ld	a,#0x20
+   0906 95            [ 4] 1449 	sub	a, l
+   0907 30 0A         [12] 1450 	jr	NC,00125$
+   0909                    1451 00124$:
+   0909 FD 21 03 00   [14] 1452 	ld	iy,#3
+   090D FD 39         [15] 1453 	add	iy,sp
+   090F FD 36 00 00   [19] 1454 	ld	0 (iy),#0x00
+   0913                    1455 00125$:
+                           1456 ;os_msed.c:423: if (str_extension(".gg", name) == 0) {
+   0913 D5            [11] 1457 	push	de
+   0914 21 08 00      [10] 1458 	ld	hl, #8
+   0917 39            [11] 1459 	add	hl, sp
+   0918 4E            [ 7] 1460 	ld	c, (hl)
+   0919 23            [ 6] 1461 	inc	hl
+   091A 46            [ 7] 1462 	ld	b, (hl)
+   091B C5            [11] 1463 	push	bc
+   091C 21r53r09      [10] 1464 	ld	hl,#__str_43
+   091F E5            [11] 1465 	push	hl
+   0920 CDr00r00      [17] 1466 	call	_str_extension
+   0923 F1            [10] 1467 	pop	af
+   0924 F1            [10] 1468 	pop	af
+   0925 7D            [ 4] 1469 	ld	a,l
+   0926 D1            [10] 1470 	pop	de
+   0927 B7            [ 4] 1471 	or	a, a
+   0928 20 02         [12] 1472 	jr	NZ,00128$
+                           1473 ;os_msed.c:424: run_cfg |= CFG_SMS_MODE;
+   092A 16 40         [ 7] 1474 	ld	d,#0x40
+   092C                    1475 00128$:
+                           1476 ;os_msed.c:428: if (codemasters) {
+   092C 21 03 00      [10] 1477 	ld	hl, #3+0
+   092F 39            [11] 1478 	add	hl, sp
+   0930 7E            [ 7] 1479 	ld	a, (hl)
+   0931 B7            [ 4] 1480 	or	a, a
+   0932 28 02         [12] 1481 	jr	Z,00130$
+                           1482 ;os_msed.c:429: run_cfg |= CFG_CDM_MAP;
+   0934 CB DA         [ 8] 1483 	set	3, d
+   0936                    1484 00130$:
+                           1485 ;os_msed.c:432: bi_set_ram_bank(1);
+   0936 D5            [11] 1486 	push	de
+   0937 3E 01         [ 7] 1487 	ld	a,#0x01
+   0939 F5            [11] 1488 	push	af
+   093A 33            [ 6] 1489 	inc	sp
+   093B CDr00r00      [17] 1490 	call	_bi_set_ram_bank
+   093E 33            [ 6] 1491 	inc	sp
+   093F D1            [10] 1492 	pop	de
+                           1493 ;os_msed.c:433: rom_inf->run_cfg = run_cfg;
+   0940 2Ar86r11      [16] 1494 	ld	hl,(_rom_inf)
+   0943 01 00 02      [10] 1495 	ld	bc,#0x0200
+   0946 09            [11] 1496 	add	hl,bc
+   0947 72            [ 7] 1497 	ld	(hl),d
+                           1498 ;os_msed.c:434: bi_set_rom_bank(1);
+   0948 3E 01         [ 7] 1499 	ld	a,#0x01
+   094A F5            [11] 1500 	push	af
+   094B 33            [ 6] 1501 	inc	sp
+   094C CDr00r00      [17] 1502 	call	_bi_set_rom_bank
+   094F 33            [ 6] 1503 	inc	sp
+   0950 F1            [10] 1504 	pop	af
+   0951 F1            [10] 1505 	pop	af
+   0952 C9            [10] 1506 	ret
+   0953                    1507 _osSetRomCfg_end::
+   0953                    1508 __str_43:
+   0953 2E 67 67           1509 	.ascii ".gg"
+   0956 00                 1510 	.db 0x00
+                           1511 ;os_msed.c:449: u8 osSelectGame(FatFullRecord *rec) {
+                           1512 ;	---------------------------------
+                           1513 ; Function osSelectGame
+                           1514 ; ---------------------------------
+   0957                    1515 _osSelectGame_start::
+   0957                    1516 _osSelectGame:
+   0957 DD E5         [15] 1517 	push	ix
+   0959 DD 21 00 00   [14] 1518 	ld	ix,#0
+   095D DD 39         [15] 1519 	add	ix,sp
+   095F 21 F6 FF      [10] 1520 	ld	hl,#-10
+   0962 39            [11] 1521 	add	hl,sp
+   0963 F9            [ 6] 1522 	ld	sp,hl
+                           1523 ;os_msed.c:456: if (rec->size > 0x100000)return ERR_ROM_SIZE;
+   0964 DD 7E 04      [19] 1524 	ld	a,4 (ix)
+   0967 DD 77 FC      [19] 1525 	ld	-4 (ix),a
+   096A DD 7E 05      [19] 1526 	ld	a,5 (ix)
+   096D DD 77 FD      [19] 1527 	ld	-3 (ix),a
+   0970 DD 6E FC      [19] 1528 	ld	l,-4 (ix)
+   0973 DD 66 FD      [19] 1529 	ld	h,-3 (ix)
+   0976 11 E0 00      [10] 1530 	ld	de, #0x00E0
+   0979 19            [11] 1531 	add	hl, de
+   097A 5E            [ 7] 1532 	ld	e,(hl)
+   097B 23            [ 6] 1533 	inc	hl
+   097C 56            [ 7] 1534 	ld	d,(hl)
+   097D 23            [ 6] 1535 	inc	hl
+   097E 4E            [ 7] 1536 	ld	c,(hl)
+   097F 23            [ 6] 1537 	inc	hl
+   0980 66            [ 7] 1538 	ld	h,(hl)
+   0981 AF            [ 4] 1539 	xor	a, a
+   0982 BB            [ 4] 1540 	cp	a, e
+   0983 9A            [ 4] 1541 	sbc	a, d
+   0984 3E 10         [ 7] 1542 	ld	a,#0x10
+   0986 99            [ 4] 1543 	sbc	a, c
+   0987 3E 00         [ 7] 1544 	ld	a,#0x00
+   0989 9C            [ 4] 1545 	sbc	a, h
+   098A 30 05         [12] 1546 	jr	NC,00102$
+   098C 2E 30         [ 7] 1547 	ld	l,#0x30
+   098E C3r2Br0B      [10] 1548 	jp	00123$
+   0991                    1549 00102$:
+                           1550 ;os_msed.c:458: gCleanScreen();
+   0991 CDr00r00      [17] 1551 	call	_gCleanScreen
+                           1552 ;os_msed.c:459: gSetXY(1, 1);
+   0994 21 01 01      [10] 1553 	ld	hl,#0x0101
+   0997 E5            [11] 1554 	push	hl
+   0998 CDr00r00      [17] 1555 	call	_gSetXY
+                           1556 ;os_msed.c:460: gSetPal(0);
+   099B 21 00 00      [10] 1557 	ld	hl, #0x0000
+   099E E3            [19] 1558 	ex	(sp),hl
+   099F CDr00r00      [17] 1559 	call	_gSetPal
+                           1560 ;os_msed.c:461: gConsPrint("");
+   09A2 21r30r0B      [10] 1561 	ld	hl, #__str_44
+   09A5 E3            [19] 1562 	ex	(sp),hl
+   09A6 CDr00r00      [17] 1563 	call	_gConsPrint
+                           1564 ;os_msed.c:462: gConsPrint("");
+   09A9 21r30r0B      [10] 1565 	ld	hl, #__str_44
+   09AC E3            [19] 1566 	ex	(sp),hl
+   09AD CDr00r00      [17] 1567 	call	_gConsPrint
+   09B0 F1            [10] 1568 	pop	af
+                           1569 ;os_msed.c:463: if (bi_is_gg_cart()) {
+   09B1 CDr00r00      [17] 1570 	call	_bi_is_gg_cart
+   09B4 DD 75 F9      [19] 1571 	ld	-7 (ix), l
+   09B7 7D            [ 4] 1572 	ld	a, l
+   09B8 B7            [ 4] 1573 	or	a, a
+   09B9 28 18         [12] 1574 	jr	Z,00104$
+                           1575 ;os_msed.c:464: gConsPrint("!!NAO DESLIGUE!!");
+   09BB 21r31r0B      [10] 1576 	ld	hl,#__str_45
+   09BE E5            [11] 1577 	push	hl
+   09BF CDr00r00      [17] 1578 	call	_gConsPrint
+                           1579 ;os_msed.c:465: gSetPal(0);
+   09C2 21 00 00      [10] 1580 	ld	hl, #0x0000
+   09C5 E3            [19] 1581 	ex	(sp),hl
+   09C6 CDr00r00      [17] 1582 	call	_gSetPal
+                           1583 ;os_msed.c:466: gConsPrint("-------------------");
+   09C9 21r42r0B      [10] 1584 	ld	hl, #__str_46
+   09CC E3            [19] 1585 	ex	(sp),hl
+   09CD CDr00r00      [17] 1586 	call	_gConsPrint
+   09D0 F1            [10] 1587 	pop	af
+   09D1 18 16         [12] 1588 	jr	00105$
+   09D3                    1589 00104$:
+                           1590 ;os_msed.c:468: gConsPrint("!NAO DESLIGUE O CONSOLE!");
+   09D3 21r56r0B      [10] 1591 	ld	hl,#__str_47
+   09D6 E5            [11] 1592 	push	hl
+   09D7 CDr00r00      [17] 1593 	call	_gConsPrint
+                           1594 ;os_msed.c:469: gSetPal(0);
+   09DA 21 00 00      [10] 1595 	ld	hl, #0x0000
+   09DD E3            [19] 1596 	ex	(sp),hl
+   09DE CDr00r00      [17] 1597 	call	_gSetPal
+                           1598 ;os_msed.c:470: gConsPrint("----------------------------");
+   09E1 21r6Fr0B      [10] 1599 	ld	hl, #__str_48
+   09E4 E3            [19] 1600 	ex	(sp),hl
+   09E5 CDr00r00      [17] 1601 	call	_gConsPrint
+   09E8 F1            [10] 1602 	pop	af
+   09E9                    1603 00105$:
+                           1604 ;os_msed.c:472: gRepaint();
+   09E9 CDr00r00      [17] 1605 	call	_gRepaint
+                           1606 ;os_msed.c:476: resp = osSaveSram();
+   09EC CDrE2r0C      [17] 1607 	call	_osSaveSram
+                           1608 ;os_msed.c:477: if (resp)return resp;
+   09EF DD 75 F8      [19] 1609 	ld	-8 (ix), l
+   09F2 7D            [ 4] 1610 	ld	a, l
+   09F3 B7            [ 4] 1611 	or	a, a
+   09F4 28 06         [12] 1612 	jr	Z,00107$
+   09F6 DD 6E F8      [19] 1613 	ld	l,-8 (ix)
+   09F9 C3r2Br0B      [10] 1614 	jp	00123$
+   09FC                    1615 00107$:
+                           1616 ;os_msed.c:479: resp = fat_open_file(rec, 0);
+   09FC 21 00 00      [10] 1617 	ld	hl,#0x0000
+   09FF E5            [11] 1618 	push	hl
+   0A00 DD 6E FC      [19] 1619 	ld	l,-4 (ix)
+   0A03 DD 66 FD      [19] 1620 	ld	h,-3 (ix)
+   0A06 E5            [11] 1621 	push	hl
+   0A07 CDr00r00      [17] 1622 	call	_fat_open_file
+   0A0A F1            [10] 1623 	pop	af
+   0A0B F1            [10] 1624 	pop	af
+                           1625 ;os_msed.c:480: if (resp)return resp;
+   0A0C DD 75 F8      [19] 1626 	ld	-8 (ix), l
+   0A0F 7D            [ 4] 1627 	ld	a, l
+   0A10 B7            [ 4] 1628 	or	a, a
+   0A11 28 06         [12] 1629 	jr	Z,00109$
+   0A13 DD 6E F8      [19] 1630 	ld	l,-8 (ix)
+   0A16 C3r2Br0B      [10] 1631 	jp	00123$
+   0A19                    1632 00109$:
+                           1633 ;os_msed.c:482: if ((file.sec_available & 1) != 0) {
+   0A19 2Ar0Cr00      [16] 1634 	ld	hl, (#(_file + 0x000c) + 0)
+   0A1C CB 45         [ 8] 1635 	bit	0, l
+   0A1E 28 15         [12] 1636 	jr	Z,00113$
+                           1637 ;os_msed.c:483: resp = fat_skip_sectors(1);
+   0A20 21 01 00      [10] 1638 	ld	hl,#0x0001
+   0A23 E5            [11] 1639 	push	hl
+   0A24 CDr00r00      [17] 1640 	call	_fat_skip_sectors
+   0A27 F1            [10] 1641 	pop	af
+                           1642 ;os_msed.c:484: if (resp)return resp;
+   0A28 DD 75 F8      [19] 1643 	ld	-8 (ix), l
+   0A2B 7D            [ 4] 1644 	ld	a, l
+   0A2C B7            [ 4] 1645 	or	a, a
+   0A2D 28 06         [12] 1646 	jr	Z,00113$
+   0A2F DD 6E F8      [19] 1647 	ld	l,-8 (ix)
+   0A32 C3r2Br0B      [10] 1648 	jp	00123$
+   0A35                    1649 00113$:
+                           1650 ;os_msed.c:487: err_len = file.sec_available / 128;
+   0A35 2Ar0Cr00      [16] 1651 	ld	hl, (#(_file + 0x000c) + 0)
+   0A38 5D            [ 4] 1652 	ld	e, l
+   0A39 54            [ 4] 1653 	ld	d, h
+   0A3A CB 3A         [ 8] 1654 	srl	d
+   0A3C CB 1B         [ 8] 1655 	rr	e
+   0A3E CB 3A         [ 8] 1656 	srl	d
+   0A40 CB 1B         [ 8] 1657 	rr	e
+   0A42 CB 3A         [ 8] 1658 	srl	d
+   0A44 CB 1B         [ 8] 1659 	rr	e
+   0A46 CB 3A         [ 8] 1660 	srl	d
+   0A48 CB 1B         [ 8] 1661 	rr	e
+   0A4A CB 3A         [ 8] 1662 	srl	d
+   0A4C CB 1B         [ 8] 1663 	rr	e
+   0A4E CB 3A         [ 8] 1664 	srl	d
+   0A50 CB 1B         [ 8] 1665 	rr	e
+   0A52 CB 3A         [ 8] 1666 	srl	d
+   0A54 CB 1B         [ 8] 1667 	rr	e
+                           1668 ;os_msed.c:488: if ((file.sec_available & 127) != 0)err_len++;
+   0A56 7D            [ 4] 1669 	ld	a,l
+   0A57 E6 7F         [ 7] 1670 	and	a, #0x7F
+   0A59 28 01         [12] 1671 	jr	Z,00115$
+   0A5B 1C            [ 4] 1672 	inc	e
+   0A5C                    1673 00115$:
+                           1674 ;os_msed.c:490: gConsPrint("Apagando...");
+   0A5C 21r8Cr0B      [10] 1675 	ld	hl,#__str_49
+   0A5F D5            [11] 1676 	push	de
+   0A60 E5            [11] 1677 	push	hl
+   0A61 CDr00r00      [17] 1678 	call	_gConsPrint
+   0A64 F1            [10] 1679 	pop	af
+   0A65 CDr00r00      [17] 1680 	call	_gRepaint
+   0A68 D1            [10] 1681 	pop	de
+                           1682 ;os_msed.c:492: bi_flash_erase(0, err_len);
+   0A69 16 00         [ 7] 1683 	ld	d,#0x00
+   0A6B D5            [11] 1684 	push	de
+   0A6C 21 00 00      [10] 1685 	ld	hl,#0x0000
+   0A6F E5            [11] 1686 	push	hl
+   0A70 21 00 00      [10] 1687 	ld	hl,#0x0000
+   0A73 E5            [11] 1688 	push	hl
+   0A74 CDr00r00      [17] 1689 	call	_bi_flash_erase
+   0A77 21 06 00      [10] 1690 	ld	hl,#0x0006
+   0A7A 39            [11] 1691 	add	hl,sp
+   0A7B F9            [ 6] 1692 	ld	sp,hl
+                           1693 ;os_msed.c:494: gConsPrint("Escrevendo.");
+   0A7C 21r98r0B      [10] 1694 	ld	hl,#__str_50
+   0A7F E5            [11] 1695 	push	hl
+   0A80 CDr00r00      [17] 1696 	call	_gConsPrint
+   0A83 F1            [10] 1697 	pop	af
+                           1698 ;os_msed.c:495: gRepaint();
+   0A84 CDr00r00      [17] 1699 	call	_gRepaint
+                           1700 ;os_msed.c:496: addr = 0;
+   0A87 21 00 00      [10] 1701 	ld	hl,#0x0000
+   0A8A E3            [19] 1702 	ex	(sp), hl
+                           1703 ;os_msed.c:497: while (file.sec_available) {
+   0A8B                    1704 00118$:
+   0A8B 21r0Cr00      [10] 1705 	ld	hl, #(_file + 0x000c) + 0
+   0A8E 7E            [ 7] 1706 	ld	a,(hl)
+   0A8F DD 77 FE      [19] 1707 	ld	-2 (ix),a
+   0A92 23            [ 6] 1708 	inc	hl
+   0A93 7E            [ 7] 1709 	ld	a,(hl)
+   0A94 DD 77 FF      [19] 1710 	ld	-1 (ix), a
+   0A97 DD B6 FE      [19] 1711 	or	a,-2 (ix)
+   0A9A 28 51         [12] 1712 	jr	Z,00120$
+                           1713 ;os_msed.c:498: slen = file.sec_available > 128 ? 128 : file.sec_available;
+   0A9C 3E 80         [ 7] 1714 	ld	a,#0x80
+   0A9E DD BE FE      [19] 1715 	cp	a, -2 (ix)
+   0AA1 3E 00         [ 7] 1716 	ld	a,#0x00
+   0AA3 DD 9E FF      [19] 1717 	sbc	a, -1 (ix)
+   0AA6 30 0A         [12] 1718 	jr	NC,00125$
+   0AA8 DD 36 FA 80   [19] 1719 	ld	-6 (ix),#0x80
+   0AAC DD 36 FB 00   [19] 1720 	ld	-5 (ix),#0x00
+   0AB0 18 0C         [12] 1721 	jr	00126$
+   0AB2                    1722 00125$:
+   0AB2 DD 7E FE      [19] 1723 	ld	a,-2 (ix)
+   0AB5 DD 77 FA      [19] 1724 	ld	-6 (ix),a
+   0AB8 DD 7E FF      [19] 1725 	ld	a,-1 (ix)
+   0ABB DD 77 FB      [19] 1726 	ld	-5 (ix),a
+   0ABE                    1727 00126$:
+   0ABE DD 5E FA      [19] 1728 	ld	e,-6 (ix)
+                           1729 ;os_msed.c:499: resp = fat_read((u8*) & addr, slen, ROM);
+   0AC1 16 00         [ 7] 1730 	ld	d,#0x00
+   0AC3 21 00 00      [10] 1731 	ld	hl,#0x0000
+   0AC6 39            [11] 1732 	add	hl,sp
+   0AC7 4D            [ 4] 1733 	ld	c, l
+   0AC8 44            [ 4] 1734 	ld	b, h
+   0AC9 AF            [ 4] 1735 	xor	a, a
+   0ACA F5            [11] 1736 	push	af
+   0ACB 33            [ 6] 1737 	inc	sp
+   0ACC D5            [11] 1738 	push	de
+   0ACD C5            [11] 1739 	push	bc
+   0ACE CDr00r00      [17] 1740 	call	_fat_read
+   0AD1 F1            [10] 1741 	pop	af
+   0AD2 F1            [10] 1742 	pop	af
+   0AD3 33            [ 6] 1743 	inc	sp
+                           1744 ;os_msed.c:500: if (resp)return resp;
+   0AD4 DD 75 F8      [19] 1745 	ld	-8 (ix), l
+   0AD7 7D            [ 4] 1746 	ld	a, l
+   0AD8 B7            [ 4] 1747 	or	a, a
+   0AD9 28 05         [12] 1748 	jr	Z,00117$
+   0ADB DD 6E F8      [19] 1749 	ld	l,-8 (ix)
+   0ADE 18 4B         [12] 1750 	jr	00123$
+   0AE0                    1751 00117$:
+                           1752 ;os_msed.c:501: gAppendChar((u8) '.');
+   0AE0 3E 2E         [ 7] 1753 	ld	a,#0x2E
+   0AE2 F5            [11] 1754 	push	af
+   0AE3 33            [ 6] 1755 	inc	sp
+   0AE4 CDr00r00      [17] 1756 	call	_gAppendChar
+   0AE7 33            [ 6] 1757 	inc	sp
+                           1758 ;os_msed.c:502: gRepaint();
+   0AE8 CDr00r00      [17] 1759 	call	_gRepaint
+   0AEB 18 9E         [12] 1760 	jr	00118$
+   0AED                    1761 00120$:
+                           1762 ;os_msed.c:505: bi_set_ram_bank(1);
+   0AED 3E 01         [ 7] 1763 	ld	a,#0x01
+   0AEF F5            [11] 1764 	push	af
+   0AF0 33            [ 6] 1765 	inc	sp
+   0AF1 CDr00r00      [17] 1766 	call	_bi_set_ram_bank
+   0AF4 33            [ 6] 1767 	inc	sp
+                           1768 ;os_msed.c:506: str_copy(rec->name, rom_inf->file_name);
+   0AF5 2Ar86r11      [16] 1769 	ld	hl,(_rom_inf)
+   0AF8 E5            [11] 1770 	push	hl
+   0AF9 DD 6E FC      [19] 1771 	ld	l,-4 (ix)
+   0AFC DD 66 FD      [19] 1772 	ld	h,-3 (ix)
+   0AFF E5            [11] 1773 	push	hl
+   0B00 CDr00r00      [17] 1774 	call	_str_copy
+   0B03 F1            [10] 1775 	pop	af
+                           1776 ;os_msed.c:507: bi_set_rom_bank(1);
+   0B04 26 01         [ 7] 1777 	ld	h,#0x01
+   0B06 E3            [19] 1778 	ex	(sp),hl
+   0B07 33            [ 6] 1779 	inc	sp
+   0B08 CDr00r00      [17] 1780 	call	_bi_set_rom_bank
+   0B0B 33            [ 6] 1781 	inc	sp
+                           1782 ;os_msed.c:508: resp = osLoadSram();
+   0B0C CDrE7r0D      [17] 1783 	call	_osLoadSram
+                           1784 ;os_msed.c:509: if (resp)return resp;
+   0B0F DD 75 F8      [19] 1785 	ld	-8 (ix), l
+   0B12 7D            [ 4] 1786 	ld	a, l
+   0B13 B7            [ 4] 1787 	or	a, a
+   0B14 28 05         [12] 1788 	jr	Z,00122$
+   0B16 DD 6E F8      [19] 1789 	ld	l,-8 (ix)
+   0B19 18 10         [12] 1790 	jr	00123$
+   0B1B                    1791 00122$:
+                           1792 ;os_msed.c:511: osSetRomCfg(rec->name);
+   0B1B DD 6E FC      [19] 1793 	ld	l,-4 (ix)
+   0B1E DD 66 FD      [19] 1794 	ld	h,-3 (ix)
+   0B21 E5            [11] 1795 	push	hl
+   0B22 CDr1Er08      [17] 1796 	call	_osSetRomCfg
+   0B25 F1            [10] 1797 	pop	af
+                           1798 ;os_msed.c:516: gRepaint();
+   0B26 CDr00r00      [17] 1799 	call	_gRepaint
+                           1800 ;os_msed.c:519: return 0;
+   0B29 2E 00         [ 7] 1801 	ld	l,#0x00
+   0B2B                    1802 00123$:
+   0B2B DD F9         [10] 1803 	ld	sp,ix
+   0B2D DD E1         [14] 1804 	pop	ix
+   0B2F C9            [10] 1805 	ret
+   0B30                    1806 _osSelectGame_end::
+   0B30                    1807 __str_44:
+   0B30 00                 1808 	.db 0x00
+   0B31                    1809 __str_45:
+   0B31 21 21 4E 41 4F 20  1810 	.ascii "!!NAO DESLIGUE!!"
+        44 45 53 4C 49 47
+        55 45 21 21
+   0B41 00                 1811 	.db 0x00
+   0B42                    1812 __str_46:
+   0B42 2D 2D 2D 2D 2D 2D  1813 	.ascii "-------------------"
+        2D 2D 2D 2D 2D 2D
+        2D 2D 2D 2D 2D 2D
+        2D
+   0B55 00                 1814 	.db 0x00
+   0B56                    1815 __str_47:
+   0B56 21 4E 41 4F 20 44  1816 	.ascii "!NAO DESLIGUE O CONSOLE!"
+        45 53 4C 49 47 55
+        45 20 4F 20 43 4F
+        4E 53 4F 4C 45 21
+   0B6E 00                 1817 	.db 0x00
+   0B6F                    1818 __str_48:
+   0B6F 2D 2D 2D 2D 2D 2D  1819 	.ascii "----------------------------"
+        2D 2D 2D 2D 2D 2D
+        2D 2D 2D 2D 2D 2D
+        2D 2D 2D 2D 2D 2D
+        2D 2D 2D 2D
+   0B8B 00                 1820 	.db 0x00
+   0B8C                    1821 __str_49:
+   0B8C 41 70 61 67 61 6E  1822 	.ascii "Apagando..."
+        64 6F 2E 2E 2E
+   0B97 00                 1823 	.db 0x00
+   0B98                    1824 __str_50:
+   0B98 45 73 63 72 65 76  1825 	.ascii "Escrevendo."
+        65 6E 64 6F 2E
+   0BA3 00                 1826 	.db 0x00
+                           1827 ;os_msed.c:522: u8 _osSaveSram(FatFullRecord *rec) {
+                           1828 ;	---------------------------------
+                           1829 ; Function _osSaveSram
+                           1830 ; ---------------------------------
+   0BA4                    1831 __osSaveSram_start::
+   0BA4                    1832 __osSaveSram:
+   0BA4 DD E5         [15] 1833 	push	ix
+   0BA6 DD 21 00 00   [14] 1834 	ld	ix,#0
+   0BAA DD 39         [15] 1835 	add	ix,sp
+   0BAC F5            [11] 1836 	push	af
+                           1837 ;os_msed.c:528: bi_set_ram_bank(1);
+   0BAD 3E 01         [ 7] 1838 	ld	a,#0x01
+   0BAF F5            [11] 1839 	push	af
+   0BB0 33            [ 6] 1840 	inc	sp
+   0BB1 CDr00r00      [17] 1841 	call	_bi_set_ram_bank
+   0BB4 33            [ 6] 1842 	inc	sp
+                           1843 ;os_msed.c:529: if (rom_inf->file_name[0] == 0)return 0;
+   0BB5 2Ar86r11      [16] 1844 	ld	hl,(_rom_inf)
+   0BB8 7E            [ 7] 1845 	ld	a, (hl)
+   0BB9 B7            [ 4] 1846 	or	a,a
+   0BBA 20 04         [12] 1847 	jr	NZ,00102$
+   0BBC 6F            [ 4] 1848 	ld	l,a
+   0BBD C3rBAr0C      [10] 1849 	jp	00118$
+   0BC0                    1850 00102$:
+                           1851 ;os_msed.c:531: bi_set_ram_bank(0);
+   0BC0 AF            [ 4] 1852 	xor	a, a
+   0BC1 F5            [11] 1853 	push	af
+   0BC2 33            [ 6] 1854 	inc	sp
+   0BC3 CDr00r00      [17] 1855 	call	_bi_set_ram_bank
+   0BC6 33            [ 6] 1856 	inc	sp
+                           1857 ;os_msed.c:532: for (i = 0; i < OS_SAVE_FILE_SIZE; i++) {
+   0BC7 01 00 00      [10] 1858 	ld	bc,#0x0000
+   0BCA 21 00 80      [10] 1859 	ld	hl,#0x8000
+   0BCD                    1860 00116$:
+                           1861 ;os_msed.c:533: if (*sram_ptr++ != OS_EMPTY_RAM_BYTE)break;
+   0BCD 7E            [ 7] 1862 	ld	a,(hl)
+   0BCE 23            [ 6] 1863 	inc	hl
+   0BCF B7            [ 4] 1864 	or	a, a
+   0BD0 20 06         [12] 1865 	jr	NZ,00105$
+                           1866 ;os_msed.c:532: for (i = 0; i < OS_SAVE_FILE_SIZE; i++) {
+   0BD2 03            [ 6] 1867 	inc	bc
+   0BD3 78            [ 4] 1868 	ld	a,b
+   0BD4 E6 C0         [ 7] 1869 	and	a, #0xC0
+   0BD6 28 F5         [12] 1870 	jr	Z,00116$
+   0BD8                    1871 00105$:
+                           1872 ;os_msed.c:537: if (i == OS_SAVE_FILE_SIZE)return 0;
+   0BD8 79            [ 4] 1873 	ld	a,c
+   0BD9 B7            [ 4] 1874 	or	a, a
+   0BDA 20 09         [12] 1875 	jr	NZ,00107$
+   0BDC 78            [ 4] 1876 	ld	a,b
+   0BDD D6 40         [ 7] 1877 	sub	a,#0x40
+   0BDF 20 04         [12] 1878 	jr	NZ,00107$
+   0BE1 6F            [ 4] 1879 	ld	l,a
+   0BE2 C3rBAr0C      [10] 1880 	jp	00118$
+   0BE5                    1881 00107$:
+                           1882 ;os_msed.c:539: gConsPrint("Salvando dados da RAM...");
+   0BE5 21rBFr0C      [10] 1883 	ld	hl,#__str_51
+   0BE8 E5            [11] 1884 	push	hl
+   0BE9 CDr00r00      [17] 1885 	call	_gConsPrint
+   0BEC F1            [10] 1886 	pop	af
+                           1887 ;os_msed.c:540: gRepaint();
+   0BED CDr00r00      [17] 1888 	call	_gRepaint
+                           1889 ;os_msed.c:542: bi_set_ram_bank(1);
+   0BF0 3E 01         [ 7] 1890 	ld	a,#0x01
+   0BF2 F5            [11] 1891 	push	af
+   0BF3 33            [ 6] 1892 	inc	sp
+   0BF4 CDr00r00      [17] 1893 	call	_bi_set_ram_bank
+   0BF7 33            [ 6] 1894 	inc	sp
+                           1895 ;os_msed.c:529: if (rom_inf->file_name[0] == 0)return 0;
+   0BF8 ED 5Br86r11   [20] 1896 	ld	de,(_rom_inf)
+                           1897 ;os_msed.c:543: fat_make_sync_name(SAVE_DIR, rom_inf->file_name, "srm", rom_inf->sync_name);
+   0BFC 21 00 01      [10] 1898 	ld	hl,#0x0100
+   0BFF 19            [11] 1899 	add	hl,de
+   0C00 4D            [ 4] 1900 	ld	c,l
+   0C01 44            [ 4] 1901 	ld	b,h
+   0C02 21rD8r0C      [10] 1902 	ld	hl,#__str_52
+   0C05 C5            [11] 1903 	push	bc
+   0C06 01rDEr0C      [10] 1904 	ld	bc,#__str_53
+   0C09 C5            [11] 1905 	push	bc
+   0C0A D5            [11] 1906 	push	de
+   0C0B E5            [11] 1907 	push	hl
+   0C0C CDr00r00      [17] 1908 	call	_fat_make_sync_name
+   0C0F 21 08 00      [10] 1909 	ld	hl,#0x0008
+   0C12 39            [11] 1910 	add	hl,sp
+   0C13 F9            [ 6] 1911 	ld	sp,hl
+                           1912 ;os_msed.c:546: resp = fat_open_file_by_name(rom_inf->sync_name, rec, OS_SAVE_FILE_SIZE / 512);
+   0C14 2Ar86r11      [16] 1913 	ld	hl,(_rom_inf)
+   0C17 01 00 01      [10] 1914 	ld	bc,#0x0100
+   0C1A 09            [11] 1915 	add	hl,bc
+   0C1B 01 20 00      [10] 1916 	ld	bc,#0x0020
+   0C1E C5            [11] 1917 	push	bc
+   0C1F DD 4E 04      [19] 1918 	ld	c,4 (ix)
+   0C22 DD 46 05      [19] 1919 	ld	b,5 (ix)
+   0C25 C5            [11] 1920 	push	bc
+   0C26 E5            [11] 1921 	push	hl
+   0C27 CDr00r00      [17] 1922 	call	_fat_open_file_by_name
+   0C2A F1            [10] 1923 	pop	af
+   0C2B F1            [10] 1924 	pop	af
+   0C2C F1            [10] 1925 	pop	af
+   0C2D DD 75 FE      [19] 1926 	ld	-2 (ix),l
+   0C30 DD 36 FF 00   [19] 1927 	ld	-1 (ix),#0x00
+                           1928 ;os_msed.c:548: if (resp == FAT_ERR_PATH_NOT_EXIST) {
+   0C34 DD 7E FE      [19] 1929 	ld	a,-2 (ix)
+   0C37 D6 FA         [ 7] 1930 	sub	a, #0xFA
+   0C39 20 49         [12] 1931 	jr	NZ,00111$
+   0C3B DD 7E FF      [19] 1932 	ld	a,-1 (ix)
+   0C3E B7            [ 4] 1933 	or	a, a
+   0C3F 20 43         [12] 1934 	jr	NZ,00111$
+                           1935 ;os_msed.c:549: resp = fat_make_dir(rec, SAVE_DIR);
+   0C41 21rD8r0C      [10] 1936 	ld	hl,#__str_52
+   0C44 E5            [11] 1937 	push	hl
+   0C45 DD 6E 04      [19] 1938 	ld	l,4 (ix)
+   0C48 DD 66 05      [19] 1939 	ld	h,5 (ix)
+   0C4B E5            [11] 1940 	push	hl
+   0C4C CDr00r00      [17] 1941 	call	_fat_make_dir
+   0C4F F1            [10] 1942 	pop	af
+   0C50 F1            [10] 1943 	pop	af
+   0C51 DD 75 FE      [19] 1944 	ld	-2 (ix),l
+                           1945 ;os_msed.c:550: if (resp)return resp;
+   0C54 DD 36 FF 00   [19] 1946 	ld	-1 (ix), #0x00
+   0C58 3E 00         [ 7] 1947 	ld	a, #0x00
+   0C5A DD B6 FE      [19] 1948 	or	a,-2 (ix)
+   0C5D 28 05         [12] 1949 	jr	Z,00109$
+   0C5F DD 6E FE      [19] 1950 	ld	l,-2 (ix)
+   0C62 18 56         [12] 1951 	jr	00118$
+   0C64                    1952 00109$:
+                           1953 ;os_msed.c:551: resp = fat_open_file_by_name(rom_inf->sync_name, rec, OS_SAVE_FILE_SIZE / 512);
+   0C64 2Ar86r11      [16] 1954 	ld	hl,(_rom_inf)
+   0C67 01 00 01      [10] 1955 	ld	bc,#0x0100
+   0C6A 09            [11] 1956 	add	hl,bc
+   0C6B 01 20 00      [10] 1957 	ld	bc,#0x0020
+   0C6E C5            [11] 1958 	push	bc
+   0C6F DD 4E 04      [19] 1959 	ld	c,4 (ix)
+   0C72 DD 46 05      [19] 1960 	ld	b,5 (ix)
+   0C75 C5            [11] 1961 	push	bc
+   0C76 E5            [11] 1962 	push	hl
+   0C77 CDr00r00      [17] 1963 	call	_fat_open_file_by_name
+   0C7A F1            [10] 1964 	pop	af
+   0C7B F1            [10] 1965 	pop	af
+   0C7C F1            [10] 1966 	pop	af
+   0C7D DD 75 FE      [19] 1967 	ld	-2 (ix),l
+   0C80 DD 36 FF 00   [19] 1968 	ld	-1 (ix),#0x00
+   0C84                    1969 00111$:
+                           1970 ;os_msed.c:553: if (resp)return resp;
+   0C84 DD 7E FF      [19] 1971 	ld	a,-1 (ix)
+   0C87 DD B6 FE      [19] 1972 	or	a,-2 (ix)
+   0C8A 28 05         [12] 1973 	jr	Z,00113$
+   0C8C DD 6E FE      [19] 1974 	ld	l,-2 (ix)
+   0C8F 18 29         [12] 1975 	jr	00118$
+   0C91                    1976 00113$:
+                           1977 ;os_msed.c:556: bi_set_ram_bank(0);
+   0C91 AF            [ 4] 1978 	xor	a, a
+   0C92 F5            [11] 1979 	push	af
+   0C93 33            [ 6] 1980 	inc	sp
+   0C94 CDr00r00      [17] 1981 	call	_bi_set_ram_bank
+   0C97 33            [ 6] 1982 	inc	sp
+                           1983 ;os_msed.c:557: resp = fat_write_file(sram_ptr, OS_SAVE_FILE_SIZE / 512);
+   0C98 21 20 00      [10] 1984 	ld	hl,#0x0020
+   0C9B E5            [11] 1985 	push	hl
+   0C9C 21 00 80      [10] 1986 	ld	hl,#0x8000
+   0C9F E5            [11] 1987 	push	hl
+   0CA0 CDr00r00      [17] 1988 	call	_fat_write_file
+   0CA3 F1            [10] 1989 	pop	af
+   0CA4 F1            [10] 1990 	pop	af
+   0CA5 DD 75 FE      [19] 1991 	ld	-2 (ix),l
+                           1992 ;os_msed.c:558: if (resp)return resp;
+   0CA8 DD 36 FF 00   [19] 1993 	ld	-1 (ix), #0x00
+   0CAC 3E 00         [ 7] 1994 	ld	a, #0x00
+   0CAE DD B6 FE      [19] 1995 	or	a,-2 (ix)
+   0CB1 28 05         [12] 1996 	jr	Z,00115$
+   0CB3 DD 6E FE      [19] 1997 	ld	l,-2 (ix)
+   0CB6 18 02         [12] 1998 	jr	00118$
+   0CB8                    1999 00115$:
+                           2000 ;os_msed.c:561: return 0;
+   0CB8 2E 00         [ 7] 2001 	ld	l,#0x00
+   0CBA                    2002 00118$:
+   0CBA DD F9         [10] 2003 	ld	sp,ix
+   0CBC DD E1         [14] 2004 	pop	ix
+   0CBE C9            [10] 2005 	ret
+   0CBF                    2006 __osSaveSram_end::
+   0CBF                    2007 __str_51:
+   0CBF 53 61 6C 76 61 6E  2008 	.ascii "Salvando dados da RAM..."
+        64 6F 20 64 61 64
+        6F 73 20 64 61 20
+        52 41 4D 2E 2E 2E
+   0CD7 00                 2009 	.db 0x00
+   0CD8                    2010 __str_52:
+   0CD8 2F 53 41 56 45     2011 	.ascii "/SAVE"
+   0CDD 00                 2012 	.db 0x00
+   0CDE                    2013 __str_53:
+   0CDE 73 72 6D           2014 	.ascii "srm"
+   0CE1 00                 2015 	.db 0x00
+                           2016 ;os_msed.c:564: u8 osSaveSram() {
+                           2017 ;	---------------------------------
+                           2018 ; Function osSaveSram
+                           2019 ; ---------------------------------
+   0CE2                    2020 _osSaveSram_start::
+   0CE2                    2021 _osSaveSram:
+                           2022 ;os_msed.c:567: FatFullRecord *rec = (FatFullRecord *) osMallocRam(sizeof (FatFullRecord));
+   0CE2 21 E5 00      [10] 2023 	ld	hl,#0x00E5
+   0CE5 E5            [11] 2024 	push	hl
+   0CE6 CDr8Cr03      [17] 2025 	call	_osMallocRam
+                           2026 ;os_msed.c:568: resp = _osSaveSram(rec);
+   0CE9 E3            [19] 2027 	ex	(sp),hl
+   0CEA CDrA4r0B      [17] 2028 	call	__osSaveSram
+                           2029 ;os_msed.c:569: osReleaseRam(sizeof (FatFullRecord));
+   0CED E3            [19] 2030 	ex	(sp),hl
+   0CEE 01 E5 00      [10] 2031 	ld	bc,#0x00E5
+   0CF1 C5            [11] 2032 	push	bc
+   0CF2 CDrCBr03      [17] 2033 	call	_osReleaseRam
+   0CF5 26 01         [ 7] 2034 	ld	h,#0x01
+   0CF7 E3            [19] 2035 	ex	(sp),hl
+   0CF8 33            [ 6] 2036 	inc	sp
+   0CF9 CDr00r00      [17] 2037 	call	_bi_set_rom_bank
+   0CFC 33            [ 6] 2038 	inc	sp
+   0CFD E1            [10] 2039 	pop	hl
+                           2040 ;os_msed.c:572: return resp;
+   0CFE C9            [10] 2041 	ret
+   0CFF                    2042 _osSaveSram_end::
+                           2043 ;os_msed.c:575: u8 _osLoadSram(FatFullRecord *rec) {
+                           2044 ;	---------------------------------
+                           2045 ; Function _osLoadSram
+                           2046 ; ---------------------------------
+   0CFF                    2047 __osLoadSram_start::
+   0CFF                    2048 __osLoadSram:
+   0CFF DD E5         [15] 2049 	push	ix
+   0D01 DD 21 00 00   [14] 2050 	ld	ix,#0
+   0D05 DD 39         [15] 2051 	add	ix,sp
+   0D07 F5            [11] 2052 	push	af
+   0D08 F5            [11] 2053 	push	af
+                           2054 ;os_msed.c:580: osCLeanGameSram();
+   0D09 C5            [11] 2055 	push	bc
+   0D0A CDr04r0E      [17] 2056 	call	_osCLeanGameSram
+   0D0D 3E 01         [ 7] 2057 	ld	a,#0x01
+   0D0F F5            [11] 2058 	push	af
+   0D10 33            [ 6] 2059 	inc	sp
+   0D11 CDr00r00      [17] 2060 	call	_bi_set_ram_bank
+   0D14 33            [ 6] 2061 	inc	sp
+   0D15 C1            [10] 2062 	pop	bc
+                           2063 ;os_msed.c:584: fat_make_sync_name(SAVE_DIR, rom_inf->file_name, "srm", rom_inf->sync_name);
+   0D16 ED 5Br86r11   [20] 2064 	ld	de,(_rom_inf)
+   0D1A FD 21 00 01   [14] 2065 	ld	iy,#0x0100
+   0D1E FD 19         [15] 2066 	add	iy, de
+   0D20 C5            [11] 2067 	push	bc
+   0D21 FD E5         [15] 2068 	push	iy
+   0D23 21rD2r0D      [10] 2069 	ld	hl,#__str_55
+   0D26 E5            [11] 2070 	push	hl
+   0D27 D5            [11] 2071 	push	de
+   0D28 21rCCr0D      [10] 2072 	ld	hl,#__str_54
+   0D2B E5            [11] 2073 	push	hl
+   0D2C CDr00r00      [17] 2074 	call	_fat_make_sync_name
+   0D2F 21 08 00      [10] 2075 	ld	hl,#0x0008
+   0D32 39            [11] 2076 	add	hl,sp
+   0D33 F9            [ 6] 2077 	ld	sp,hl
+   0D34 C1            [10] 2078 	pop	bc
+                           2079 ;os_msed.c:587: resp = fat_open_file_by_name(rom_inf->sync_name, rec, 0);
+   0D35 2Ar86r11      [16] 2080 	ld	hl,(_rom_inf)
+   0D38 11 00 01      [10] 2081 	ld	de,#0x0100
+   0D3B 19            [11] 2082 	add	hl,de
+   0D3C C5            [11] 2083 	push	bc
+   0D3D 11 00 00      [10] 2084 	ld	de,#0x0000
+   0D40 D5            [11] 2085 	push	de
+   0D41 DD 5E 04      [19] 2086 	ld	e,4 (ix)
+   0D44 DD 56 05      [19] 2087 	ld	d,5 (ix)
+   0D47 D5            [11] 2088 	push	de
+   0D48 E5            [11] 2089 	push	hl
+   0D49 CDr00r00      [17] 2090 	call	_fat_open_file_by_name
+   0D4C F1            [10] 2091 	pop	af
+   0D4D F1            [10] 2092 	pop	af
+   0D4E F1            [10] 2093 	pop	af
+   0D4F C1            [10] 2094 	pop	bc
+   0D50 4D            [ 4] 2095 	ld	c,l
+   0D51 06 00         [ 7] 2096 	ld	b,#0x00
+                           2097 ;os_msed.c:588: if (resp == FAT_ERR_NOT_EXIST)return 0;
+   0D53 79            [ 4] 2098 	ld	a,c
+   0D54 D6 F0         [ 7] 2099 	sub	a,#0xF0
+   0D56 20 06         [12] 2100 	jr	NZ,00102$
+   0D58 B0            [ 4] 2101 	or	a,b
+   0D59 20 03         [12] 2102 	jr	NZ,00102$
+   0D5B 6F            [ 4] 2103 	ld	l,a
+   0D5C 18 69         [12] 2104 	jr	00109$
+   0D5E                    2105 00102$:
+                           2106 ;os_msed.c:589: if (resp)return resp;
+   0D5E 78            [ 4] 2107 	ld	a,b
+   0D5F B1            [ 4] 2108 	or	a,c
+   0D60 28 03         [12] 2109 	jr	Z,00104$
+   0D62 69            [ 4] 2110 	ld	l,c
+   0D63 18 62         [12] 2111 	jr	00109$
+   0D65                    2112 00104$:
+                           2113 ;os_msed.c:591: gConsPrint("Load save RAM...");
+   0D65 21rD6r0D      [10] 2114 	ld	hl,#__str_56
+   0D68 C5            [11] 2115 	push	bc
+   0D69 E5            [11] 2116 	push	hl
+   0D6A CDr00r00      [17] 2117 	call	_gConsPrint
+   0D6D F1            [10] 2118 	pop	af
+   0D6E CDr00r00      [17] 2119 	call	_gRepaint
+   0D71 C1            [10] 2120 	pop	bc
+                           2121 ;os_msed.c:594: size = OS_SAVE_FILE_SIZE / 512;
+   0D72 DD 36 FC 20   [19] 2122 	ld	-4 (ix),#0x20
+   0D76 AF            [ 4] 2123 	xor	a, a
+   0D77 DD 77 FD      [19] 2124 	ld	-3 (ix),a
+   0D7A DD 77 FE      [19] 2125 	ld	-2 (ix),a
+   0D7D DD 77 FF      [19] 2126 	ld	-1 (ix),a
+                           2127 ;os_msed.c:595: if (size > file.sec_available)size = file.sec_available;
+   0D80 2Ar0Cr00      [16] 2128 	ld	hl, (#_file + 12)
+   0D83 11 00 00      [10] 2129 	ld	de,#0x0000
+   0D86 7D            [ 4] 2130 	ld	a,l
+   0D87 D6 20         [ 7] 2131 	sub	a, #0x20
+   0D89 7C            [ 4] 2132 	ld	a,h
+   0D8A DE 00         [ 7] 2133 	sbc	a, #0x00
+   0D8C 7A            [ 4] 2134 	ld	a,d
+   0D8D DE 00         [ 7] 2135 	sbc	a, #0x00
+   0D8F 7B            [ 4] 2136 	ld	a,e
+   0D90 DE 00         [ 7] 2137 	sbc	a, #0x00
+   0D92 30 0C         [12] 2138 	jr	NC,00106$
+   0D94 DD 75 FC      [19] 2139 	ld	-4 (ix),l
+   0D97 DD 74 FD      [19] 2140 	ld	-3 (ix),h
+   0D9A DD 72 FE      [19] 2141 	ld	-2 (ix),d
+   0D9D DD 73 FF      [19] 2142 	ld	-1 (ix),e
+   0DA0                    2143 00106$:
+                           2144 ;os_msed.c:597: bi_set_ram_bank(0);
+   0DA0 C5            [11] 2145 	push	bc
+   0DA1 AF            [ 4] 2146 	xor	a, a
+   0DA2 F5            [11] 2147 	push	af
+   0DA3 33            [ 6] 2148 	inc	sp
+   0DA4 CDr00r00      [17] 2149 	call	_bi_set_ram_bank
+   0DA7 33            [ 6] 2150 	inc	sp
+   0DA8 C1            [10] 2151 	pop	bc
+                           2152 ;os_msed.c:598: resp = fat_read((void *) 0x8000, size, RAM);
+   0DA9 D1            [10] 2153 	pop	de
+   0DAA D5            [11] 2154 	push	de
+   0DAB C5            [11] 2155 	push	bc
+   0DAC 3E 01         [ 7] 2156 	ld	a,#0x01
+   0DAE F5            [11] 2157 	push	af
+   0DAF 33            [ 6] 2158 	inc	sp
+   0DB0 D5            [11] 2159 	push	de
+   0DB1 21 00 80      [10] 2160 	ld	hl,#0x8000
+   0DB4 E5            [11] 2161 	push	hl
+   0DB5 CDr00r00      [17] 2162 	call	_fat_read
+   0DB8 F1            [10] 2163 	pop	af
+   0DB9 F1            [10] 2164 	pop	af
+   0DBA 33            [ 6] 2165 	inc	sp
+   0DBB C1            [10] 2166 	pop	bc
+   0DBC 4D            [ 4] 2167 	ld	c,l
+                           2168 ;os_msed.c:599: if (resp)return resp;
+   0DBD 3E 00         [ 7] 2169 	ld	a, #0x00
+   0DBF B1            [ 4] 2170 	or	a,c
+   0DC0 28 03         [12] 2171 	jr	Z,00108$
+   0DC2 69            [ 4] 2172 	ld	l,c
+   0DC3 18 02         [12] 2173 	jr	00109$
+   0DC5                    2174 00108$:
+                           2175 ;os_msed.c:601: return 0;
+   0DC5 2E 00         [ 7] 2176 	ld	l,#0x00
+   0DC7                    2177 00109$:
+   0DC7 DD F9         [10] 2178 	ld	sp,ix
+   0DC9 DD E1         [14] 2179 	pop	ix
+   0DCB C9            [10] 2180 	ret
+   0DCC                    2181 __osLoadSram_end::
+   0DCC                    2182 __str_54:
+   0DCC 2F 53 41 56 45     2183 	.ascii "/SAVE"
+   0DD1 00                 2184 	.db 0x00
+   0DD2                    2185 __str_55:
+   0DD2 73 72 6D           2186 	.ascii "srm"
+   0DD5 00                 2187 	.db 0x00
+   0DD6                    2188 __str_56:
+   0DD6 4C 6F 61 64 20 73  2189 	.ascii "Load save RAM..."
+        61 76 65 20 52 41
+        4D 2E 2E 2E
+   0DE6 00                 2190 	.db 0x00
+                           2191 ;os_msed.c:604: u8 osLoadSram() {
+                           2192 ;	---------------------------------
+                           2193 ; Function osLoadSram
+                           2194 ; ---------------------------------
+   0DE7                    2195 _osLoadSram_start::
+   0DE7                    2196 _osLoadSram:
+                           2197 ;os_msed.c:607: FatFullRecord *rec = (FatFullRecord *) osMallocRam(sizeof (FatFullRecord));
+   0DE7 21 E5 00      [10] 2198 	ld	hl,#0x00E5
+   0DEA E5            [11] 2199 	push	hl
+   0DEB CDr8Cr03      [17] 2200 	call	_osMallocRam
+                           2201 ;os_msed.c:608: resp = _osLoadSram(rec);
+   0DEE E3            [19] 2202 	ex	(sp),hl
+   0DEF CDrFFr0C      [17] 2203 	call	__osLoadSram
+                           2204 ;os_msed.c:609: osReleaseRam(sizeof (FatFullRecord));
+   0DF2 E3            [19] 2205 	ex	(sp),hl
+   0DF3 01 E5 00      [10] 2206 	ld	bc,#0x00E5
+   0DF6 C5            [11] 2207 	push	bc
+   0DF7 CDrCBr03      [17] 2208 	call	_osReleaseRam
+   0DFA 26 01         [ 7] 2209 	ld	h,#0x01
+   0DFC E3            [19] 2210 	ex	(sp),hl
+   0DFD 33            [ 6] 2211 	inc	sp
+   0DFE CDr00r00      [17] 2212 	call	_bi_set_rom_bank
+   0E01 33            [ 6] 2213 	inc	sp
+   0E02 E1            [10] 2214 	pop	hl
+                           2215 ;os_msed.c:611: return resp;
+   0E03 C9            [10] 2216 	ret
+   0E04                    2217 _osLoadSram_end::
+                           2218 ;os_msed.c:614: void osCLeanGameSram() {
+                           2219 ;	---------------------------------
+                           2220 ; Function osCLeanGameSram
+                           2221 ; ---------------------------------
+   0E04                    2222 _osCLeanGameSram_start::
+   0E04                    2223 _osCLeanGameSram:
+                           2224 ;os_msed.c:619: bi_set_ram_bank(0);
+   0E04 AF            [ 4] 2225 	xor	a, a
+   0E05 F5            [11] 2226 	push	af
+   0E06 33            [ 6] 2227 	inc	sp
+   0E07 CDr00r00      [17] 2228 	call	_bi_set_ram_bank
+   0E0A 33            [ 6] 2229 	inc	sp
+                           2230 ;os_msed.c:620: for (i = 0; i < OS_SAVE_FILE_SIZE; i++)*sram_ptr++ = OS_EMPTY_RAM_BYTE;
+   0E0B 11 00 80      [10] 2231 	ld	de,#0x8000
+   0E0E 01 00 40      [10] 2232 	ld	bc,#0x4000
+   0E11                    2233 00104$:
+   0E11 AF            [ 4] 2234 	xor	a, a
+   0E12 12            [ 7] 2235 	ld	(de),a
+   0E13 13            [ 6] 2236 	inc	de
+   0E14 0B            [ 6] 2237 	dec	bc
+   0E15 78            [ 4] 2238 	ld	a,b
+   0E16 B1            [ 4] 2239 	or	a,c
+   0E17 20 F8         [12] 2240 	jr	NZ,00104$
+                           2241 ;os_msed.c:621: bi_set_rom_bank(1);
+   0E19 3E 01         [ 7] 2242 	ld	a,#0x01
+   0E1B F5            [11] 2243 	push	af
+   0E1C 33            [ 6] 2244 	inc	sp
+   0E1D CDr00r00      [17] 2245 	call	_bi_set_rom_bank
+   0E20 33            [ 6] 2246 	inc	sp
+   0E21 C9            [10] 2247 	ret
+   0E22                    2248 _osCLeanGameSram_end::
+                           2249 ;os_msed.c:624: u8 osSaveRamMenu(FatFullRecord *rec) {
+                           2250 ;	---------------------------------
+                           2251 ; Function osSaveRamMenu
+                           2252 ; ---------------------------------
+   0E22                    2253 _osSaveRamMenu_start::
+   0E22                    2254 _osSaveRamMenu:
+   0E22 DD E5         [15] 2255 	push	ix
+   0E24 DD 21 00 00   [14] 2256 	ld	ix,#0
+   0E28 DD 39         [15] 2257 	add	ix,sp
+   0E2A 21 F4 FF      [10] 2258 	ld	hl,#-12
+   0E2D 39            [11] 2259 	add	hl,sp
+   0E2E F9            [ 6] 2260 	ld	sp,hl
+                           2261 ;os_msed.c:627: const u8 * sram_menu_str[] = {
+   0E2F 21 00 00      [10] 2262 	ld	hl,#0x0000
+   0E32 39            [11] 2263 	add	hl,sp
+   0E33 5D            [ 4] 2264 	ld	e,l
+   0E34 54            [ 4] 2265 	ld	d,h
+   0E35 36rD1         [10] 2266 	ld	(hl),#<(__str_57)
+   0E37 23            [ 6] 2267 	inc	hl
+   0E38 36s0E         [10] 2268 	ld	(hl),#>(__str_57)
+   0E3A D5            [11] 2269 	push	de
+   0E3B FD E1         [14] 2270 	pop	iy
+   0E3D FD 23         [10] 2271 	inc	iy
+   0E3F FD 23         [10] 2272 	inc	iy
+   0E41 FD 36 00rDB   [19] 2273 	ld	0 (iy),#<(__str_58)
+   0E45 FD 36 01s0E   [19] 2274 	ld	1 (iy),#>(__str_58)
+   0E49 FD 21 04 00   [14] 2275 	ld	iy,#0x0004
+   0E4D FD 19         [15] 2276 	add	iy, de
+   0E4F FD 36 00rE2   [19] 2277 	ld	0 (iy),#<(__str_59)
+   0E53 FD 36 01s0E   [19] 2278 	ld	1 (iy),#>(__str_59)
+   0E57 FD 21 06 00   [14] 2279 	ld	iy,#0x0006
+   0E5B FD 19         [15] 2280 	add	iy, de
+   0E5D FD 36 00rF4   [19] 2281 	ld	0 (iy),#<(__str_60)
+   0E61 FD 36 01s0E   [19] 2282 	ld	1 (iy),#>(__str_60)
+   0E65 FD 21 08 00   [14] 2283 	ld	iy,#0x0008
+   0E69 FD 19         [15] 2284 	add	iy, de
+   0E6B FD 36 00r06   [19] 2285 	ld	0 (iy),#<(__str_61)
+   0E6F FD 36 01s0F   [19] 2286 	ld	1 (iy),#>(__str_61)
+   0E73 21 0A 00      [10] 2287 	ld	hl,#0x000A
+   0E76 19            [11] 2288 	add	hl,de
+   0E77 AF            [ 4] 2289 	xor	a, a
+   0E78 77            [ 7] 2290 	ld	(hl), a
+   0E79 23            [ 6] 2291 	inc	hl
+   0E7A 77            [ 7] 2292 	ld	(hl), a
+                           2293 ;os_msed.c:630: resp = guiDrawMenu(sram_menu_str, 0);
+   0E7B C5            [11] 2294 	push	bc
+   0E7C 21 00 00      [10] 2295 	ld	hl,#0x0000
+   0E7F E5            [11] 2296 	push	hl
+   0E80 D5            [11] 2297 	push	de
+   0E81 CDr00r00      [17] 2298 	call	_guiDrawMenu
+   0E84 F1            [10] 2299 	pop	af
+   0E85 F1            [10] 2300 	pop	af
+   0E86 C1            [10] 2301 	pop	bc
+   0E87 4D            [ 4] 2302 	ld	c,l
+                           2303 ;os_msed.c:632: if (resp == 0) {
+   0E88 79            [ 4] 2304 	ld	a,c
+                           2305 ;os_msed.c:633: return 0;
+   0E89 B7            [ 4] 2306 	or	a,a
+   0E8A 20 03         [12] 2307 	jr	NZ,00110$
+   0E8C 6F            [ 4] 2308 	ld	l,a
+   0E8D 18 3D         [12] 2309 	jr	00112$
+   0E8F                    2310 00110$:
+                           2311 ;os_msed.c:634: } else if (resp == 1) {
+   0E8F 79            [ 4] 2312 	ld	a,c
+   0E90 3D            [ 4] 2313 	dec	a
+   0E91 20 0F         [12] 2314 	jr	NZ,00107$
+                           2315 ;os_msed.c:635: resp = osFileToSram(rec);
+   0E93 C5            [11] 2316 	push	bc
+   0E94 DD 6E 04      [19] 2317 	ld	l,4 (ix)
+   0E97 DD 66 05      [19] 2318 	ld	h,5 (ix)
+   0E9A E5            [11] 2319 	push	hl
+   0E9B CDr0Fr0F      [17] 2320 	call	_osFileToSram
+   0E9E F1            [10] 2321 	pop	af
+   0E9F C1            [10] 2322 	pop	bc
+                           2323 ;os_msed.c:636: return resp;
+   0EA0 18 2A         [12] 2324 	jr	00112$
+   0EA2                    2325 00107$:
+                           2326 ;os_msed.c:637: } else if (resp == 2) {
+   0EA2 79            [ 4] 2327 	ld	a,c
+   0EA3 D6 02         [ 7] 2328 	sub	a, #0x02
+   0EA5 20 0F         [12] 2329 	jr	NZ,00104$
+                           2330 ;os_msed.c:638: resp = osSramToFile(rec);
+   0EA7 C5            [11] 2331 	push	bc
+   0EA8 DD 6E 04      [19] 2332 	ld	l,4 (ix)
+   0EAB DD 66 05      [19] 2333 	ld	h,5 (ix)
+   0EAE E5            [11] 2334 	push	hl
+   0EAF CDrBBr0F      [17] 2335 	call	_osSramToFile
+   0EB2 F1            [10] 2336 	pop	af
+   0EB3 C1            [10] 2337 	pop	bc
+                           2338 ;os_msed.c:639: return resp;
+   0EB4 18 16         [12] 2339 	jr	00112$
+   0EB6                    2340 00104$:
+                           2341 ;os_msed.c:640: } else if (resp == 3) {
+   0EB6 79            [ 4] 2342 	ld	a,c
+   0EB7 D6 03         [ 7] 2343 	sub	a, #0x03
+   0EB9 20 0F         [12] 2344 	jr	NZ,00108$
+                           2345 ;os_msed.c:641: resp = guiHexView(rec);
+   0EBB C5            [11] 2346 	push	bc
+   0EBC DD 6E 04      [19] 2347 	ld	l,4 (ix)
+   0EBF DD 66 05      [19] 2348 	ld	h,5 (ix)
+   0EC2 E5            [11] 2349 	push	hl
+   0EC3 CDr00r00      [17] 2350 	call	_guiHexView
+   0EC6 F1            [10] 2351 	pop	af
+   0EC7 C1            [10] 2352 	pop	bc
+                           2353 ;os_msed.c:642: return resp;
+   0EC8 18 02         [12] 2354 	jr	00112$
+   0ECA                    2355 00108$:
+                           2356 ;os_msed.c:644: return 0;
+   0ECA 2E 00         [ 7] 2357 	ld	l,#0x00
+   0ECC                    2358 00112$:
+   0ECC DD F9         [10] 2359 	ld	sp,ix
+   0ECE DD E1         [14] 2360 	pop	ix
+   0ED0 C9            [10] 2361 	ret
+   0ED1                    2362 _osSaveRamMenu_end::
+   0ED1                    2363 __str_57:
+   0ED1 46 69 6C 65 20 4D  2364 	.ascii "File Menu"
+        65 6E 75
+   0EDA 00                 2365 	.db 0x00
+   0EDB                    2366 __str_58:
+   0EDB 43 61 6E 63 65 6C  2367 	.ascii "Cancel"
+   0EE1 00                 2368 	.db 0x00
+   0EE2                    2369 __str_59:
+   0EE2 43 6F 70 79 20 46  2370 	.ascii "Copy File To SRAM"
+        69 6C 65 20 54 6F
+        20 53 52 41 4D
+   0EF3 00                 2371 	.db 0x00
+   0EF4                    2372 __str_60:
+   0EF4 43 6F 70 79 20 53  2373 	.ascii "Copy SRAM To File"
+        52 41 4D 20 54 6F
+        20 46 69 6C 65
+   0F05 00                 2374 	.db 0x00
+   0F06                    2375 __str_61:
+   0F06 48 65 78 20 56 69  2376 	.ascii "Hex View"
+        65 77
+   0F0E 00                 2377 	.db 0x00
+                           2378 ;os_msed.c:647: u8 osFileToSram(FatFullRecord *rec) {
+                           2379 ;	---------------------------------
+                           2380 ; Function osFileToSram
+                           2381 ; ---------------------------------
+   0F0F                    2382 _osFileToSram_start::
+   0F0F                    2383 _osFileToSram:
+   0F0F DD E5         [15] 2384 	push	ix
+   0F11 DD 21 00 00   [14] 2385 	ld	ix,#0
+   0F15 DD 39         [15] 2386 	add	ix,sp
+   0F17 F5            [11] 2387 	push	af
+   0F18 F5            [11] 2388 	push	af
+                           2389 ;os_msed.c:652: resp = fat_open_file(rec, 0);
+   0F19 C5            [11] 2390 	push	bc
+   0F1A 21 00 00      [10] 2391 	ld	hl,#0x0000
+   0F1D E5            [11] 2392 	push	hl
+   0F1E DD 6E 04      [19] 2393 	ld	l,4 (ix)
+   0F21 DD 66 05      [19] 2394 	ld	h,5 (ix)
+   0F24 E5            [11] 2395 	push	hl
+   0F25 CDr00r00      [17] 2396 	call	_fat_open_file
+   0F28 F1            [10] 2397 	pop	af
+   0F29 F1            [10] 2398 	pop	af
+   0F2A C1            [10] 2399 	pop	bc
+   0F2B 4D            [ 4] 2400 	ld	c,l
+   0F2C 06 00         [ 7] 2401 	ld	b,#0x00
+                           2402 ;os_msed.c:653: if (resp)return resp;
+   0F2E 78            [ 4] 2403 	ld	a,b
+   0F2F B1            [ 4] 2404 	or	a,c
+   0F30 28 04         [12] 2405 	jr	Z,00102$
+   0F32 69            [ 4] 2406 	ld	l,c
+   0F33 C3rB6r0F      [10] 2407 	jp	00109$
+   0F36                    2408 00102$:
+                           2409 ;os_msed.c:655: len = rec->size / 512;
+   0F36 DD 6E 04      [19] 2410 	ld	l,4 (ix)
+   0F39 DD 66 05      [19] 2411 	ld	h,5 (ix)
+   0F3C 11 E0 00      [10] 2412 	ld	de, #0x00E0
+   0F3F 19            [11] 2413 	add	hl, de
+   0F40 7E            [ 7] 2414 	ld	a,(hl)
+   0F41 DD 77 FC      [19] 2415 	ld	-4 (ix),a
+   0F44 23            [ 6] 2416 	inc	hl
+   0F45 7E            [ 7] 2417 	ld	a,(hl)
+   0F46 DD 77 FD      [19] 2418 	ld	-3 (ix),a
+   0F49 23            [ 6] 2419 	inc	hl
+   0F4A 7E            [ 7] 2420 	ld	a,(hl)
+   0F4B DD 77 FE      [19] 2421 	ld	-2 (ix),a
+   0F4E 23            [ 6] 2422 	inc	hl
+   0F4F 7E            [ 7] 2423 	ld	a,(hl)
+   0F50 DD 77 FF      [19] 2424 	ld	-1 (ix),a
+   0F53 F5            [11] 2425 	push	af
+   0F54 DD 5E FC      [19] 2426 	ld	e,-4 (ix)
+   0F57 DD 56 FD      [19] 2427 	ld	d,-3 (ix)
+   0F5A DD 66 FE      [19] 2428 	ld	h,-2 (ix)
+   0F5D DD 6E FF      [19] 2429 	ld	l,-1 (ix)
+   0F60 F1            [10] 2430 	pop	af
+   0F61 3E 09         [ 7] 2431 	ld	a,#0x09
+   0F63                    2432 00123$:
+   0F63 CB 3D         [ 8] 2433 	srl	l
+   0F65 CB 1C         [ 8] 2434 	rr	h
+   0F67 CB 1A         [ 8] 2435 	rr	d
+   0F69 CB 1B         [ 8] 2436 	rr	e
+   0F6B 3D            [ 4] 2437 	dec	a
+   0F6C 20 F5         [12] 2438 	jr	NZ,00123$
+                           2439 ;os_msed.c:656: if (rec->size % 512 != 0)len++;
+   0F6E DD 7E FC      [19] 2440 	ld	a,-4 (ix)
+   0F71 B7            [ 4] 2441 	or	a, a
+   0F72 20 06         [12] 2442 	jr	NZ,00125$
+   0F74 DD CB FD 46   [20] 2443 	bit	0, -3 (ix)
+   0F78 28 01         [12] 2444 	jr	Z,00104$
+   0F7A                    2445 00125$:
+   0F7A 13            [ 6] 2446 	inc	de
+   0F7B                    2447 00104$:
+                           2448 ;os_msed.c:657: if (len > OS_SAVE_FILE_SIZE / 512)len = OS_SAVE_FILE_SIZE / 512;
+   0F7B 3E 20         [ 7] 2449 	ld	a,#0x20
+   0F7D BB            [ 4] 2450 	cp	a, e
+   0F7E 3E 00         [ 7] 2451 	ld	a,#0x00
+   0F80 9A            [ 4] 2452 	sbc	a, d
+   0F81 30 03         [12] 2453 	jr	NC,00106$
+   0F83 11 20 00      [10] 2454 	ld	de,#0x0020
+   0F86                    2455 00106$:
+                           2456 ;os_msed.c:659: bi_set_ram_bank(0);
+   0F86 C5            [11] 2457 	push	bc
+   0F87 D5            [11] 2458 	push	de
+   0F88 AF            [ 4] 2459 	xor	a, a
+   0F89 F5            [11] 2460 	push	af
+   0F8A 33            [ 6] 2461 	inc	sp
+   0F8B CDr00r00      [17] 2462 	call	_bi_set_ram_bank
+   0F8E 33            [ 6] 2463 	inc	sp
+   0F8F D1            [10] 2464 	pop	de
+   0F90 3E 01         [ 7] 2465 	ld	a,#0x01
+   0F92 F5            [11] 2466 	push	af
+   0F93 33            [ 6] 2467 	inc	sp
+   0F94 D5            [11] 2468 	push	de
+   0F95 21 00 80      [10] 2469 	ld	hl,#0x8000
+   0F98 E5            [11] 2470 	push	hl
+   0F99 CDr00r00      [17] 2471 	call	_fat_read
+   0F9C F1            [10] 2472 	pop	af
+   0F9D F1            [10] 2473 	pop	af
+   0F9E 33            [ 6] 2474 	inc	sp
+   0F9F C1            [10] 2475 	pop	bc
+   0FA0 4D            [ 4] 2476 	ld	c,l
+   0FA1 06 00         [ 7] 2477 	ld	b,#0x00
+                           2478 ;os_msed.c:661: bi_set_rom_bank(1);
+   0FA3 C5            [11] 2479 	push	bc
+   0FA4 3E 01         [ 7] 2480 	ld	a,#0x01
+   0FA6 F5            [11] 2481 	push	af
+   0FA7 33            [ 6] 2482 	inc	sp
+   0FA8 CDr00r00      [17] 2483 	call	_bi_set_rom_bank
+   0FAB 33            [ 6] 2484 	inc	sp
+   0FAC C1            [10] 2485 	pop	bc
+                           2486 ;os_msed.c:662: if (resp)return resp;
+   0FAD 78            [ 4] 2487 	ld	a,b
+   0FAE B1            [ 4] 2488 	or	a,c
+   0FAF 28 03         [12] 2489 	jr	Z,00108$
+   0FB1 69            [ 4] 2490 	ld	l,c
+   0FB2 18 02         [12] 2491 	jr	00109$
+   0FB4                    2492 00108$:
+                           2493 ;os_msed.c:664: return 0;
+   0FB4 2E 00         [ 7] 2494 	ld	l,#0x00
+   0FB6                    2495 00109$:
+   0FB6 DD F9         [10] 2496 	ld	sp,ix
+   0FB8 DD E1         [14] 2497 	pop	ix
+   0FBA C9            [10] 2498 	ret
+   0FBB                    2499 _osFileToSram_end::
+                           2500 ;os_msed.c:667: u8 osSramToFile(FatFullRecord *rec) {
+                           2501 ;	---------------------------------
+                           2502 ; Function osSramToFile
+                           2503 ; ---------------------------------
+   0FBB                    2504 _osSramToFile_start::
+   0FBB                    2505 _osSramToFile:
+   0FBB DD E5         [15] 2506 	push	ix
+   0FBD DD 21 00 00   [14] 2507 	ld	ix,#0
+   0FC1 DD 39         [15] 2508 	add	ix,sp
+   0FC3 21 FA FF      [10] 2509 	ld	hl,#-6
+   0FC6 39            [11] 2510 	add	hl,sp
+   0FC7 F9            [ 6] 2511 	ld	sp,hl
+                           2512 ;os_msed.c:673: if (rec->size < OS_SAVE_FILE_SIZE) {
+   0FC8 DD 5E 04      [19] 2513 	ld	e,4 (ix)
+   0FCB DD 56 05      [19] 2514 	ld	d,5 (ix)
+   0FCE 6B            [ 4] 2515 	ld	l, e
+   0FCF 62            [ 4] 2516 	ld	h, d
+   0FD0 01 E0 00      [10] 2517 	ld	bc, #0x00E0
+   0FD3 09            [11] 2518 	add	hl, bc
+   0FD4 7E            [ 7] 2519 	ld	a,(hl)
+   0FD5 DD 77 FC      [19] 2520 	ld	-4 (ix),a
+   0FD8 23            [ 6] 2521 	inc	hl
+   0FD9 7E            [ 7] 2522 	ld	a,(hl)
+   0FDA DD 77 FD      [19] 2523 	ld	-3 (ix),a
+   0FDD 23            [ 6] 2524 	inc	hl
+   0FDE 7E            [ 7] 2525 	ld	a,(hl)
+   0FDF DD 77 FE      [19] 2526 	ld	-2 (ix),a
+   0FE2 23            [ 6] 2527 	inc	hl
+   0FE3 7E            [ 7] 2528 	ld	a,(hl)
+   0FE4 DD 77 FF      [19] 2529 	ld	-1 (ix),a
+   0FE7 DD 7E FD      [19] 2530 	ld	a,-3 (ix)
+   0FEA E6 C0         [ 7] 2531 	and	a, #0xC0
+   0FEC 20 36         [12] 2532 	jr	NZ,00104$
+   0FEE DD 7E FE      [19] 2533 	ld	a,-2 (ix)
+   0FF1 B7            [ 4] 2534 	or	a, a
+   0FF2 20 30         [12] 2535 	jr	NZ,00104$
+   0FF4 DD 7E FF      [19] 2536 	ld	a,-1 (ix)
+   0FF7 B7            [ 4] 2537 	or	a, a
+   0FF8 20 2A         [12] 2538 	jr	NZ,00104$
+                           2539 ;os_msed.c:674: len = rec->size / 512;
+   0FFA F5            [11] 2540 	push	af
+   0FFB DD 4E FC      [19] 2541 	ld	c,-4 (ix)
+   0FFE DD 46 FD      [19] 2542 	ld	b,-3 (ix)
+   1001 DD 66 FE      [19] 2543 	ld	h,-2 (ix)
+   1004 DD 6E FF      [19] 2544 	ld	l,-1 (ix)
+   1007 F1            [10] 2545 	pop	af
+   1008 3E 09         [ 7] 2546 	ld	a,#0x09
+   100A                    2547 00126$:
+   100A CB 3D         [ 8] 2548 	srl	l
+   100C CB 1C         [ 8] 2549 	rr	h
+   100E CB 18         [ 8] 2550 	rr	b
+   1010 CB 19         [ 8] 2551 	rr	c
+   1012 3D            [ 4] 2552 	dec	a
+   1013 20 F5         [12] 2553 	jr	NZ,00126$
+                           2554 ;os_msed.c:675: if (rec->size % 512 != 0)len++;
+   1015 DD 7E FC      [19] 2555 	ld	a,-4 (ix)
+   1018 B7            [ 4] 2556 	or	a, a
+   1019 20 06         [12] 2557 	jr	NZ,00128$
+   101B DD CB FD 46   [20] 2558 	bit	0, -3 (ix)
+   101F 28 06         [12] 2559 	jr	Z,00105$
+   1021                    2560 00128$:
+   1021 03            [ 6] 2561 	inc	bc
+   1022 18 03         [12] 2562 	jr	00105$
+   1024                    2563 00104$:
+                           2564 ;os_msed.c:677: len = OS_SAVE_FILE_SIZE / 512;
+   1024 01 20 00      [10] 2565 	ld	bc,#0x0020
+   1027                    2566 00105$:
+                           2567 ;os_msed.c:680: resp = fat_open_file(rec, len);
+   1027 C5            [11] 2568 	push	bc
+   1028 C5            [11] 2569 	push	bc
+   1029 D5            [11] 2570 	push	de
+   102A CDr00r00      [17] 2571 	call	_fat_open_file
+   102D F1            [10] 2572 	pop	af
+   102E F1            [10] 2573 	pop	af
+   102F C1            [10] 2574 	pop	bc
+   1030 DD 75 FA      [19] 2575 	ld	-6 (ix),l
+                           2576 ;os_msed.c:681: if (resp)return resp;
+   1033 DD 36 FB 00   [19] 2577 	ld	-5 (ix), #0x00
+   1037 3E 00         [ 7] 2578 	ld	a, #0x00
+   1039 DD B6 FA      [19] 2579 	or	a,-6 (ix)
+   103C 28 05         [12] 2580 	jr	Z,00107$
+   103E DD 6E FA      [19] 2581 	ld	l,-6 (ix)
+   1041 18 2F         [12] 2582 	jr	00110$
+   1043                    2583 00107$:
+                           2584 ;os_msed.c:683: bi_set_ram_bank(0);
+   1043 C5            [11] 2585 	push	bc
+   1044 AF            [ 4] 2586 	xor	a, a
+   1045 F5            [11] 2587 	push	af
+   1046 33            [ 6] 2588 	inc	sp
+   1047 CDr00r00      [17] 2589 	call	_bi_set_ram_bank
+   104A 33            [ 6] 2590 	inc	sp
+   104B 21 00 80      [10] 2591 	ld	hl,#0x8000
+   104E E5            [11] 2592 	push	hl
+   104F CDr00r00      [17] 2593 	call	_fat_write_file
+   1052 F1            [10] 2594 	pop	af
+   1053 F1            [10] 2595 	pop	af
+   1054 DD 75 FA      [19] 2596 	ld	-6 (ix),l
+   1057 DD 36 FB 00   [19] 2597 	ld	-5 (ix),#0x00
+                           2598 ;os_msed.c:685: bi_set_rom_bank(1);
+   105B 3E 01         [ 7] 2599 	ld	a,#0x01
+   105D F5            [11] 2600 	push	af
+   105E 33            [ 6] 2601 	inc	sp
+   105F CDr00r00      [17] 2602 	call	_bi_set_rom_bank
+   1062 33            [ 6] 2603 	inc	sp
+                           2604 ;os_msed.c:686: if (resp)return resp;
+   1063 DD 7E FB      [19] 2605 	ld	a,-5 (ix)
+   1066 DD B6 FA      [19] 2606 	or	a,-6 (ix)
+   1069 28 05         [12] 2607 	jr	Z,00109$
+   106B DD 6E FA      [19] 2608 	ld	l,-6 (ix)
+   106E 18 02         [12] 2609 	jr	00110$
+   1070                    2610 00109$:
+                           2611 ;os_msed.c:688: return 0;
+   1070 2E 00         [ 7] 2612 	ld	l,#0x00
+   1072                    2613 00110$:
+   1072 DD F9         [10] 2614 	ld	sp,ix
+   1074 DD E1         [14] 2615 	pop	ix
+   1076 C9            [10] 2616 	ret
+   1077                    2617 _osSramToFile_end::
+                           2618 ;os_msed.c:691: u8 osUpdateMenu(FatFullRecord *rec) {
+                           2619 ;	---------------------------------
+                           2620 ; Function osUpdateMenu
+                           2621 ; ---------------------------------
+   1077                    2622 _osUpdateMenu_start::
+   1077                    2623 _osUpdateMenu:
+   1077 DD E5         [15] 2624 	push	ix
+   1079 DD 21 00 00   [14] 2625 	ld	ix,#0
+   107D DD 39         [15] 2626 	add	ix,sp
+   107F 21 F8 FF      [10] 2627 	ld	hl,#-8
+   1082 39            [11] 2628 	add	hl,sp
+   1083 F9            [ 6] 2629 	ld	sp,hl
+                           2630 ;os_msed.c:694: const u8 * menu_str[] = {
+   1084 21 00 00      [10] 2631 	ld	hl,#0x0000
+   1087 39            [11] 2632 	add	hl,sp
+   1088 5D            [ 4] 2633 	ld	e,l
+   1089 54            [ 4] 2634 	ld	d,h
+   108A 36rCC         [10] 2635 	ld	(hl),#<(__str_62)
+   108C 23            [ 6] 2636 	inc	hl
+   108D 36s10         [10] 2637 	ld	(hl),#>(__str_62)
+   108F 6B            [ 4] 2638 	ld	l, e
+   1090 62            [ 4] 2639 	ld	h, d
+   1091 23            [ 6] 2640 	inc	hl
+   1092 23            [ 6] 2641 	inc	hl
+   1093 01rDDr10      [10] 2642 	ld	bc,#__str_63
+   1096 71            [ 7] 2643 	ld	(hl),c
+   1097 23            [ 6] 2644 	inc	hl
+   1098 70            [ 7] 2645 	ld	(hl),b
+   1099 21 04 00      [10] 2646 	ld	hl,#0x0004
+   109C 19            [11] 2647 	add	hl,de
+   109D 01rE6r10      [10] 2648 	ld	bc,#__str_64
+   10A0 71            [ 7] 2649 	ld	(hl),c
+   10A1 23            [ 6] 2650 	inc	hl
+   10A2 70            [ 7] 2651 	ld	(hl),b
+   10A3 21 06 00      [10] 2652 	ld	hl,#0x0006
+   10A6 19            [11] 2653 	add	hl,de
+   10A7 AF            [ 4] 2654 	xor	a, a
+   10A8 77            [ 7] 2655 	ld	(hl), a
+   10A9 23            [ 6] 2656 	inc	hl
+   10AA 77            [ 7] 2657 	ld	(hl), a
+                           2658 ;os_msed.c:697: resp = guiDrawMenu(menu_str, 0);
+   10AB 21 00 00      [10] 2659 	ld	hl,#0x0000
+   10AE E5            [11] 2660 	push	hl
+   10AF D5            [11] 2661 	push	de
+   10B0 CDr00r00      [17] 2662 	call	_guiDrawMenu
+   10B3 F1            [10] 2663 	pop	af
+   10B4 F1            [10] 2664 	pop	af
+                           2665 ;os_msed.c:699: if (resp == 1)return osUpdate(rec);
+   10B5 2D            [ 4] 2666 	dec	l
+   10B6 20 0D         [12] 2667 	jr	NZ,00102$
+   10B8 DD 6E 04      [19] 2668 	ld	l,4 (ix)
+   10BB DD 66 05      [19] 2669 	ld	h,5 (ix)
+   10BE E5            [11] 2670 	push	hl
+   10BF CDrF9r10      [17] 2671 	call	_osUpdate
+   10C2 F1            [10] 2672 	pop	af
+   10C3 18 02         [12] 2673 	jr	00103$
+   10C5                    2674 00102$:
+                           2675 ;os_msed.c:701: return 0;
+   10C5 2E 00         [ 7] 2676 	ld	l,#0x00
+   10C7                    2677 00103$:
+   10C7 DD F9         [10] 2678 	ld	sp,ix
+   10C9 DD E1         [14] 2679 	pop	ix
+   10CB C9            [10] 2680 	ret
+   10CC                    2681 _osUpdateMenu_end::
+   10CC                    2682 __str_62:
+   10CC 4D 65 6E 75 20 64  2683 	.ascii "Menu de arquivos"
+        65 20 61 72 71 75
+        69 76 6F 73
+   10DC 00                 2684 	.db 0x00
+   10DD                    2685 __str_63:
+   10DD 43 61 6E 63 65 6C  2686 	.ascii "Cancelar"
+        61 72
+   10E5 00                 2687 	.db 0x00
+   10E6                    2688 __str_64:
+   10E6 41 74 75 61 6C 69  2689 	.ascii "Atualizar firmware"
+        7A 61 72 20 66 69
+        72 6D 77 61 72 65
+   10F8 00                 2690 	.db 0x00
+                           2691 ;os_msed.c:704: u8 osUpdate(FatFullRecord *rec) {
+                           2692 ;	---------------------------------
+                           2693 ; Function osUpdate
+                           2694 ; ---------------------------------
+   10F9                    2695 _osUpdate_start::
+   10F9                    2696 _osUpdate:
+   10F9 DD E5         [15] 2697 	push	ix
+   10FB DD 21 00 00   [14] 2698 	ld	ix,#0
+   10FF DD 39         [15] 2699 	add	ix,sp
+   1101 F5            [11] 2700 	push	af
+   1102 3B            [ 6] 2701 	dec	sp
+                           2702 ;os_msed.c:711: gCleanScreen();
+   1103 CDr00r00      [17] 2703 	call	_gCleanScreen
+                           2704 ;os_msed.c:712: gSetPal(0);
+   1106 21 00 00      [10] 2705 	ld	hl,#0x0000
+   1109 E5            [11] 2706 	push	hl
+   110A CDr00r00      [17] 2707 	call	_gSetPal
+   110D F1            [10] 2708 	pop	af
+                           2709 ;os_msed.c:713: gDrawStringCx("!NAO DESLIGUE O CONSOLE!", 11);
+   110E 11r11r12      [10] 2710 	ld	de,#__str_65
+   1111 3E 0B         [ 7] 2711 	ld	a,#0x0B
+   1113 F5            [11] 2712 	push	af
+   1114 33            [ 6] 2713 	inc	sp
+   1115 D5            [11] 2714 	push	de
+   1116 CDr00r00      [17] 2715 	call	_gDrawStringCx
+   1119 F1            [10] 2716 	pop	af
+   111A 33            [ 6] 2717 	inc	sp
+                           2718 ;os_msed.c:714: gRepaint();
+   111B CDr00r00      [17] 2719 	call	_gRepaint
+                           2720 ;os_msed.c:716: if (rec->size != 0x8000)return ERR_OS_SIZE;
+   111E DD 4E 04      [19] 2721 	ld	c,4 (ix)
+   1121 DD 46 05      [19] 2722 	ld	b,5 (ix)
+   1124 69            [ 4] 2723 	ld	l, c
+   1125 60            [ 4] 2724 	ld	h, b
+   1126 11 E0 00      [10] 2725 	ld	de, #0x00E0
+   1129 19            [11] 2726 	add	hl, de
+   112A 5E            [ 7] 2727 	ld	e,(hl)
+   112B 23            [ 6] 2728 	inc	hl
+   112C 56            [ 7] 2729 	ld	d,(hl)
+   112D 23            [ 6] 2730 	inc	hl
+   112E 23            [ 6] 2731 	inc	hl
+   112F 7E            [ 7] 2732 	ld	a,(hl)
+   1130 2B            [ 6] 2733 	dec	hl
+   1131 6E            [ 7] 2734 	ld	l,(hl)
+   1132 67            [ 4] 2735 	ld	h,a
+   1133 7B            [ 4] 2736 	ld	a,e
+   1134 B7            [ 4] 2737 	or	a, a
+   1135 20 0B         [12] 2738 	jr	NZ,00133$
+   1137 7A            [ 4] 2739 	ld	a,d
+   1138 D6 80         [ 7] 2740 	sub	a,#0x80
+   113A 20 06         [12] 2741 	jr	NZ,00133$
+   113C B5            [ 4] 2742 	or	a,l
+   113D 20 03         [12] 2743 	jr	NZ,00133$
+   113F B4            [ 4] 2744 	or	a,h
+   1140 28 05         [12] 2745 	jr	Z,00102$
+   1142                    2746 00133$:
+   1142 2E 37         [ 7] 2747 	ld	l,#0x37
+   1144 C3r0Cr12      [10] 2748 	jp	00113$
+   1147                    2749 00102$:
+                           2750 ;os_msed.c:718: resp = fat_open_file(rec, 0);
+   1147 C5            [11] 2751 	push	bc
+   1148 21 00 00      [10] 2752 	ld	hl,#0x0000
+   114B E5            [11] 2753 	push	hl
+   114C C5            [11] 2754 	push	bc
+   114D CDr00r00      [17] 2755 	call	_fat_open_file
+   1150 F1            [10] 2756 	pop	af
+   1151 F1            [10] 2757 	pop	af
+   1152 C1            [10] 2758 	pop	bc
+                           2759 ;os_msed.c:719: if (resp)return resp;
+   1153 DD 75 FD      [19] 2760 	ld	-3 (ix), l
+   1156 7D            [ 4] 2761 	ld	a, l
+   1157 B7            [ 4] 2762 	or	a, a
+   1158 28 06         [12] 2763 	jr	Z,00104$
+   115A DD 6E FD      [19] 2764 	ld	l,-3 (ix)
+   115D C3r0Cr12      [10] 2765 	jp	00113$
+   1160                    2766 00104$:
+                           2767 ;os_msed.c:721: buff = osMallocRam(512);
+   1160 C5            [11] 2768 	push	bc
+   1161 21 00 02      [10] 2769 	ld	hl,#0x0200
+   1164 E5            [11] 2770 	push	hl
+   1165 CDr8Cr03      [17] 2771 	call	_osMallocRam
+   1168 F1            [10] 2772 	pop	af
+   1169 C1            [10] 2773 	pop	bc
+   116A EB            [ 4] 2774 	ex	de,hl
+                           2775 ;os_msed.c:722: resp = fat_read(buff, 1, RAM);
+   116B C5            [11] 2776 	push	bc
+   116C D5            [11] 2777 	push	de
+   116D 3E 01         [ 7] 2778 	ld	a,#0x01
+   116F F5            [11] 2779 	push	af
+   1170 33            [ 6] 2780 	inc	sp
+   1171 21 01 00      [10] 2781 	ld	hl,#0x0001
+   1174 E5            [11] 2782 	push	hl
+   1175 D5            [11] 2783 	push	de
+   1176 CDr00r00      [17] 2784 	call	_fat_read
+   1179 F1            [10] 2785 	pop	af
+   117A F1            [10] 2786 	pop	af
+   117B 33            [ 6] 2787 	inc	sp
+   117C D1            [10] 2788 	pop	de
+   117D C1            [10] 2789 	pop	bc
+   117E DD 75 FD      [19] 2790 	ld	-3 (ix),l
+                           2791 ;os_msed.c:723: edos = str_cmp_len(&buff[0x80], "EDOS", 4);
+   1181 21 80 00      [10] 2792 	ld	hl,#0x0080
+   1184 19            [11] 2793 	add	hl,de
+   1185 EB            [ 4] 2794 	ex	de,hl
+   1186 C5            [11] 2795 	push	bc
+   1187 3E 04         [ 7] 2796 	ld	a,#0x04
+   1189 F5            [11] 2797 	push	af
+   118A 33            [ 6] 2798 	inc	sp
+   118B 21r2Ar12      [10] 2799 	ld	hl,#__str_66
+   118E E5            [11] 2800 	push	hl
+   118F D5            [11] 2801 	push	de
+   1190 CDr00r00      [17] 2802 	call	_str_cmp_len
+   1193 F1            [10] 2803 	pop	af
+   1194 F1            [10] 2804 	pop	af
+   1195 33            [ 6] 2805 	inc	sp
+   1196 C1            [10] 2806 	pop	bc
+                           2807 ;os_msed.c:724: osReleaseRam(512);
+   1197 E5            [11] 2808 	push	hl
+   1198 C5            [11] 2809 	push	bc
+   1199 11 00 02      [10] 2810 	ld	de,#0x0200
+   119C D5            [11] 2811 	push	de
+   119D CDrCBr03      [17] 2812 	call	_osReleaseRam
+   11A0 F1            [10] 2813 	pop	af
+   11A1 C1            [10] 2814 	pop	bc
+   11A2 E1            [10] 2815 	pop	hl
+                           2816 ;os_msed.c:725: if (resp)return resp;
+   11A3 DD 7E FD      [19] 2817 	ld	a,-3 (ix)
+   11A6 B7            [ 4] 2818 	or	a, a
+   11A7 28 05         [12] 2819 	jr	Z,00106$
+   11A9 DD 6E FD      [19] 2820 	ld	l,-3 (ix)
+   11AC 18 5E         [12] 2821 	jr	00113$
+   11AE                    2822 00106$:
+                           2823 ;os_msed.c:726: if (!edos)return ERR_OS_FILE;
+   11AE 7D            [ 4] 2824 	ld	a,l
+   11AF B7            [ 4] 2825 	or	a, a
+   11B0 20 04         [12] 2826 	jr	NZ,00108$
+   11B2 2E 38         [ 7] 2827 	ld	l,#0x38
+   11B4 18 56         [12] 2828 	jr	00113$
+   11B6                    2829 00108$:
+                           2830 ;os_msed.c:728: resp = fat_open_file(rec, 0);
+   11B6 21 00 00      [10] 2831 	ld	hl,#0x0000
+   11B9 E5            [11] 2832 	push	hl
+   11BA C5            [11] 2833 	push	bc
+   11BB CDr00r00      [17] 2834 	call	_fat_open_file
+   11BE F1            [10] 2835 	pop	af
+   11BF F1            [10] 2836 	pop	af
+                           2837 ;os_msed.c:729: if (resp)return resp;
+   11C0 DD 75 FD      [19] 2838 	ld	-3 (ix), l
+   11C3 7D            [ 4] 2839 	ld	a, l
+   11C4 B7            [ 4] 2840 	or	a, a
+   11C5 28 05         [12] 2841 	jr	Z,00110$
+   11C7 DD 6E FD      [19] 2842 	ld	l,-3 (ix)
+   11CA 18 40         [12] 2843 	jr	00113$
+   11CC                    2844 00110$:
+                           2845 ;os_msed.c:731: bi_flash_erase(0x10000, 1);
+   11CC 21 01 00      [10] 2846 	ld	hl,#0x0001
+   11CF E5            [11] 2847 	push	hl
+   11D0 21 01 00      [10] 2848 	ld	hl,#0x0001
+   11D3 E5            [11] 2849 	push	hl
+   11D4 21 00 00      [10] 2850 	ld	hl,#0x0000
+   11D7 E5            [11] 2851 	push	hl
+   11D8 CDr00r00      [17] 2852 	call	_bi_flash_erase
+   11DB 21 06 00      [10] 2853 	ld	hl,#0x0006
+   11DE 39            [11] 2854 	add	hl,sp
+   11DF F9            [ 6] 2855 	ld	sp,hl
+                           2856 ;os_msed.c:733: addr = 128;
+   11E0 DD 36 FE 80   [19] 2857 	ld	-2 (ix),#0x80
+   11E4 DD 36 FF 00   [19] 2858 	ld	-1 (ix),#0x00
+                           2859 ;os_msed.c:734: resp = fat_read((u8*) & addr, 64, ROM);
+   11E8 21 01 00      [10] 2860 	ld	hl,#0x0001
+   11EB 39            [11] 2861 	add	hl,sp
+   11EC EB            [ 4] 2862 	ex	de,hl
+   11ED AF            [ 4] 2863 	xor	a, a
+   11EE F5            [11] 2864 	push	af
+   11EF 33            [ 6] 2865 	inc	sp
+   11F0 21 40 00      [10] 2866 	ld	hl,#0x0040
+   11F3 E5            [11] 2867 	push	hl
+   11F4 D5            [11] 2868 	push	de
+   11F5 CDr00r00      [17] 2869 	call	_fat_read
+   11F8 F1            [10] 2870 	pop	af
+   11F9 F1            [10] 2871 	pop	af
+   11FA 33            [ 6] 2872 	inc	sp
+                           2873 ;os_msed.c:735: if (resp)return resp;
+   11FB DD 75 FD      [19] 2874 	ld	-3 (ix), l
+   11FE 7D            [ 4] 2875 	ld	a, l
+   11FF B7            [ 4] 2876 	or	a, a
+   1200 28 05         [12] 2877 	jr	Z,00112$
+   1202 DD 6E FD      [19] 2878 	ld	l,-3 (ix)
+   1205 18 05         [12] 2879 	jr	00113$
+   1207                    2880 00112$:
+                           2881 ;os_msed.c:737: bi_install_os();
+   1207 CDr00r00      [17] 2882 	call	_bi_install_os
+                           2883 ;os_msed.c:740: return 0;
+   120A 2E 00         [ 7] 2884 	ld	l,#0x00
+   120C                    2885 00113$:
+   120C DD F9         [10] 2886 	ld	sp,ix
+   120E DD E1         [14] 2887 	pop	ix
+   1210 C9            [10] 2888 	ret
+   1211                    2889 _osUpdate_end::
+   1211                    2890 __str_65:
+   1211 21 4E 41 4F 20 44  2891 	.ascii "!NAO DESLIGUE O CONSOLE!"
+        45 53 4C 49 47 55
+        45 20 4F 20 43 4F
+        4E 53 4F 4C 45 21
+   1229 00                 2892 	.db 0x00
+   122A                    2893 __str_66:
+   122A 45 44 4F 53        2894 	.ascii "EDOS"
+   122E 00                 2895 	.db 0x00
+                           2896 ;os_msed.c:743: void osSelectGameUsb() {
+                           2897 ;	---------------------------------
+                           2898 ; Function osSelectGameUsb
+                           2899 ; ---------------------------------
+   122F                    2900 _osSelectGameUsb_start::
+   122F                    2901 _osSelectGameUsb:
+   122F DD E5         [15] 2902 	push	ix
+   1231 DD 21 00 00   [14] 2903 	ld	ix,#0
+   1235 DD 39         [15] 2904 	add	ix,sp
+   1237 F5            [11] 2905 	push	af
+   1238 F5            [11] 2906 	push	af
+                           2907 ;os_msed.c:748: gSetPal(0);
+   1239 21 00 00      [10] 2908 	ld	hl,#0x0000
+   123C E5            [11] 2909 	push	hl
+   123D CDr00r00      [17] 2910 	call	_gSetPal
+   1240 F1            [10] 2911 	pop	af
+                           2912 ;os_msed.c:749: gCleanScreen();
+   1241 CDr00r00      [17] 2913 	call	_gCleanScreen
+                           2914 ;os_msed.c:750: gSetXY(0, 2);
+   1244 21 00 02      [10] 2915 	ld	hl,#0x0200
+   1247 E5            [11] 2916 	push	hl
+   1248 CDr00r00      [17] 2917 	call	_gSetXY
+                           2918 ;os_msed.c:751: gConsPrint("USB loading...");
+   124B 21r37r13      [10] 2919 	ld	hl, #__str_67
+   124E E3            [19] 2920 	ex	(sp),hl
+   124F CDr00r00      [17] 2921 	call	_gConsPrint
+   1252 F1            [10] 2922 	pop	af
+                           2923 ;os_msed.c:752: gRepaint();
+   1253 CDr00r00      [17] 2924 	call	_gRepaint
+                           2925 ;os_msed.c:753: wr_len = bi_usb_rd_byte();
+   1256 CDr00r00      [17] 2926 	call	_bi_usb_rd_byte
+   1259 DD 75 FE      [19] 2927 	ld	-2 (ix),l
+                           2928 ;os_msed.c:754: if (wr_len > 16 || wr_len == 0)return;
+   125C 3E 10         [ 7] 2929 	ld	a,#0x10
+   125E DD 96 FE      [19] 2930 	sub	a, -2 (ix)
+   1261 DAr32r13      [10] 2931 	jp	C,00107$
+   1264 DD 7E FE      [19] 2932 	ld	a,-2 (ix)
+   1267 B7            [ 4] 2933 	or	a, a
+   1268 CAr32r13      [10] 2934 	jp	Z,00107$
+                           2935 ;os_msed.c:759: gConsPrint("Flash Erase...");
+   126B 21r46r13      [10] 2936 	ld	hl,#__str_68
+   126E E5            [11] 2937 	push	hl
+   126F CDr00r00      [17] 2938 	call	_gConsPrint
+   1272 F1            [10] 2939 	pop	af
+                           2940 ;os_msed.c:760: gRepaint();
+   1273 CDr00r00      [17] 2941 	call	_gRepaint
+                           2942 ;os_msed.c:762: bi_flash_erase(0, wr_len);
+   1276 DD 6E FE      [19] 2943 	ld	l,-2 (ix)
+   1279 26 00         [ 7] 2944 	ld	h,#0x00
+   127B E5            [11] 2945 	push	hl
+   127C 21 00 00      [10] 2946 	ld	hl,#0x0000
+   127F E5            [11] 2947 	push	hl
+   1280 21 00 00      [10] 2948 	ld	hl,#0x0000
+   1283 E5            [11] 2949 	push	hl
+   1284 CDr00r00      [17] 2950 	call	_bi_flash_erase
+   1287 21 06 00      [10] 2951 	ld	hl,#0x0006
+   128A 39            [11] 2952 	add	hl,sp
+   128B F9            [ 6] 2953 	ld	sp,hl
+                           2954 ;os_msed.c:763: bi_usb_wr_byte((u8) 'k');
+   128C 3E 6B         [ 7] 2955 	ld	a,#0x6B
+   128E F5            [11] 2956 	push	af
+   128F 33            [ 6] 2957 	inc	sp
+   1290 CDr00r00      [17] 2958 	call	_bi_usb_wr_byte
+   1293 33            [ 6] 2959 	inc	sp
+                           2960 ;os_msed.c:765: gConsPrint("Copy ROM.");
+   1294 21r55r13      [10] 2961 	ld	hl,#__str_69
+   1297 E5            [11] 2962 	push	hl
+   1298 CDr00r00      [17] 2963 	call	_gConsPrint
+   129B F1            [10] 2964 	pop	af
+                           2965 ;os_msed.c:766: gRepaint();
+   129C CDr00r00      [17] 2966 	call	_gRepaint
+                           2967 ;os_msed.c:768: addr = 0;
+   129F 21 00 00      [10] 2968 	ld	hl,#0x0000
+   12A2 E3            [19] 2969 	ex	(sp), hl
+                           2970 ;os_msed.c:769: while (wr_len) {
+   12A3 DD 7E FE      [19] 2971 	ld	a,-2 (ix)
+   12A6 DD 77 FF      [19] 2972 	ld	-1 (ix),a
+   12A9                    2973 00104$:
+   12A9 DD 7E FF      [19] 2974 	ld	a,-1 (ix)
+   12AC B7            [ 4] 2975 	or	a, a
+   12AD 28 5A         [12] 2976 	jr	Z,00106$
+                           2977 ;os_msed.c:771: bi_usb_to_rom(&addr, 64);
+   12AF 21 00 00      [10] 2978 	ld	hl,#0x0000
+   12B2 39            [11] 2979 	add	hl,sp
+   12B3 01 40 00      [10] 2980 	ld	bc,#0x0040
+   12B6 C5            [11] 2981 	push	bc
+   12B7 E5            [11] 2982 	push	hl
+   12B8 CDr00r00      [17] 2983 	call	_bi_usb_to_rom
+   12BB F1            [10] 2984 	pop	af
+                           2985 ;os_msed.c:772: bi_usb_wr_byte((u8) 'k');
+   12BC 26 6B         [ 7] 2986 	ld	h,#0x6B
+   12BE E3            [19] 2987 	ex	(sp),hl
+   12BF 33            [ 6] 2988 	inc	sp
+   12C0 CDr00r00      [17] 2989 	call	_bi_usb_wr_byte
+   12C3 33            [ 6] 2990 	inc	sp
+                           2991 ;os_msed.c:773: addr += 64;
+   12C4 DD 7E FC      [19] 2992 	ld	a,-4 (ix)
+   12C7 C6 40         [ 7] 2993 	add	a, #0x40
+   12C9 DD 77 FC      [19] 2994 	ld	-4 (ix),a
+   12CC DD 7E FD      [19] 2995 	ld	a,-3 (ix)
+   12CF CE 00         [ 7] 2996 	adc	a, #0x00
+   12D1 DD 77 FD      [19] 2997 	ld	-3 (ix),a
+                           2998 ;os_msed.c:774: bi_usb_to_rom(&addr, 64);
+   12D4 21 00 00      [10] 2999 	ld	hl,#0x0000
+   12D7 39            [11] 3000 	add	hl,sp
+   12D8 01 40 00      [10] 3001 	ld	bc,#0x0040
+   12DB C5            [11] 3002 	push	bc
+   12DC E5            [11] 3003 	push	hl
+   12DD CDr00r00      [17] 3004 	call	_bi_usb_to_rom
+   12E0 F1            [10] 3005 	pop	af
+                           3006 ;os_msed.c:775: bi_usb_wr_byte((u8) 'k');
+   12E1 26 6B         [ 7] 3007 	ld	h,#0x6B
+   12E3 E3            [19] 3008 	ex	(sp),hl
+   12E4 33            [ 6] 3009 	inc	sp
+   12E5 CDr00r00      [17] 3010 	call	_bi_usb_wr_byte
+   12E8 33            [ 6] 3011 	inc	sp
+                           3012 ;os_msed.c:776: addr += 64;
+   12E9 DD 7E FC      [19] 3013 	ld	a,-4 (ix)
+   12EC C6 40         [ 7] 3014 	add	a, #0x40
+   12EE DD 77 FC      [19] 3015 	ld	-4 (ix),a
+   12F1 DD 7E FD      [19] 3016 	ld	a,-3 (ix)
+   12F4 CE 00         [ 7] 3017 	adc	a, #0x00
+   12F6 DD 77 FD      [19] 3018 	ld	-3 (ix),a
+                           3019 ;os_msed.c:778: wr_len--;
+   12F9 DD 35 FF      [23] 3020 	dec	-1 (ix)
+                           3021 ;os_msed.c:779: gAppendChar((u8) '.');
+   12FC 3E 2E         [ 7] 3022 	ld	a,#0x2E
+   12FE F5            [11] 3023 	push	af
+   12FF 33            [ 6] 3024 	inc	sp
+   1300 CDr00r00      [17] 3025 	call	_gAppendChar
+   1303 33            [ 6] 3026 	inc	sp
+                           3027 ;os_msed.c:780: gRepaint();
+   1304 CDr00r00      [17] 3028 	call	_gRepaint
+   1307 18 A0         [12] 3029 	jr	00104$
+   1309                    3030 00106$:
+                           3031 ;os_msed.c:783: bi_set_ram_bank(1);
+   1309 3E 01         [ 7] 3032 	ld	a,#0x01
+   130B F5            [11] 3033 	push	af
+   130C 33            [ 6] 3034 	inc	sp
+   130D CDr00r00      [17] 3035 	call	_bi_set_ram_bank
+   1310 33            [ 6] 3036 	inc	sp
+                           3037 ;os_msed.c:784: str_copy("usb-game-savedata.sms", rom_inf->file_name);
+   1311 2Ar86r11      [16] 3038 	ld	hl,(_rom_inf)
+   1314 11r5Fr13      [10] 3039 	ld	de,#__str_70
+   1317 E5            [11] 3040 	push	hl
+   1318 D5            [11] 3041 	push	de
+   1319 CDr00r00      [17] 3042 	call	_str_copy
+   131C F1            [10] 3043 	pop	af
+   131D F1            [10] 3044 	pop	af
+                           3045 ;os_msed.c:785: rom_inf->run_cfg = 0;
+   131E 2Ar86r11      [16] 3046 	ld	hl,(_rom_inf)
+   1321 01 00 02      [10] 3047 	ld	bc,#0x0200
+   1324 09            [11] 3048 	add	hl,bc
+   1325 36 00         [10] 3049 	ld	(hl),#0x00
+                           3050 ;os_msed.c:786: bi_set_rom_bank(1);
+   1327 3E 01         [ 7] 3051 	ld	a,#0x01
+   1329 F5            [11] 3052 	push	af
+   132A 33            [ 6] 3053 	inc	sp
+   132B CDr00r00      [17] 3054 	call	_bi_set_rom_bank
+   132E 33            [ 6] 3055 	inc	sp
+                           3056 ;os_msed.c:787: osLoadSram();
+   132F CDrE7r0D      [17] 3057 	call	_osLoadSram
+   1332                    3058 00107$:
+   1332 DD F9         [10] 3059 	ld	sp,ix
+   1334 DD E1         [14] 3060 	pop	ix
+   1336 C9            [10] 3061 	ret
+   1337                    3062 _osSelectGameUsb_end::
+   1337                    3063 __str_67:
+   1337 55 53 42 20 6C 6F  3064 	.ascii "USB loading..."
+        61 64 69 6E 67 2E
+        2E 2E
+   1345 00                 3065 	.db 0x00
+   1346                    3066 __str_68:
+   1346 46 6C 61 73 68 20  3067 	.ascii "Flash Erase..."
+        45 72 61 73 65 2E
+        2E 2E
+   1354 00                 3068 	.db 0x00
+   1355                    3069 __str_69:
+   1355 43 6F 70 79 20 52  3070 	.ascii "Copy ROM."
+        4F 4D 2E
+   135E 00                 3071 	.db 0x00
+   135F                    3072 __str_70:
+   135F 75 73 62 2D 67 61  3073 	.ascii "usb-game-savedata.sms"
+        6D 65 2D 73 61 76
+        65 64 61 74 61 2E
+        73 6D 73
+   1374 00                 3074 	.db 0x00
+                           3075 ;os_msed.c:810: void osUpdateUsb() {
+                           3076 ;	---------------------------------
+                           3077 ; Function osUpdateUsb
+                           3078 ; ---------------------------------
+   1375                    3079 _osUpdateUsb_start::
+   1375                    3080 _osUpdateUsb:
+   1375 F5            [11] 3081 	push	af
+                           3082 ;os_msed.c:813: gSetPal(0);
+   1376 21 00 00      [10] 3083 	ld	hl,#0x0000
+   1379 E5            [11] 3084 	push	hl
+   137A CDr00r00      [17] 3085 	call	_gSetPal
+   137D F1            [10] 3086 	pop	af
+                           3087 ;os_msed.c:814: gCleanScreen();
+   137E CDr00r00      [17] 3088 	call	_gCleanScreen
+                           3089 ;os_msed.c:815: gSetXY(0, 2);
+   1381 21 00 02      [10] 3090 	ld	hl,#0x0200
+   1384 E5            [11] 3091 	push	hl
+   1385 CDr00r00      [17] 3092 	call	_gSetXY
+                           3093 ;os_msed.c:816: gConsPrint("USB loading...");
+   1388 21rCDr13      [10] 3094 	ld	hl, #__str_71
+   138B E3            [19] 3095 	ex	(sp),hl
+   138C CDr00r00      [17] 3096 	call	_gConsPrint
+   138F F1            [10] 3097 	pop	af
+                           3098 ;os_msed.c:817: gRepaint();
+   1390 CDr00r00      [17] 3099 	call	_gRepaint
+                           3100 ;os_msed.c:820: bi_flash_erase(0x10000, 1);
+   1393 21 01 00      [10] 3101 	ld	hl,#0x0001
+   1396 E5            [11] 3102 	push	hl
+   1397 21 01 00      [10] 3103 	ld	hl,#0x0001
+   139A E5            [11] 3104 	push	hl
+   139B 21 00 00      [10] 3105 	ld	hl,#0x0000
+   139E E5            [11] 3106 	push	hl
+   139F CDr00r00      [17] 3107 	call	_bi_flash_erase
+   13A2 21 06 00      [10] 3108 	ld	hl,#0x0006
+   13A5 39            [11] 3109 	add	hl,sp
+   13A6 F9            [ 6] 3110 	ld	sp,hl
+                           3111 ;os_msed.c:821: bi_usb_wr_byte((u8) 'k');
+   13A7 3E 6B         [ 7] 3112 	ld	a,#0x6B
+   13A9 F5            [11] 3113 	push	af
+   13AA 33            [ 6] 3114 	inc	sp
+   13AB CDr00r00      [17] 3115 	call	_bi_usb_wr_byte
+   13AE 33            [ 6] 3116 	inc	sp
+                           3117 ;os_msed.c:822: addr = 128;
+   13AF 21 80 00      [10] 3118 	ld	hl,#0x0080
+   13B2 E3            [19] 3119 	ex	(sp), hl
+                           3120 ;os_msed.c:823: bi_usb_to_rom(&addr, 64);
+   13B3 21 00 00      [10] 3121 	ld	hl,#0x0000
+   13B6 39            [11] 3122 	add	hl,sp
+   13B7 01 40 00      [10] 3123 	ld	bc,#0x0040
+   13BA C5            [11] 3124 	push	bc
+   13BB E5            [11] 3125 	push	hl
+   13BC CDr00r00      [17] 3126 	call	_bi_usb_to_rom
+   13BF F1            [10] 3127 	pop	af
+                           3128 ;os_msed.c:824: bi_usb_wr_byte((u8) 'k');
+   13C0 26 6B         [ 7] 3129 	ld	h,#0x6B
+   13C2 E3            [19] 3130 	ex	(sp),hl
+   13C3 33            [ 6] 3131 	inc	sp
+   13C4 CDr00r00      [17] 3132 	call	_bi_usb_wr_byte
+   13C7 33            [ 6] 3133 	inc	sp
+                           3134 ;os_msed.c:825: bi_install_os();
+   13C8 CDr00r00      [17] 3135 	call	_bi_install_os
+   13CB F1            [10] 3136 	pop	af
+   13CC C9            [10] 3137 	ret
+   13CD                    3138 _osUpdateUsb_end::
+   13CD                    3139 __str_71:
+   13CD 55 53 42 20 6C 6F  3140 	.ascii "USB loading..."
+        61 64 69 6E 67 2E
+        2E 2E
+   13DB 00                 3141 	.db 0x00
+                           3142 	.area _CODE
+                           3143 	.area _INITIALIZER
+                           3144 	.area _CABS (ABS)

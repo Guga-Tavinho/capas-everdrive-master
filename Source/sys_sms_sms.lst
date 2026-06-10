@@ -1,0 +1,3993 @@
+                              1 ;--------------------------------------------------------
+                              2 ; File Created by SDCC : free open source ANSI-C Compiler
+                              3 ; Version 3.3.0 #8604 (May 11 2013) (MINGW64)
+                              4 ; This file was generated Wed Jun 10 08:26:50 2026
+                              5 ;--------------------------------------------------------
+                              6 	.module sys_sms
+                              7 	.optsdcc -mz80
+                              8 	
+                              9 ;--------------------------------------------------------
+                             10 ; Public variables in this module
+                             11 ;--------------------------------------------------------
+                             12 	.globl _sys_joy_read
+                             13 	.globl _g_vdp_init
+                             14 	.globl _g_set_vdp_reg
+                             15 	.globl _g_vram_wr
+                             16 	.globl _g_set_pal
+                             17 	.globl _bi_is_gg_cart
+                             18 	.globl _diskReadToRam
+                             19 	.globl _str_eq_ncase
+                             20 	.globl _str_extension
+                             21 	.globl _str_length
+                             22 	.globl _sysMemSet
+                             23 	.globl _gDrawStringMl
+                             24 	.globl _gAppendNum
+                             25 	.globl _gAppendHex32
+                             26 	.globl _gAppendHex16SW
+                             27 	.globl _gAppendHex8
+                             28 	.globl _gDrawStringCx
+                             29 	.globl _gDrawString
+                             30 	.globl _gRepaint
+                             31 	.globl _gVsync
+                             32 	.globl _osReleaseRam
+                             33 	.globl _osMallocRam
+                             34 	.globl _osUsbListener
+                             35 	.globl _fat_cluster_to_sector
+                             36 	.globl _fat_read
+                             37 	.globl _fat_open_file
+                             38 	.globl _fat_get_full_record
+                             39 	.globl _cover_miss
+                             40 	.globl _cover_loaded_h
+                             41 	.globl _cover_loaded_w
+                             42 	.globl _cover_name
+                             43 	.globl _gfx_buff
+                             44 	.globl _g_cons_border
+                             45 	.globl _g_current_pal
+                             46 	.globl _g_ptr
+                             47 	.globl _SYS_BR_ROWS
+                             48 	.globl _pal_sg
+                             49 	.globl _pal_gg
+                             50 	.globl _pal_sms
+                             51 	.globl _sysInit
+                             52 	.globl _gSetSGpal
+                             53 	.globl _sysJoyWait
+                             54 	.globl _sysJoyRead
+                             55 	.globl _gSetFont
+                             56 	.globl _gCleanScreen
+                             57 	.globl _gFillRect
+                             58 	.globl _gAppendString
+                             59 	.globl _gConsPrint
+                             60 	.globl _gSetXY
+                             61 	.globl _gMoveXY
+                             62 	.globl _gAppendChar
+                             63 	.globl _gCopyActiveToRam
+                             64 	.globl _gCopyRamToBack
+                             65 	.globl _guiPrintError
+                             66 	.globl _guiDrawBrowser
+                             67 	.globl _guiDrawCover
+                             68 	.globl _guiMakeCoverName
+                             69 	.globl _guiFindCover
+                             70 	.globl _guiLoadCover
+                             71 	.globl _guiClearCover
+                             72 	.globl _guiPutCoverMap
+                             73 	.globl _guiResetCoverCache
+                             74 	.globl _guiGetCoverMiss
+                             75 	.globl _guiSetCoverMiss
+                             76 	.globl _guiDrawMenu
+                             77 	.globl _guiDrawForm
+                             78 	.globl _guiHexView
+                             79 	.globl _guiGetMaxRows
+                             80 	.globl _sysGetRomRegion
+                             81 	.globl _gScreenW
+                             82 	.globl _gScreenH
+                             83 	.globl _gSetPal
+                             84 	.globl _gAppendStringMl
+                             85 ;--------------------------------------------------------
+                             86 ; special function registers
+                             87 ;--------------------------------------------------------
+                             88 ;--------------------------------------------------------
+                             89 ; ram data
+                             90 ;--------------------------------------------------------
+                             91 	.area _DATA
+   0000                      92 _SYS_BR_ROWS::
+   0000                      93 	.ds 1
+   0001                      94 _g_ptr::
+   0001                      95 	.ds 2
+   0003                      96 _g_current_pal::
+   0003                      97 	.ds 2
+   0005                      98 _g_cons_border::
+   0005                      99 	.ds 1
+   0006                     100 _gfx_buff::
+   0006                     101 	.ds 1792
+   0706                     102 _cover_name::
+   0706                     103 	.ds 212
+   07DA                     104 _cover_loaded_w::
+   07DA                     105 	.ds 1
+   07DB                     106 _cover_loaded_h::
+   07DB                     107 	.ds 1
+   07DC                     108 _cover_miss::
+   07DC                     109 	.ds 64
+   081C                     110 _sysJoyRead_joy_ctr_1_91:
+   081C                     111 	.ds 1
+   081D                     112 _guiDrawBrowser_old_selector_1_123:
+   081D                     113 	.ds 2
+   081F                     114 _guiDrawCover_old_selector_1_135:
+   081F                     115 	.ds 2
+   0821                     116 _guiDrawCover_old_valid_1_135:
+   0821                     117 	.ds 1
+   0822                     118 _guiDrawCover_old_found_1_135:
+   0822                     119 	.ds 1
+                            120 ;--------------------------------------------------------
+                            121 ; ram data
+                            122 ;--------------------------------------------------------
+                            123 	.area _INITIALIZED
+                            124 ;--------------------------------------------------------
+                            125 ; absolute external ram data
+                            126 ;--------------------------------------------------------
+                            127 	.area _DABS (ABS)
+                            128 ;--------------------------------------------------------
+                            129 ; global & static initialisations
+                            130 ;--------------------------------------------------------
+                            131 	.area _HOME
+                            132 	.area _GSINIT
+                            133 	.area _GSFINAL
+                            134 	.area _GSINIT
+                            135 ;--------------------------------------------------------
+                            136 ; Home
+                            137 ;--------------------------------------------------------
+                            138 	.area _HOME
+                            139 	.area _HOME
+                            140 ;--------------------------------------------------------
+                            141 ; code
+                            142 ;--------------------------------------------------------
+                            143 	.area _CODE
+                            144 ;sys_sms.c:146: void sysInit() {
+                            145 ;	---------------------------------
+                            146 ; Function sysInit
+                            147 ; ---------------------------------
+   0000                     148 _sysInit_start::
+   0000                     149 _sysInit:
+                            150 ;sys_sms.c:148: g_current_pal = 0;
+   0000 21r03r00      [10]  151 	ld	hl,#_g_current_pal + 0
+   0003 36 00         [10]  152 	ld	(hl), #0x00
+   0005 21r04r00      [10]  153 	ld	hl,#_g_current_pal + 1
+   0008 36 00         [10]  154 	ld	(hl), #0x00
+                            155 ;sys_sms.c:149: g_vdp_init();
+   000A CDr00r00      [17]  156 	call	_g_vdp_init
+                            157 ;sys_sms.c:152: if (bi_is_gg_cart()) {
+   000D CDr00r00      [17]  158 	call	_bi_is_gg_cart
+   0010 7D            [ 4]  159 	ld	a,l
+   0011 B7            [ 4]  160 	or	a, a
+   0012 28 19         [12]  161 	jr	Z,00102$
+                            162 ;sys_sms.c:153: SYS_BR_ROWS = 13;
+   0014 21r00r00      [10]  163 	ld	hl,#_SYS_BR_ROWS + 0
+   0017 36 0D         [10]  164 	ld	(hl), #0x0D
+                            165 ;sys_sms.c:154: g_cons_border = 6;
+   0019 21r05r00      [10]  166 	ld	hl,#_g_cons_border + 0
+   001C 36 06         [10]  167 	ld	(hl), #0x06
+                            168 ;sys_sms.c:155: g_set_pal(pal_gg, 0, 64);
+   001E 11r7Ar00      [10]  169 	ld	de,#_pal_gg
+   0021 21 00 40      [10]  170 	ld	hl,#0x4000
+   0024 E5            [11]  171 	push	hl
+   0025 D5            [11]  172 	push	de
+   0026 CDr00r00      [17]  173 	call	_g_set_pal
+   0029 F1            [10]  174 	pop	af
+   002A F1            [10]  175 	pop	af
+   002B 18 17         [12]  176 	jr	00103$
+   002D                     177 00102$:
+                            178 ;sys_sms.c:157: g_cons_border = 2;
+   002D 21r05r00      [10]  179 	ld	hl,#_g_cons_border + 0
+   0030 36 02         [10]  180 	ld	(hl), #0x02
+                            181 ;sys_sms.c:158: SYS_BR_ROWS = 18;
+   0032 21r00r00      [10]  182 	ld	hl,#_SYS_BR_ROWS + 0
+   0035 36 12         [10]  183 	ld	(hl), #0x12
+                            184 ;sys_sms.c:159: g_set_pal(pal_sms, 0, 32);
+   0037 11r5Ar00      [10]  185 	ld	de,#_pal_sms
+   003A 21 00 20      [10]  186 	ld	hl,#0x2000
+   003D E5            [11]  187 	push	hl
+   003E D5            [11]  188 	push	de
+   003F CDr00r00      [17]  189 	call	_g_set_pal
+   0042 F1            [10]  190 	pop	af
+   0043 F1            [10]  191 	pop	af
+   0044                     192 00103$:
+                            193 ;sys_sms.c:162: gCleanScreen();
+   0044 CDr52r02      [17]  194 	call	_gCleanScreen
+                            195 ;sys_sms.c:163: gRepaint();
+   0047 CDr00r00      [17]  196 	call	_gRepaint
+                            197 ;sys_sms.c:165: g_set_vdp_reg(VDP_REG_SPRITE_PAT, 0);
+   004A 21 06 00      [10]  198 	ld	hl,#0x0006
+   004D E5            [11]  199 	push	hl
+   004E CDr00r00      [17]  200 	call	_g_set_vdp_reg
+                            201 ;sys_sms.c:166: g_set_vdp_reg(VDP_REG_MODE2, VDP_MOD2_BLK);
+   0051 21 01 40      [10]  202 	ld	hl, #0x4001
+   0054 E3            [19]  203 	ex	(sp),hl
+   0055 CDr00r00      [17]  204 	call	_g_set_vdp_reg
+   0058 F1            [10]  205 	pop	af
+   0059 C9            [10]  206 	ret
+   005A                     207 _sysInit_end::
+   005A                     208 _pal_sms:
+   005A 00                  209 	.db #0x00	; 0
+   005B 3F                  210 	.db #0x3F	; 63
+   005C 00                  211 	.db #0x00	; 0
+   005D 00                  212 	.db #0x00	; 0
+   005E 00                  213 	.db #0x00	; 0
+   005F 00                  214 	.db #0x00	; 0
+   0060 00                  215 	.db #0x00	; 0
+   0061 00                  216 	.db #0x00	; 0
+   0062 00                  217 	.db #0x00	; 0
+   0063 15                  218 	.db #0x15	; 21
+   0064 00                  219 	.db #0x00	; 0
+   0065 0A                  220 	.db #0x0A	; 10
+   0066 00                  221 	.db #0x00	; 0
+   0067 00                  222 	.db #0x00	; 0
+   0068 00                  223 	.db #0x00	; 0
+   0069 00                  224 	.db #0x00	; 0
+   006A 15                  225 	.db #0x15	; 21
+   006B 3F                  226 	.db #0x3F	; 63
+   006C 00                  227 	.db #0x00	; 0
+   006D 00                  228 	.db #0x00	; 0
+   006E 00                  229 	.db #0x00	; 0
+   006F 00                  230 	.db #0x00	; 0
+   0070 00                  231 	.db #0x00	; 0
+   0071 00                  232 	.db #0x00	; 0
+   0072 00                  233 	.db #0x00	; 0
+   0073 00                  234 	.db #0x00	; 0
+   0074 00                  235 	.db #0x00	; 0
+   0075 0A                  236 	.db #0x0A	; 10
+   0076 00                  237 	.db #0x00	; 0
+   0077 00                  238 	.db #0x00	; 0
+   0078 00                  239 	.db #0x00	; 0
+   0079 00                  240 	.db #0x00	; 0
+   007A                     241 _pal_gg:
+   007A 00 00               242 	.dw #0x0000
+   007C FF 0F               243 	.dw #0x0FFF
+   007E 00 00               244 	.dw #0x0000
+   0080 00 00               245 	.dw #0x0000
+   0082 00 00               246 	.dw #0x0000
+   0084 00 00               247 	.dw #0x0000
+   0086 00 00               248 	.dw #0x0000
+   0088 00 00               249 	.dw #0x0000
+   008A 00 00               250 	.dw #0x0000
+   008C 66 06               251 	.dw #0x0666
+   008E 00 00               252 	.dw #0x0000
+   0090 CC 00               253 	.dw #0x00CC
+   0092 00 00               254 	.dw #0x0000
+   0094 00 00               255 	.dw #0x0000
+   0096 00 00               256 	.dw #0x0000
+   0098 00 00               257 	.dw #0x0000
+   009A 66 06               258 	.dw #0x0666
+   009C FF 0F               259 	.dw #0x0FFF
+   009E 00 00               260 	.dw #0x0000
+   00A0 00 00               261 	.dw #0x0000
+   00A2 00 00               262 	.dw #0x0000
+   00A4 00 00               263 	.dw #0x0000
+   00A6 00 00               264 	.dw #0x0000
+   00A8 00 00               265 	.dw #0x0000
+   00AA 00 00               266 	.dw #0x0000
+   00AC 00 00               267 	.dw #0x0000
+   00AE 00 00               268 	.dw #0x0000
+   00B0 CC 00               269 	.dw #0x00CC
+   00B2 00 00               270 	.dw #0x0000
+   00B4 00 00               271 	.dw #0x0000
+   00B6 00 00               272 	.dw #0x0000
+   00B8 00 00               273 	.dw #0x0000
+   00BA                     274 _pal_sg:
+   00BA 00                  275 	.db #0x00	; 0
+   00BB 00                  276 	.db #0x00	; 0
+   00BC 00                  277 	.db #0x00	; 0
+   00BD 00                  278 	.db #0x00	; 0
+   00BE 00                  279 	.db #0x00	; 0
+   00BF 00                  280 	.db #0x00	; 0
+   00C0 00                  281 	.db #0x00	; 0
+   00C1 00                  282 	.db #0x00	; 0
+   00C2 00                  283 	.db #0x00	; 0
+   00C3 00                  284 	.db #0x00	; 0
+   00C4 00                  285 	.db #0x00	; 0
+   00C5 00                  286 	.db #0x00	; 0
+   00C6 00                  287 	.db #0x00	; 0
+   00C7 00                  288 	.db #0x00	; 0
+   00C8 00                  289 	.db #0x00	; 0
+   00C9 00                  290 	.db #0x00	; 0
+   00CA 00                  291 	.db #0x00	; 0
+   00CB 00                  292 	.db #0x00	; 0
+   00CC 00                  293 	.db #0x00	; 0
+   00CD 00                  294 	.db #0x00	; 0
+   00CE 00                  295 	.db #0x00	; 0
+   00CF 00                  296 	.db #0x00	; 0
+   00D0 00                  297 	.db #0x00	; 0
+   00D1 00                  298 	.db #0x00	; 0
+   00D2 00                  299 	.db #0x00	; 0
+   00D3 00                  300 	.db #0x00	; 0
+   00D4 00                  301 	.db #0x00	; 0
+   00D5 00                  302 	.db #0x00	; 0
+   00D6 00                  303 	.db #0x00	; 0
+   00D7 00                  304 	.db #0x00	; 0
+   00D8 00                  305 	.db #0x00	; 0
+   00D9 00                  306 	.db #0x00	; 0
+   00DA 00                  307 	.db #0x00	; 0
+   00DB 00                  308 	.db #0x00	; 0
+   00DC 00                  309 	.db #0x00	; 0
+   00DD 00                  310 	.db #0x00	; 0
+   00DE 00                  311 	.db #0x00	; 0
+   00DF 00                  312 	.db #0x00	; 0
+   00E0 00                  313 	.db #0x00	; 0
+   00E1 00                  314 	.db #0x00	; 0
+   00E2 00                  315 	.db #0x00	; 0
+   00E3 00                  316 	.db #0x00	; 0
+   00E4 00                  317 	.db #0x00	; 0
+   00E5 00                  318 	.db #0x00	; 0
+   00E6 00                  319 	.db #0x00	; 0
+   00E7 00                  320 	.db #0x00	; 0
+   00E8 00                  321 	.db #0x00	; 0
+   00E9 00                  322 	.db #0x00	; 0
+   00EA 00                  323 	.db #0x00	; 0
+   00EB 00                  324 	.db #0x00	; 0
+   00EC 08                  325 	.db #0x08	; 8
+   00ED 0C                  326 	.db #0x0C	; 12
+   00EE 20                  327 	.db #0x20	; 32
+   00EF 30                  328 	.db #0x30	; 48	'0'
+   00F0 02                  329 	.db #0x02	; 2
+   00F1 3C                  330 	.db #0x3C	; 60
+   00F2 02                  331 	.db #0x02	; 2
+   00F3 03                  332 	.db #0x03	; 3
+   00F4 0A                  333 	.db #0x0A	; 10
+   00F5 0F                  334 	.db #0x0F	; 15
+   00F6 08                  335 	.db #0x08	; 8
+   00F7 33                  336 	.db #0x33	; 51	'3'
+   00F8 2A                  337 	.db #0x2A	; 42
+   00F9 3F                  338 	.db #0x3F	; 63
+                            339 ;sys_sms.c:170: void gSetSGpal() {
+                            340 ;	---------------------------------
+                            341 ; Function gSetSGpal
+                            342 ; ---------------------------------
+   00FA                     343 _gSetSGpal_start::
+   00FA                     344 _gSetSGpal:
+                            345 ;sys_sms.c:172: g_set_pal(pal_sg, 0, 64);
+   00FA 11rBAr00      [10]  346 	ld	de,#_pal_sg
+   00FD 21 00 40      [10]  347 	ld	hl,#0x4000
+   0100 E5            [11]  348 	push	hl
+   0101 D5            [11]  349 	push	de
+   0102 CDr00r00      [17]  350 	call	_g_set_pal
+   0105 F1            [10]  351 	pop	af
+   0106 F1            [10]  352 	pop	af
+   0107 C9            [10]  353 	ret
+   0108                     354 _gSetSGpal_end::
+                            355 ;sys_sms.c:175: void sysJoyWait() {
+                            356 ;	---------------------------------
+                            357 ; Function sysJoyWait
+                            358 ; ---------------------------------
+   0108                     359 _sysJoyWait_start::
+   0108                     360 _sysJoyWait:
+                            361 ;sys_sms.c:177: while (sysJoyRead() != 0);
+   0108                     362 00101$:
+   0108 CDr17r01      [17]  363 	call	_sysJoyRead
+   010B 7C            [ 4]  364 	ld	a,h
+   010C B5            [ 4]  365 	or	a,l
+   010D 20 F9         [12]  366 	jr	NZ,00101$
+                            367 ;sys_sms.c:178: while (sysJoyRead() == 0);
+   010F                     368 00104$:
+   010F CDr17r01      [17]  369 	call	_sysJoyRead
+   0112 7C            [ 4]  370 	ld	a,h
+   0113 B5            [ 4]  371 	or	a,l
+   0114 28 F9         [12]  372 	jr	Z,00104$
+   0116 C9            [10]  373 	ret
+   0117                     374 _sysJoyWait_end::
+                            375 ;sys_sms.c:184: u16 sysJoyRead() {
+                            376 ;	---------------------------------
+                            377 ; Function sysJoyRead
+                            378 ; ---------------------------------
+   0117                     379 _sysJoyRead_start::
+   0117                     380 _sysJoyRead:
+                            381 ;sys_sms.c:194: osUsbListener();
+   0117 CDr00r00      [17]  382 	call	_osUsbListener
+                            383 ;sys_sms.c:195: if (joy_ctr < JOY_DELAY - 2)gVsync();
+   011A 3Ar1Cr08      [13]  384 	ld	a,(#_sysJoyRead_joy_ctr_1_91 + 0)
+   011D D6 0E         [ 7]  385 	sub	a, #0x0E
+   011F 30 03         [12]  386 	jr	NC,00102$
+   0121 CDr00r00      [17]  387 	call	_gVsync
+   0124                     388 00102$:
+                            389 ;sys_sms.c:198: joy = sys_joy_read();
+   0124 CDr00r00      [17]  390 	call	_sys_joy_read
+   0127 FD 21r00r00   [14]  391 	ld	iy,#_joy
+   012B FD 75 00      [19]  392 	ld	0 (iy),l
+   012E 21r01r00      [10]  393 	ld	hl,#_joy + 1
+   0131 36 00         [10]  394 	ld	(hl), #0x00
+                            395 ;sys_sms.c:201: if (joy != 0 && (joy & (JOY_L | JOY_R | JOY_U | JOY_D)) != 0) {
+   0133 3Ar01r00      [13]  396 	ld	a,(#_joy + 1)
+   0136 21r00r00      [10]  397 	ld	hl,#_joy + 0
+   0139 B6            [ 7]  398 	or	a,(hl)
+   013A 28 0D         [12]  399 	jr	Z,00104$
+   013C 3Ar00r00      [13]  400 	ld	a,(#_joy + 0)
+   013F E6 0F         [ 7]  401 	and	a, #0x0F
+   0141 28 06         [12]  402 	jr	Z,00104$
+                            403 ;sys_sms.c:202: joy_ctr++;
+   0143 21r1Cr08      [10]  404 	ld	hl, #_sysJoyRead_joy_ctr_1_91+0
+   0146 34            [11]  405 	inc	(hl)
+   0147 18 05         [12]  406 	jr	00105$
+   0149                     407 00104$:
+                            408 ;sys_sms.c:204: joy_ctr = 0;
+   0149 21r1Cr08      [10]  409 	ld	hl,#_sysJoyRead_joy_ctr_1_91 + 0
+   014C 36 00         [10]  410 	ld	(hl), #0x00
+   014E                     411 00105$:
+                            412 ;sys_sms.c:206: if (joy_ctr > JOY_DELAY) {
+   014E 3E 10         [ 7]  413 	ld	a,#0x10
+   0150 FD 21r1Cr08   [14]  414 	ld	iy,#_sysJoyRead_joy_ctr_1_91
+   0154 FD 96 00      [19]  415 	sub	a, 0 (iy)
+   0157 30 12         [12]  416 	jr	NC,00108$
+                            417 ;sys_sms.c:207: joy_ctr -= 2;
+   0159 21r1Cr08      [10]  418 	ld	hl, #_sysJoyRead_joy_ctr_1_91+0
+   015C 35            [11]  419 	dec	(hl)
+   015D 21r1Cr08      [10]  420 	ld	hl, #_sysJoyRead_joy_ctr_1_91+0
+   0160 35            [11]  421 	dec	(hl)
+                            422 ;sys_sms.c:208: joy = 0;
+   0161 21r00r00      [10]  423 	ld	hl,#_joy + 0
+   0164 36 00         [10]  424 	ld	(hl), #0x00
+   0166 21r01r00      [10]  425 	ld	hl,#_joy + 1
+   0169 36 00         [10]  426 	ld	(hl), #0x00
+   016B                     427 00108$:
+                            428 ;sys_sms.c:215: return joy;
+   016B 2Ar00r00      [16]  429 	ld	hl,(_joy)
+   016E C9            [10]  430 	ret
+   016F                     431 _sysJoyRead_end::
+                            432 ;sys_sms.c:218: void gSetFont(u8 *ptr) {
+                            433 ;	---------------------------------
+                            434 ; Function gSetFont
+                            435 ; ---------------------------------
+   016F                     436 _gSetFont_start::
+   016F                     437 _gSetFont:
+   016F DD E5         [15]  438 	push	ix
+   0171 DD 21 00 00   [14]  439 	ld	ix,#0
+   0175 DD 39         [15]  440 	add	ix,sp
+   0177 21 B9 FF      [10]  441 	ld	hl,#-71
+   017A 39            [11]  442 	add	hl,sp
+   017B F9            [ 6]  443 	ld	sp,hl
+                            444 ;sys_sms.c:225: g_set_vdp_reg(VDP_REG_MODE2, 0);
+   017C 21 01 00      [10]  445 	ld	hl,#0x0001
+   017F E5            [11]  446 	push	hl
+   0180 CDr00r00      [17]  447 	call	_g_set_vdp_reg
+   0183 F1            [10]  448 	pop	af
+                            449 ;sys_sms.c:227: for (i = 0; i < 64; i++)buff[i] = 0;
+   0184 21 02 00      [10]  450 	ld	hl,#0x0002
+   0187 39            [11]  451 	add	hl,sp
+   0188 4D            [ 4]  452 	ld	c,l
+   0189 44            [ 4]  453 	ld	b,h
+   018A 11 00 00      [10]  454 	ld	de,#0x0000
+   018D                     455 00104$:
+   018D 69            [ 4]  456 	ld	l, c
+   018E 60            [ 4]  457 	ld	h, b
+   018F 19            [11]  458 	add	hl,de
+   0190 36 00         [10]  459 	ld	(hl),#0x00
+   0192 13            [ 6]  460 	inc	de
+   0193 7B            [ 4]  461 	ld	a,e
+   0194 D6 40         [ 7]  462 	sub	a, #0x40
+   0196 7A            [ 4]  463 	ld	a,d
+   0197 DE 00         [ 7]  464 	sbc	a, #0x00
+   0199 38 F2         [12]  465 	jr	C,00104$
+                            466 ;sys_sms.c:228: g_vram_wr(buff, 0, 64);
+   019B 69            [ 4]  467 	ld	l, c
+   019C 60            [ 4]  468 	ld	h, b
+   019D C5            [11]  469 	push	bc
+   019E 11 40 00      [10]  470 	ld	de,#0x0040
+   01A1 D5            [11]  471 	push	de
+   01A2 11 00 00      [10]  472 	ld	de,#0x0000
+   01A5 D5            [11]  473 	push	de
+   01A6 E5            [11]  474 	push	hl
+   01A7 CDr00r00      [17]  475 	call	_g_vram_wr
+   01AA 21 06 00      [10]  476 	ld	hl,#0x0006
+   01AD 39            [11]  477 	add	hl,sp
+   01AE F9            [ 6]  478 	ld	sp,hl
+   01AF C1            [10]  479 	pop	bc
+                            480 ;sys_sms.c:231: ptr2 = ptr;
+   01B0 DD 6E 04      [19]  481 	ld	l,4 (ix)
+   01B3 DD 66 05      [19]  482 	ld	h,5 (ix)
+                            483 ;sys_sms.c:232: for (i = 0; i < 4096; i += 64) {
+   01B6 DD 71 FE      [19]  484 	ld	-2 (ix),c
+   01B9 DD 70 FF      [19]  485 	ld	-1 (ix),b
+   01BC DD 36 B9 00   [19]  486 	ld	-71 (ix),#0x00
+   01C0 DD 36 BA 00   [19]  487 	ld	-70 (ix),#0x00
+                            488 ;sys_sms.c:233: for (u = 0; u < 64; u += 4) {
+   01C4                     489 00114$:
+   01C4 1E 00         [ 7]  490 	ld	e,#0x00
+   01C6                     491 00106$:
+                            492 ;sys_sms.c:234: buff[u] = *ptr2++;
+   01C6 E5            [11]  493 	push	hl
+   01C7 6B            [ 4]  494 	ld	l,e
+   01C8 26 00         [ 7]  495 	ld	h,#0x00
+   01CA E5            [11]  496 	push	hl
+   01CB FD E1         [14]  497 	pop	iy
+   01CD E1            [10]  498 	pop	hl
+   01CE FD 09         [15]  499 	add	iy, bc
+   01D0 7E            [ 7]  500 	ld	a,(hl)
+   01D1 23            [ 6]  501 	inc	hl
+   01D2 FD 77 00      [19]  502 	ld	0 (iy), a
+                            503 ;sys_sms.c:235: buff[u + 3] = 0;
+   01D5 7B            [ 4]  504 	ld	a,e
+   01D6 C6 03         [ 7]  505 	add	a, #0x03
+   01D8 DD 77 FB      [19]  506 	ld	-5 (ix),a
+   01DB E5            [11]  507 	push	hl
+   01DC DD 6E FB      [19]  508 	ld	l,-5 (ix)
+   01DF 26 00         [ 7]  509 	ld	h,#0x00
+   01E1 E5            [11]  510 	push	hl
+   01E2 FD E1         [14]  511 	pop	iy
+   01E4 E1            [10]  512 	pop	hl
+   01E5 FD 09         [15]  513 	add	iy, bc
+   01E7 FD 36 00 00   [19]  514 	ld	0 (iy), #0x00
+                            515 ;sys_sms.c:236: buff[u + 1] = 0;
+   01EB 53            [ 4]  516 	ld	d,e
+   01EC 14            [ 4]  517 	inc	d
+   01ED E5            [11]  518 	push	hl
+   01EE 6A            [ 4]  519 	ld	l,d
+   01EF 26 00         [ 7]  520 	ld	h,#0x00
+   01F1 E5            [11]  521 	push	hl
+   01F2 FD E1         [14]  522 	pop	iy
+   01F4 E1            [10]  523 	pop	hl
+   01F5 FD 09         [15]  524 	add	iy, bc
+   01F7 FD 36 00 00   [19]  525 	ld	0 (iy), #0x00
+                            526 ;sys_sms.c:233: for (u = 0; u < 64; u += 4) {
+   01FB 1C            [ 4]  527 	inc	e
+   01FC 1C            [ 4]  528 	inc	e
+   01FD 1C            [ 4]  529 	inc	e
+   01FE 1C            [ 4]  530 	inc	e
+   01FF 7B            [ 4]  531 	ld	a,e
+   0200 D6 40         [ 7]  532 	sub	a, #0x40
+   0202 38 C2         [12]  533 	jr	C,00106$
+                            534 ;sys_sms.c:238: g_vram_wr(buff, i + 1024, 64);
+   0204 FD 21 00 04   [14]  535 	ld	iy,#0x0400
+   0208 D1            [10]  536 	pop	de
+   0209 D5            [11]  537 	push	de
+   020A FD 19         [15]  538 	add	iy, de
+   020C DD 7E FE      [19]  539 	ld	a,-2 (ix)
+   020F DD 77 FC      [19]  540 	ld	-4 (ix),a
+   0212 DD 7E FF      [19]  541 	ld	a,-1 (ix)
+   0215 DD 77 FD      [19]  542 	ld	-3 (ix),a
+   0218 E5            [11]  543 	push	hl
+   0219 C5            [11]  544 	push	bc
+   021A 11 40 00      [10]  545 	ld	de,#0x0040
+   021D D5            [11]  546 	push	de
+   021E FD E5         [15]  547 	push	iy
+   0220 DD 5E FC      [19]  548 	ld	e,-4 (ix)
+   0223 DD 56 FD      [19]  549 	ld	d,-3 (ix)
+   0226 D5            [11]  550 	push	de
+   0227 CDr00r00      [17]  551 	call	_g_vram_wr
+   022A 21 06 00      [10]  552 	ld	hl,#0x0006
+   022D 39            [11]  553 	add	hl,sp
+   022E F9            [ 6]  554 	ld	sp,hl
+   022F C1            [10]  555 	pop	bc
+   0230 E1            [10]  556 	pop	hl
+                            557 ;sys_sms.c:232: for (i = 0; i < 4096; i += 64) {
+   0231 DD 7E B9      [19]  558 	ld	a,-71 (ix)
+   0234 C6 40         [ 7]  559 	add	a, #0x40
+   0236 DD 77 B9      [19]  560 	ld	-71 (ix),a
+   0239 DD 7E BA      [19]  561 	ld	a,-70 (ix)
+   023C CE 00         [ 7]  562 	adc	a, #0x00
+   023E DD 77 BA      [19]  563 	ld	-70 (ix), a
+   0241 E6 F0         [ 7]  564 	and	a, #0xF0
+   0243 CArC4r01      [10]  565 	jp	Z,00114$
+                            566 ;sys_sms.c:241: g_set_vdp_reg(VDP_REG_MODE2, VDP_MOD2_BLK);
+   0246 21 01 40      [10]  567 	ld	hl,#0x4001
+   0249 E5            [11]  568 	push	hl
+   024A CDr00r00      [17]  569 	call	_g_set_vdp_reg
+   024D DD F9         [10]  570 	ld	sp,ix
+   024F DD E1         [14]  571 	pop	ix
+   0251 C9            [10]  572 	ret
+   0252                     573 _gSetFont_end::
+                            574 ;sys_sms.c:245: void gCleanScreen() {
+                            575 ;	---------------------------------
+                            576 ; Function gCleanScreen
+                            577 ; ---------------------------------
+   0252                     578 _gCleanScreen_start::
+   0252                     579 _gCleanScreen:
+                            580 ;sys_sms.c:247: sysMemSet(gfx_buff, 0, G_SCREEN_W * G_SCREEN_H * 2);
+   0252 11r06r00      [10]  581 	ld	de,#_gfx_buff
+   0255 21 00 07      [10]  582 	ld	hl,#0x0700
+   0258 E5            [11]  583 	push	hl
+   0259 AF            [ 4]  584 	xor	a, a
+   025A F5            [11]  585 	push	af
+   025B 33            [ 6]  586 	inc	sp
+   025C D5            [11]  587 	push	de
+   025D CDr00r00      [17]  588 	call	_sysMemSet
+   0260 F1            [10]  589 	pop	af
+   0261 F1            [10]  590 	pop	af
+   0262 33            [ 6]  591 	inc	sp
+   0263 C9            [10]  592 	ret
+   0264                     593 _gCleanScreen_end::
+                            594 ;sys_sms.c:250: void gFillRect(u16 data, u8 x, u8 y, u8 w, u8 h) {
+                            595 ;	---------------------------------
+                            596 ; Function gFillRect
+                            597 ; ---------------------------------
+   0264                     598 _gFillRect_start::
+   0264                     599 _gFillRect:
+   0264 DD E5         [15]  600 	push	ix
+   0266 DD 21 00 00   [14]  601 	ld	ix,#0
+   026A DD 39         [15]  602 	add	ix,sp
+   026C F5            [11]  603 	push	af
+   026D F5            [11]  604 	push	af
+                            605 ;sys_sms.c:257: gSetXY(x, y);
+   026E DD 66 07      [19]  606 	ld	h,7 (ix)
+   0271 DD 6E 06      [19]  607 	ld	l,6 (ix)
+   0274 E5            [11]  608 	push	hl
+   0275 CDr81r03      [17]  609 	call	_gSetXY
+   0278 F1            [10]  610 	pop	af
+                            611 ;sys_sms.c:259: for (yy = 0; yy < h; yy++) {
+   0279 01r06r00      [10]  612 	ld	bc,#_gfx_buff
+   027C 1E 00         [ 7]  613 	ld	e,#0x00
+   027E                     614 00107$:
+   027E 7B            [ 4]  615 	ld	a,e
+   027F DD 96 09      [19]  616 	sub	a, 9 (ix)
+   0282 30 58         [12]  617 	jr	NC,00109$
+                            618 ;sys_sms.c:260: ptr = (u16 *) & gfx_buff[g_ptr];
+   0284 2Ar01r00      [16]  619 	ld	hl,(_g_ptr)
+   0287 29            [11]  620 	add	hl, hl
+   0288 09            [11]  621 	add	hl,bc
+   0289 DD 75 FE      [19]  622 	ld	-2 (ix),l
+   028C DD 74 FF      [19]  623 	ld	-1 (ix),h
+                            624 ;sys_sms.c:261: for (xx = 0; xx < w; xx++) {
+   028F 16 00         [ 7]  625 	ld	d,#0x00
+   0291                     626 00104$:
+   0291 7A            [ 4]  627 	ld	a,d
+   0292 DD 96 08      [19]  628 	sub	a, 8 (ix)
+   0295 30 36         [12]  629 	jr	NC,00101$
+                            630 ;sys_sms.c:262: *ptr++ = data | g_current_pal;
+   0297 DD 7E 04      [19]  631 	ld	a,4 (ix)
+   029A 21r03r00      [10]  632 	ld	hl,#_g_current_pal + 0
+   029D B6            [ 7]  633 	or	a,(hl)
+   029E DD 77 FC      [19]  634 	ld	-4 (ix),a
+   02A1 DD 7E 05      [19]  635 	ld	a,5 (ix)
+   02A4 21r04r00      [10]  636 	ld	hl,#_g_current_pal + 1
+   02A7 B6            [ 7]  637 	or	a,(hl)
+   02A8 DD 77 FD      [19]  638 	ld	-3 (ix),a
+   02AB DD 6E FE      [19]  639 	ld	l,-2 (ix)
+   02AE DD 66 FF      [19]  640 	ld	h,-1 (ix)
+   02B1 DD 7E FC      [19]  641 	ld	a,-4 (ix)
+   02B4 77            [ 7]  642 	ld	(hl),a
+   02B5 23            [ 6]  643 	inc	hl
+   02B6 DD 7E FD      [19]  644 	ld	a,-3 (ix)
+   02B9 77            [ 7]  645 	ld	(hl),a
+   02BA DD 7E FE      [19]  646 	ld	a,-2 (ix)
+   02BD C6 02         [ 7]  647 	add	a, #0x02
+   02BF DD 77 FE      [19]  648 	ld	-2 (ix),a
+   02C2 DD 7E FF      [19]  649 	ld	a,-1 (ix)
+   02C5 CE 00         [ 7]  650 	adc	a, #0x00
+   02C7 DD 77 FF      [19]  651 	ld	-1 (ix),a
+                            652 ;sys_sms.c:261: for (xx = 0; xx < w; xx++) {
+   02CA 14            [ 4]  653 	inc	d
+   02CB 18 C4         [12]  654 	jr	00104$
+   02CD                     655 00101$:
+                            656 ;sys_sms.c:264: g_ptr += G_SCREEN_W;
+   02CD 21r01r00      [10]  657 	ld	hl,#_g_ptr
+   02D0 7E            [ 7]  658 	ld	a,(hl)
+   02D1 C6 20         [ 7]  659 	add	a, #0x20
+   02D3 77            [ 7]  660 	ld	(hl),a
+   02D4 23            [ 6]  661 	inc	hl
+   02D5 7E            [ 7]  662 	ld	a,(hl)
+   02D6 CE 00         [ 7]  663 	adc	a, #0x00
+   02D8 77            [ 7]  664 	ld	(hl),a
+                            665 ;sys_sms.c:259: for (yy = 0; yy < h; yy++) {
+   02D9 1C            [ 4]  666 	inc	e
+   02DA 18 A2         [12]  667 	jr	00107$
+   02DC                     668 00109$:
+   02DC DD F9         [10]  669 	ld	sp,ix
+   02DE DD E1         [14]  670 	pop	ix
+   02E0 C9            [10]  671 	ret
+   02E1                     672 _gFillRect_end::
+                            673 ;sys_sms.c:268: void gAppendString(u8 *str) {
+                            674 ;	---------------------------------
+                            675 ; Function gAppendString
+                            676 ; ---------------------------------
+   02E1                     677 _gAppendString_start::
+   02E1                     678 _gAppendString:
+   02E1 DD E5         [15]  679 	push	ix
+   02E3 DD 21 00 00   [14]  680 	ld	ix,#0
+   02E7 DD 39         [15]  681 	add	ix,sp
+   02E9 F5            [11]  682 	push	af
+   02EA 3B            [ 6]  683 	dec	sp
+                            684 ;sys_sms.c:270: u16 *ptr = (u16 *) & gfx_buff[g_ptr];
+   02EB 2Ar01r00      [16]  685 	ld	hl,(_g_ptr)
+   02EE 29            [11]  686 	add	hl, hl
+   02EF 11r06r00      [10]  687 	ld	de,#_gfx_buff
+   02F2 19            [11]  688 	add	hl,de
+   02F3 EB            [ 4]  689 	ex	de,hl
+                            690 ;sys_sms.c:273: while (*str != 0) {
+   02F4 DD 4E 04      [19]  691 	ld	c,4 (ix)
+   02F7 DD 46 05      [19]  692 	ld	b,5 (ix)
+   02FA DD 36 FD 00   [19]  693 	ld	-3 (ix),#0x00
+   02FE                     694 00101$:
+   02FE 0A            [ 7]  695 	ld	a,(bc)
+   02FF B7            [ 4]  696 	or	a, a
+   0300 28 2E         [12]  697 	jr	Z,00103$
+                            698 ;sys_sms.c:274: *ptr++ = *str++ | g_current_pal;
+   0302 03            [ 6]  699 	inc	bc
+   0303 DD 77 FE      [19]  700 	ld	-2 (ix),a
+   0306 DD 36 FF 00   [19]  701 	ld	-1 (ix),#0x00
+   030A DD 7E FE      [19]  702 	ld	a,-2 (ix)
+   030D 21r03r00      [10]  703 	ld	hl,#_g_current_pal + 0
+   0310 B6            [ 7]  704 	or	a,(hl)
+   0311 DD 77 FE      [19]  705 	ld	-2 (ix),a
+   0314 DD 7E FF      [19]  706 	ld	a,-1 (ix)
+   0317 21r04r00      [10]  707 	ld	hl,#_g_current_pal + 1
+   031A B6            [ 7]  708 	or	a,(hl)
+   031B DD 77 FF      [19]  709 	ld	-1 (ix),a
+   031E 6B            [ 4]  710 	ld	l, e
+   031F 62            [ 4]  711 	ld	h, d
+   0320 DD 7E FE      [19]  712 	ld	a,-2 (ix)
+   0323 77            [ 7]  713 	ld	(hl),a
+   0324 23            [ 6]  714 	inc	hl
+   0325 DD 7E FF      [19]  715 	ld	a,-1 (ix)
+   0328 77            [ 7]  716 	ld	(hl),a
+   0329 13            [ 6]  717 	inc	de
+   032A 13            [ 6]  718 	inc	de
+                            719 ;sys_sms.c:275: str_len++;
+   032B DD 34 FD      [23]  720 	inc	-3 (ix)
+   032E 18 CE         [12]  721 	jr	00101$
+   0330                     722 00103$:
+                            723 ;sys_sms.c:277: g_ptr += str_len;
+   0330 DD 56 FD      [19]  724 	ld	d,-3 (ix)
+   0333 06 00         [ 7]  725 	ld	b,#0x00
+   0335 21r01r00      [10]  726 	ld	hl,#_g_ptr
+   0338 7E            [ 7]  727 	ld	a,(hl)
+   0339 82            [ 4]  728 	add	a, d
+   033A 77            [ 7]  729 	ld	(hl),a
+   033B 23            [ 6]  730 	inc	hl
+   033C 7E            [ 7]  731 	ld	a,(hl)
+   033D 88            [ 4]  732 	adc	a, b
+   033E 77            [ 7]  733 	ld	(hl),a
+   033F DD F9         [10]  734 	ld	sp,ix
+   0341 DD E1         [14]  735 	pop	ix
+   0343 C9            [10]  736 	ret
+   0344                     737 _gAppendString_end::
+                            738 ;sys_sms.c:280: void gConsPrint(u8 *str) {
+                            739 ;	---------------------------------
+                            740 ; Function gConsPrint
+                            741 ; ---------------------------------
+   0344                     742 _gConsPrint_start::
+   0344                     743 _gConsPrint:
+                            744 ;sys_sms.c:282: g_ptr = g_ptr / G_SCREEN_W * G_SCREEN_W + G_SCREEN_W;
+   0344 2Ar01r00      [16]  745 	ld	hl,(_g_ptr)
+   0347 CB 3C         [ 8]  746 	srl	h
+   0349 CB 1D         [ 8]  747 	rr	l
+   034B CB 3C         [ 8]  748 	srl	h
+   034D CB 1D         [ 8]  749 	rr	l
+   034F CB 3C         [ 8]  750 	srl	h
+   0351 CB 1D         [ 8]  751 	rr	l
+   0353 CB 3C         [ 8]  752 	srl	h
+   0355 CB 1D         [ 8]  753 	rr	l
+   0357 CB 3C         [ 8]  754 	srl	h
+   0359 CB 1D         [ 8]  755 	rr	l
+   035B 29            [11]  756 	add	hl, hl
+   035C 29            [11]  757 	add	hl, hl
+   035D 29            [11]  758 	add	hl, hl
+   035E 29            [11]  759 	add	hl, hl
+   035F 29            [11]  760 	add	hl, hl
+   0360 11 20 00      [10]  761 	ld	de, #0x0020
+   0363 19            [11]  762 	add	hl, de
+   0364 22r01r00      [16]  763 	ld	(_g_ptr),hl
+                            764 ;sys_sms.c:283: g_ptr += g_cons_border;
+   0367 21r05r00      [10]  765 	ld	hl,#_g_cons_border + 0
+   036A 56            [ 7]  766 	ld	d, (hl)
+   036B 1E 00         [ 7]  767 	ld	e,#0x00
+   036D 21r01r00      [10]  768 	ld	hl,#_g_ptr
+   0370 7E            [ 7]  769 	ld	a,(hl)
+   0371 82            [ 4]  770 	add	a, d
+   0372 77            [ 7]  771 	ld	(hl),a
+   0373 23            [ 6]  772 	inc	hl
+   0374 7E            [ 7]  773 	ld	a,(hl)
+   0375 8B            [ 4]  774 	adc	a, e
+   0376 77            [ 7]  775 	ld	(hl),a
+                            776 ;sys_sms.c:284: gAppendString(str);
+   0377 C1            [10]  777 	pop	bc
+   0378 E1            [10]  778 	pop	hl
+   0379 E5            [11]  779 	push	hl
+   037A C5            [11]  780 	push	bc
+   037B E5            [11]  781 	push	hl
+   037C CDrE1r02      [17]  782 	call	_gAppendString
+   037F F1            [10]  783 	pop	af
+   0380 C9            [10]  784 	ret
+   0381                     785 _gConsPrint_end::
+                            786 ;sys_sms.c:287: void gSetXY(u8 x, u8 y) {
+                            787 ;	---------------------------------
+                            788 ; Function gSetXY
+                            789 ; ---------------------------------
+   0381                     790 _gSetXY_start::
+   0381                     791 _gSetXY:
+   0381 DD E5         [15]  792 	push	ix
+   0383 DD 21 00 00   [14]  793 	ld	ix,#0
+   0387 DD 39         [15]  794 	add	ix,sp
+                            795 ;sys_sms.c:289: g_ptr = x + y * G_SCREEN_W;
+   0389 DD 56 04      [19]  796 	ld	d,4 (ix)
+   038C 06 00         [ 7]  797 	ld	b,#0x00
+   038E DD 6E 05      [19]  798 	ld	l,5 (ix)
+   0391 26 00         [ 7]  799 	ld	h,#0x00
+   0393 29            [11]  800 	add	hl, hl
+   0394 29            [11]  801 	add	hl, hl
+   0395 29            [11]  802 	add	hl, hl
+   0396 29            [11]  803 	add	hl, hl
+   0397 29            [11]  804 	add	hl, hl
+   0398 5D            [ 4]  805 	ld	e,l
+   0399 4C            [ 4]  806 	ld	c,h
+   039A 7A            [ 4]  807 	ld	a,d
+   039B 21r01r00      [10]  808 	ld	hl,#_g_ptr
+   039E 83            [ 4]  809 	add	a, e
+   039F 77            [ 7]  810 	ld	(hl),a
+   03A0 78            [ 4]  811 	ld	a,b
+   03A1 89            [ 4]  812 	adc	a, c
+   03A2 23            [ 6]  813 	inc	hl
+   03A3 77            [ 7]  814 	ld	(hl),a
+   03A4 DD E1         [14]  815 	pop	ix
+   03A6 C9            [10]  816 	ret
+   03A7                     817 _gSetXY_end::
+                            818 ;sys_sms.c:292: void gMoveXY(s8 x, s8 y) {
+                            819 ;	---------------------------------
+                            820 ; Function gMoveXY
+                            821 ; ---------------------------------
+   03A7                     822 _gMoveXY_start::
+   03A7                     823 _gMoveXY:
+   03A7 DD E5         [15]  824 	push	ix
+   03A9 DD 21 00 00   [14]  825 	ld	ix,#0
+   03AD DD 39         [15]  826 	add	ix,sp
+                            827 ;sys_sms.c:294: g_ptr += x + y * G_SCREEN_W;
+   03AF DD 5E 04      [19]  828 	ld	e,4 (ix)
+   03B2 DD 7E 04      [19]  829 	ld	a,4 (ix)
+   03B5 17            [ 4]  830 	rla
+   03B6 9F            [ 4]  831 	sbc	a, a
+   03B7 57            [ 4]  832 	ld	d,a
+   03B8 DD 6E 05      [19]  833 	ld	l,5 (ix)
+   03BB DD 7E 05      [19]  834 	ld	a,5 (ix)
+   03BE 17            [ 4]  835 	rla
+   03BF 9F            [ 4]  836 	sbc	a, a
+   03C0 67            [ 4]  837 	ld	h,a
+   03C1 29            [11]  838 	add	hl, hl
+   03C2 29            [11]  839 	add	hl, hl
+   03C3 29            [11]  840 	add	hl, hl
+   03C4 29            [11]  841 	add	hl, hl
+   03C5 29            [11]  842 	add	hl, hl
+   03C6 19            [11]  843 	add	hl,de
+   03C7 EB            [ 4]  844 	ex	de,hl
+   03C8 21r01r00      [10]  845 	ld	hl,#_g_ptr
+   03CB 7E            [ 7]  846 	ld	a,(hl)
+   03CC 83            [ 4]  847 	add	a, e
+   03CD 77            [ 7]  848 	ld	(hl),a
+   03CE 23            [ 6]  849 	inc	hl
+   03CF 7E            [ 7]  850 	ld	a,(hl)
+   03D0 8A            [ 4]  851 	adc	a, d
+   03D1 77            [ 7]  852 	ld	(hl),a
+   03D2 DD E1         [14]  853 	pop	ix
+   03D4 C9            [10]  854 	ret
+   03D5                     855 _gMoveXY_end::
+                            856 ;sys_sms.c:297: void gAppendChar(u8 str) {
+                            857 ;	---------------------------------
+                            858 ; Function gAppendChar
+                            859 ; ---------------------------------
+   03D5                     860 _gAppendChar_start::
+   03D5                     861 _gAppendChar:
+   03D5 DD E5         [15]  862 	push	ix
+   03D7 DD 21 00 00   [14]  863 	ld	ix,#0
+   03DB DD 39         [15]  864 	add	ix,sp
+                            865 ;sys_sms.c:299: gfx_buff[g_ptr++] = str | (g_current_pal << 8);
+   03DD ED 5Br01r00   [20]  866 	ld	de,(_g_ptr)
+   03E1 21r01r00      [10]  867 	ld	hl, #_g_ptr+0
+   03E4 34            [11]  868 	inc	(hl)
+   03E5 20 04         [12]  869 	jr	NZ,00103$
+   03E7 21r02r00      [10]  870 	ld	hl, #_g_ptr+1
+   03EA 34            [11]  871 	inc	(hl)
+   03EB                     872 00103$:
+   03EB EB            [ 4]  873 	ex	de,hl
+   03EC 29            [11]  874 	add	hl, hl
+   03ED 11r06r00      [10]  875 	ld	de,#_gfx_buff
+   03F0 19            [11]  876 	add	hl,de
+   03F1 FD 21r03r00   [14]  877 	ld	iy,#_g_current_pal
+   03F5 FD 56 00      [19]  878 	ld	d,0 (iy)
+   03F8 1E 00         [ 7]  879 	ld	e,#0x00
+   03FA DD 4E 04      [19]  880 	ld	c,4 (ix)
+   03FD 06 00         [ 7]  881 	ld	b,#0x00
+   03FF 7B            [ 4]  882 	ld	a,e
+   0400 B1            [ 4]  883 	or	a, c
+   0401 5F            [ 4]  884 	ld	e,a
+   0402 7A            [ 4]  885 	ld	a,d
+   0403 B0            [ 4]  886 	or	a, b
+   0404 57            [ 4]  887 	ld	d,a
+   0405 73            [ 7]  888 	ld	(hl),e
+   0406 23            [ 6]  889 	inc	hl
+   0407 72            [ 7]  890 	ld	(hl),d
+   0408 DD E1         [14]  891 	pop	ix
+   040A C9            [10]  892 	ret
+   040B                     893 _gAppendChar_end::
+                            894 ;sys_sms.c:302: void gCopyActiveToRam(u16 *buff) {
+                            895 ;	---------------------------------
+                            896 ; Function gCopyActiveToRam
+                            897 ; ---------------------------------
+   040B                     898 _gCopyActiveToRam_start::
+   040B                     899 _gCopyActiveToRam:
+                            900 ;sys_sms.c:303: buff;
+   040B C9            [10]  901 	ret
+   040C                     902 _gCopyActiveToRam_end::
+                            903 ;sys_sms.c:306: void gCopyRamToBack(u16 *buff) {
+                            904 ;	---------------------------------
+                            905 ; Function gCopyRamToBack
+                            906 ; ---------------------------------
+   040C                     907 _gCopyRamToBack_start::
+   040C                     908 _gCopyRamToBack:
+                            909 ;sys_sms.c:307: buff;
+   040C C9            [10]  910 	ret
+   040D                     911 _gCopyRamToBack_end::
+                            912 ;sys_sms.c:310: void guiPrintError(u8 code) {
+                            913 ;	---------------------------------
+                            914 ; Function guiPrintError
+                            915 ; ---------------------------------
+   040D                     916 _guiPrintError_start::
+   040D                     917 _guiPrintError:
+                            918 ;sys_sms.c:312: gCleanScreen();
+   040D CDr52r02      [17]  919 	call	_gCleanScreen
+                            920 ;sys_sms.c:313: gDrawStringCx("ERROR: 0x00", 10);
+   0410 11r58r04      [10]  921 	ld	de,#__str_0
+   0413 3E 0A         [ 7]  922 	ld	a,#0x0A
+   0415 F5            [11]  923 	push	af
+   0416 33            [ 6]  924 	inc	sp
+   0417 D5            [11]  925 	push	de
+   0418 CDr00r00      [17]  926 	call	_gDrawStringCx
+                            927 ;sys_sms.c:314: gMoveXY(-2, 0);
+   041B 33            [ 6]  928 	inc	sp
+   041C 21 FE 00      [10]  929 	ld	hl,#0x00FE
+   041F E3            [19]  930 	ex	(sp),hl
+   0420 CDrA7r03      [17]  931 	call	_gMoveXY
+   0423 F1            [10]  932 	pop	af
+                            933 ;sys_sms.c:315: gAppendHex8(code);
+   0424 21 02 00      [10]  934 	ld	hl, #2+0
+   0427 39            [11]  935 	add	hl, sp
+   0428 7E            [ 7]  936 	ld	a, (hl)
+   0429 F5            [11]  937 	push	af
+   042A 33            [ 6]  938 	inc	sp
+   042B CDr00r00      [17]  939 	call	_gAppendHex8
+   042E 33            [ 6]  940 	inc	sp
+                            941 ;sys_sms.c:316: if (code == FAT_ERR_FAT16) {
+   042F 21 02 00      [10]  942 	ld	hl, #2+0
+   0432 39            [11]  943 	add	hl, sp
+   0433 7E            [ 7]  944 	ld	a, (hl)
+   0434 D6 FB         [ 7]  945 	sub	a, #0xFB
+   0436 20 1A         [12]  946 	jr	NZ,00102$
+                            947 ;sys_sms.c:317: gDrawStringCx("FAT16 is not supported", 12);
+   0438 11r64r04      [10]  948 	ld	de,#__str_1
+   043B 3E 0C         [ 7]  949 	ld	a,#0x0C
+   043D F5            [11]  950 	push	af
+   043E 33            [ 6]  951 	inc	sp
+   043F D5            [11]  952 	push	de
+   0440 CDr00r00      [17]  953 	call	_gDrawStringCx
+   0443 F1            [10]  954 	pop	af
+   0444 33            [ 6]  955 	inc	sp
+                            956 ;sys_sms.c:318: gDrawStringCx("Please use FAT32", 14);
+   0445 11r7Br04      [10]  957 	ld	de,#__str_2
+   0448 3E 0E         [ 7]  958 	ld	a,#0x0E
+   044A F5            [11]  959 	push	af
+   044B 33            [ 6]  960 	inc	sp
+   044C D5            [11]  961 	push	de
+   044D CDr00r00      [17]  962 	call	_gDrawStringCx
+   0450 F1            [10]  963 	pop	af
+   0451 33            [ 6]  964 	inc	sp
+   0452                     965 00102$:
+                            966 ;sys_sms.c:321: gRepaint();
+   0452 CDr00r00      [17]  967 	call	_gRepaint
+                            968 ;sys_sms.c:322: sysJoyWait();
+   0455 C3r08r01      [10]  969 	jp	_sysJoyWait
+   0458                     970 _guiPrintError_end::
+   0458                     971 __str_0:
+   0458 45 52 52 4F 52 3A   972 	.ascii "ERROR: 0x00"
+        20 30 78 30 30
+   0463 00                  973 	.db 0x00
+   0464                     974 __str_1:
+   0464 46 41 54 31 36 20   975 	.ascii "FAT16 is not supported"
+        69 73 20 6E 6F 74
+        20 73 75 70 70 6F
+        72 74 65 64
+   047A 00                  976 	.db 0x00
+   047B                     977 __str_2:
+   047B 50 6C 65 61 73 65   978 	.ascii "Please use FAT32"
+        20 75 73 65 20 46
+        41 54 33 32
+   048B 00                  979 	.db 0x00
+                            980 ;sys_sms.c:325: u8 guiDrawBrowser(u8 full_repaint, u16 selector) {
+                            981 ;	---------------------------------
+                            982 ; Function guiDrawBrowser
+                            983 ; ---------------------------------
+   048C                     984 _guiDrawBrowser_start::
+   048C                     985 _guiDrawBrowser:
+   048C DD E5         [15]  986 	push	ix
+   048E DD 21 00 00   [14]  987 	ld	ix,#0
+   0492 DD 39         [15]  988 	add	ix,sp
+   0494 21 E9 FF      [10]  989 	ld	hl,#-23
+   0497 39            [11]  990 	add	hl,sp
+   0498 F9            [ 6]  991 	ld	sp,hl
+                            992 ;sys_sms.c:328: u8 gg_cart = bi_is_gg_cart();
+   0499 CDr00r00      [17]  993 	call	_bi_is_gg_cart
+   049C 45            [ 4]  994 	ld	b,l
+                            995 ;sys_sms.c:330: u16 page = selector / SYS_BR_ROWS * SYS_BR_ROWS;
+   049D 21r00r00      [10]  996 	ld	hl,#_SYS_BR_ROWS + 0
+   04A0 5E            [ 7]  997 	ld	e, (hl)
+   04A1 16 00         [ 7]  998 	ld	d,#0x00
+   04A3 C5            [11]  999 	push	bc
+   04A4 D5            [11] 1000 	push	de
+   04A5 D5            [11] 1001 	push	de
+   04A6 DD 6E 05      [19] 1002 	ld	l,5 (ix)
+   04A9 DD 66 06      [19] 1003 	ld	h,6 (ix)
+   04AC E5            [11] 1004 	push	hl
+   04AD CDr00r00      [17] 1005 	call	__divuint_rrx_s
+   04B0 F1            [10] 1006 	pop	af
+   04B1 E3            [19] 1007 	ex	(sp),hl
+   04B2 CDr00r00      [17] 1008 	call	__mulint_rrx_s
+   04B5 F1            [10] 1009 	pop	af
+   04B6 F1            [10] 1010 	pop	af
+   04B7 C1            [10] 1011 	pop	bc
+   04B8 DD 75 EE      [19] 1012 	ld	-18 (ix),l
+   04BB DD 74 EF      [19] 1013 	ld	-17 (ix),h
+                           1014 ;sys_sms.c:333: u8 y = gg_cart ? 3 : 1;
+   04BE 78            [ 4] 1015 	ld	a,b
+   04BF B7            [ 4] 1016 	or	a, a
+   04C0 28 04         [12] 1017 	jr	Z,00137$
+   04C2 1E 03         [ 7] 1018 	ld	e,#0x03
+   04C4 18 02         [12] 1019 	jr	00138$
+   04C6                    1020 00137$:
+   04C6 1E 01         [ 7] 1021 	ld	e,#0x01
+   04C8                    1022 00138$:
+                           1023 ;sys_sms.c:334: u8 x = gg_cart ? 6 : 1;
+   04C8 78            [ 4] 1024 	ld	a,b
+   04C9 B7            [ 4] 1025 	or	a, a
+   04CA 28 04         [12] 1026 	jr	Z,00139$
+   04CC 3E 06         [ 7] 1027 	ld	a,#0x06
+   04CE 18 02         [12] 1028 	jr	00140$
+   04D0                    1029 00139$:
+   04D0 3E 01         [ 7] 1030 	ld	a,#0x01
+   04D2                    1031 00140$:
+   04D2 DD 77 ED      [19] 1032 	ld	-19 (ix),a
+                           1033 ;sys_sms.c:335: u8 ful_name_y = y + SYS_BR_ROWS + 3;
+   04D5 7B            [ 4] 1034 	ld	a,e
+   04D6 21r00r00      [10] 1035 	ld	hl,#_SYS_BR_ROWS
+   04D9 86            [ 7] 1036 	add	a, (hl)
+   04DA C6 03         [ 7] 1037 	add	a, #0x03
+   04DC DD 77 EC      [19] 1038 	ld	-20 (ix),a
+                           1039 ;sys_sms.c:336: u8 scr_w = gScreenW();
+   04DF C5            [11] 1040 	push	bc
+   04E0 D5            [11] 1041 	push	de
+   04E1 CDr15r18      [17] 1042 	call	_gScreenW
+   04E4 D1            [10] 1043 	pop	de
+   04E5 C1            [10] 1044 	pop	bc
+   04E6 55            [ 4] 1045 	ld	d,l
+                           1046 ;sys_sms.c:337: u8 max_name_len = gg_cart ? 20 : COVER_X - x - 1;
+   04E7 78            [ 4] 1047 	ld	a,b
+   04E8 B7            [ 4] 1048 	or	a, a
+   04E9 28 04         [12] 1049 	jr	Z,00141$
+   04EB 3E 14         [ 7] 1050 	ld	a,#0x14
+   04ED 18 05         [12] 1051 	jr	00142$
+   04EF                    1052 00141$:
+   04EF 3E 11         [ 7] 1053 	ld	a,#0x11
+   04F1 DD 96 ED      [19] 1054 	sub	a, -19 (ix)
+   04F4                    1055 00142$:
+   04F4 DD 77 EA      [19] 1056 	ld	-22 (ix),a
+                           1057 ;sys_sms.c:340: rec = osMallocRam(sizeof (FatFullRecord));
+   04F7 D5            [11] 1058 	push	de
+   04F8 21 E5 00      [10] 1059 	ld	hl,#0x00E5
+   04FB E5            [11] 1060 	push	hl
+   04FC CDr00r00      [17] 1061 	call	_osMallocRam
+   04FF F1            [10] 1062 	pop	af
+   0500 D1            [10] 1063 	pop	de
+   0501 DD 75 F2      [19] 1064 	ld	-14 (ix),l
+   0504 DD 74 F3      [19] 1065 	ld	-13 (ix),h
+                           1066 ;sys_sms.c:343: if (full_repaint) {
+   0507 DD 7E 04      [19] 1067 	ld	a,4 (ix)
+   050A B7            [ 4] 1068 	or	a, a
+   050B 28 05         [12] 1069 	jr	Z,00102$
+                           1070 ;sys_sms.c:344: gCleanScreen();
+   050D D5            [11] 1071 	push	de
+   050E CDr52r02      [17] 1072 	call	_gCleanScreen
+   0511 D1            [10] 1073 	pop	de
+   0512                    1074 00102$:
+                           1075 ;sys_sms.c:346: if (full_repaint == 2) {
+   0512 DD 7E 04      [19] 1076 	ld	a,4 (ix)
+   0515 D6 02         [ 7] 1077 	sub	a, #0x02
+   0517 20 05         [12] 1078 	jr	NZ,00104$
+                           1079 ;sys_sms.c:347: guiResetCoverCache();
+   0519 D5            [11] 1080 	push	de
+   051A CDrA3r0F      [17] 1081 	call	_guiResetCoverCache
+   051D D1            [10] 1082 	pop	de
+   051E                    1083 00104$:
+                           1084 ;sys_sms.c:351: gSetPal(1);
+   051E D5            [11] 1085 	push	de
+   051F 21 01 00      [10] 1086 	ld	hl,#0x0001
+   0522 E5            [11] 1087 	push	hl
+   0523 CDr1Br18      [17] 1088 	call	_gSetPal
+   0526 F1            [10] 1089 	pop	af
+   0527 D1            [10] 1090 	pop	de
+                           1091 ;sys_sms.c:352: if (full_repaint) {
+   0528 DD 7E 04      [19] 1092 	ld	a,4 (ix)
+   052B B7            [ 4] 1093 	or	a, a
+   052C 28 1A         [12] 1094 	jr	Z,00106$
+                           1095 ;sys_sms.c:353: gFillRect(0, 0, y, scr_w, 1);
+   052E D5            [11] 1096 	push	de
+   052F 3E 01         [ 7] 1097 	ld	a,#0x01
+   0531 F5            [11] 1098 	push	af
+   0532 33            [ 6] 1099 	inc	sp
+   0533 D5            [11] 1100 	push	de
+   0534 33            [ 6] 1101 	inc	sp
+   0535 7B            [ 4] 1102 	ld	a,e
+   0536 F5            [11] 1103 	push	af
+   0537 33            [ 6] 1104 	inc	sp
+   0538 AF            [ 4] 1105 	xor	a, a
+   0539 F5            [11] 1106 	push	af
+   053A 33            [ 6] 1107 	inc	sp
+   053B 21 00 00      [10] 1108 	ld	hl,#0x0000
+   053E E5            [11] 1109 	push	hl
+   053F CDr64r02      [17] 1110 	call	_gFillRect
+   0542 21 06 00      [10] 1111 	ld	hl,#0x0006
+   0545 39            [11] 1112 	add	hl,sp
+   0546 F9            [ 6] 1113 	ld	sp,hl
+   0547 D1            [10] 1114 	pop	de
+   0548                    1115 00106$:
+                           1116 ;sys_sms.c:356: gFillRect(0, 0, ful_name_y, scr_w, 2);
+   0548 D5            [11] 1117 	push	de
+   0549 3E 02         [ 7] 1118 	ld	a,#0x02
+   054B F5            [11] 1119 	push	af
+   054C 33            [ 6] 1120 	inc	sp
+   054D D5            [11] 1121 	push	de
+   054E 33            [ 6] 1122 	inc	sp
+   054F DD 7E EC      [19] 1123 	ld	a,-20 (ix)
+   0552 F5            [11] 1124 	push	af
+   0553 33            [ 6] 1125 	inc	sp
+   0554 AF            [ 4] 1126 	xor	a, a
+   0555 F5            [11] 1127 	push	af
+   0556 33            [ 6] 1128 	inc	sp
+   0557 21 00 00      [10] 1129 	ld	hl,#0x0000
+   055A E5            [11] 1130 	push	hl
+   055B CDr64r02      [17] 1131 	call	_gFillRect
+   055E 21 06 00      [10] 1132 	ld	hl,#0x0006
+   0561 39            [11] 1133 	add	hl,sp
+   0562 F9            [ 6] 1134 	ld	sp,hl
+   0563 D1            [10] 1135 	pop	de
+                           1136 ;sys_sms.c:359: gDrawString("Pagina ", x, y);
+   0564 01r88r08      [10] 1137 	ld	bc,#__str_3
+   0567 D5            [11] 1138 	push	de
+   0568 7B            [ 4] 1139 	ld	a,e
+   0569 F5            [11] 1140 	push	af
+   056A 33            [ 6] 1141 	inc	sp
+   056B DD 7E ED      [19] 1142 	ld	a,-19 (ix)
+   056E F5            [11] 1143 	push	af
+   056F 33            [ 6] 1144 	inc	sp
+   0570 C5            [11] 1145 	push	bc
+   0571 CDr00r00      [17] 1146 	call	_gDrawString
+   0574 F1            [10] 1147 	pop	af
+   0575 F1            [10] 1148 	pop	af
+   0576 D1            [10] 1149 	pop	de
+                           1150 ;sys_sms.c:360: gAppendNum(page / SYS_BR_ROWS + 1);
+   0577 FD 21r00r00   [14] 1151 	ld	iy,#_SYS_BR_ROWS
+   057B FD 6E 00      [19] 1152 	ld	l,0 (iy)
+   057E 26 00         [ 7] 1153 	ld	h,#0x00
+   0580 D5            [11] 1154 	push	de
+   0581 E5            [11] 1155 	push	hl
+   0582 DD 6E EE      [19] 1156 	ld	l,-18 (ix)
+   0585 DD 66 EF      [19] 1157 	ld	h,-17 (ix)
+   0588 E5            [11] 1158 	push	hl
+   0589 CDr00r00      [17] 1159 	call	__divuint_rrx_s
+   058C F1            [10] 1160 	pop	af
+   058D F1            [10] 1161 	pop	af
+   058E D1            [10] 1162 	pop	de
+   058F 23            [ 6] 1163 	inc	hl
+   0590 01 00 00      [10] 1164 	ld	bc,#0x0000
+   0593 D5            [11] 1165 	push	de
+   0594 C5            [11] 1166 	push	bc
+   0595 E5            [11] 1167 	push	hl
+   0596 CDr00r00      [17] 1168 	call	_gAppendNum
+   0599 F1            [10] 1169 	pop	af
+   059A F1            [10] 1170 	pop	af
+   059B D1            [10] 1171 	pop	de
+                           1172 ;sys_sms.c:361: gAppendString(" de ");
+   059C 21r90r08      [10] 1173 	ld	hl,#__str_4
+   059F D5            [11] 1174 	push	de
+   05A0 E5            [11] 1175 	push	hl
+   05A1 CDrE1r02      [17] 1176 	call	_gAppendString
+   05A4 F1            [10] 1177 	pop	af
+   05A5 D1            [10] 1178 	pop	de
+                           1179 ;sys_sms.c:362: i = fat_dir_size / SYS_BR_ROWS;
+   05A6 3Ar00r00      [13] 1180 	ld	a,(#_SYS_BR_ROWS + 0)
+   05A9 DD 77 F9      [19] 1181 	ld	-7 (ix),a
+   05AC DD 36 FA 00   [19] 1182 	ld	-6 (ix),#0x00
+   05B0 D5            [11] 1183 	push	de
+   05B1 DD 6E F9      [19] 1184 	ld	l,-7 (ix)
+   05B4 DD 66 FA      [19] 1185 	ld	h,-6 (ix)
+   05B7 E5            [11] 1186 	push	hl
+   05B8 2Ar00r00      [16] 1187 	ld	hl,(_fat_dir_size)
+   05BB E5            [11] 1188 	push	hl
+   05BC CDr00r00      [17] 1189 	call	__divuint_rrx_s
+   05BF F1            [10] 1190 	pop	af
+   05C0 F1            [10] 1191 	pop	af
+   05C1 D1            [10] 1192 	pop	de
+                           1193 ;sys_sms.c:363: if (fat_dir_size % SYS_BR_ROWS != 0)i++;
+   05C2 E5            [11] 1194 	push	hl
+   05C3 D5            [11] 1195 	push	de
+   05C4 DD 6E F9      [19] 1196 	ld	l,-7 (ix)
+   05C7 DD 66 FA      [19] 1197 	ld	h,-6 (ix)
+   05CA E5            [11] 1198 	push	hl
+   05CB 2Ar00r00      [16] 1199 	ld	hl,(_fat_dir_size)
+   05CE E5            [11] 1200 	push	hl
+   05CF CDr00r00      [17] 1201 	call	__moduint_rrx_s
+   05D2 F1            [10] 1202 	pop	af
+   05D3 F1            [10] 1203 	pop	af
+   05D4 D1            [10] 1204 	pop	de
+   05D5 C1            [10] 1205 	pop	bc
+   05D6 7C            [ 4] 1206 	ld	a,h
+   05D7 B5            [ 4] 1207 	or	a,l
+   05D8 28 01         [12] 1208 	jr	Z,00108$
+   05DA 03            [ 6] 1209 	inc	bc
+   05DB                    1210 00108$:
+                           1211 ;sys_sms.c:364: gAppendNum(i);
+   05DB 21 00 00      [10] 1212 	ld	hl,#0x0000
+   05DE D5            [11] 1213 	push	de
+   05DF E5            [11] 1214 	push	hl
+   05E0 C5            [11] 1215 	push	bc
+   05E1 CDr00r00      [17] 1216 	call	_gAppendNum
+   05E4 F1            [10] 1217 	pop	af
+   05E5 F1            [10] 1218 	pop	af
+   05E6 D1            [10] 1219 	pop	de
+                           1220 ;sys_sms.c:365: gDrawString("Instagram: @tavinho.games", 1, y + 1);
+   05E7 63            [ 4] 1221 	ld	h,e
+   05E8 24            [ 4] 1222 	inc	h
+   05E9 01r95r08      [10] 1223 	ld	bc,#__str_5
+   05EC D5            [11] 1224 	push	de
+   05ED E5            [11] 1225 	push	hl
+   05EE 33            [ 6] 1226 	inc	sp
+   05EF 3E 01         [ 7] 1227 	ld	a,#0x01
+   05F1 F5            [11] 1228 	push	af
+   05F2 33            [ 6] 1229 	inc	sp
+   05F3 C5            [11] 1230 	push	bc
+   05F4 CDr00r00      [17] 1231 	call	_gDrawString
+   05F7 F1            [10] 1232 	pop	af
+   05F8 F1            [10] 1233 	pop	af
+   05F9 D1            [10] 1234 	pop	de
+                           1235 ;sys_sms.c:366: y += 2;
+   05FA 1C            [ 4] 1236 	inc	e
+   05FB 1C            [ 4] 1237 	inc	e
+                           1238 ;sys_sms.c:368: resp = 0;
+   05FC DD 36 EB 00   [19] 1239 	ld	-21 (ix),#0x00
+                           1240 ;sys_sms.c:369: if (fat_dir_size == 0) {
+   0600 3Ar01r00      [13] 1241 	ld	a,(#_fat_dir_size + 1)
+   0603 21r00r00      [10] 1242 	ld	hl,#_fat_dir_size + 0
+   0606 B6            [ 7] 1243 	or	a,(hl)
+   0607 20 1C         [12] 1244 	jr	NZ,00110$
+                           1245 ;sys_sms.c:370: gSetPal(0);
+   0609 D5            [11] 1246 	push	de
+   060A 21 00 00      [10] 1247 	ld	hl,#0x0000
+   060D E5            [11] 1248 	push	hl
+   060E CDr1Br18      [17] 1249 	call	_gSetPal
+   0611 F1            [10] 1250 	pop	af
+   0612 D1            [10] 1251 	pop	de
+                           1252 ;sys_sms.c:371: gDrawStringCx("There are no files", 11);
+   0613 01rAFr08      [10] 1253 	ld	bc,#__str_6
+   0616 D5            [11] 1254 	push	de
+   0617 3E 0B         [ 7] 1255 	ld	a,#0x0B
+   0619 F5            [11] 1256 	push	af
+   061A 33            [ 6] 1257 	inc	sp
+   061B C5            [11] 1258 	push	bc
+   061C CDr00r00      [17] 1259 	call	_gDrawStringCx
+   061F F1            [10] 1260 	pop	af
+   0620 33            [ 6] 1261 	inc	sp
+   0621 CDrD8r0E      [17] 1262 	call	_guiClearCover
+   0624 D1            [10] 1263 	pop	de
+   0625                    1264 00110$:
+                           1265 ;sys_sms.c:374: if (full_repaint && fat_dir_size > 4)gRepaint();
+   0625 DD 7E 04      [19] 1266 	ld	a,4 (ix)
+   0628 B7            [ 4] 1267 	or	a, a
+   0629 28 19         [12] 1268 	jr	Z,00168$
+   062B 3E 04         [ 7] 1269 	ld	a,#0x04
+   062D FD 21r00r00   [14] 1270 	ld	iy,#_fat_dir_size
+   0631 FD BE 00      [19] 1271 	cp	a, 0 (iy)
+   0634 3E 00         [ 7] 1272 	ld	a,#0x00
+   0636 FD 21r00r00   [14] 1273 	ld	iy,#_fat_dir_size
+   063A FD 9E 01      [19] 1274 	sbc	a, 1 (iy)
+   063D 30 05         [12] 1275 	jr	NC,00168$
+   063F D5            [11] 1276 	push	de
+   0640 CDr00r00      [17] 1277 	call	_gRepaint
+   0643 D1            [10] 1278 	pop	de
+                           1279 ;sys_sms.c:376: for (i = page; i < page + SYS_BR_ROWS && i < fat_dir_size; i++, y++) {
+   0644                    1280 00168$:
+   0644 DD 7E F2      [19] 1281 	ld	a,-14 (ix)
+   0647 C6 E4         [ 7] 1282 	add	a, #0xE4
+   0649 DD 77 F9      [19] 1283 	ld	-7 (ix),a
+   064C DD 7E F3      [19] 1284 	ld	a,-13 (ix)
+   064F CE 00         [ 7] 1285 	adc	a, #0x00
+   0651 DD 77 FA      [19] 1286 	ld	-6 (ix),a
+   0654 DD 7E EC      [19] 1287 	ld	a,-20 (ix)
+   0657 3C            [ 4] 1288 	inc	a
+   0658 DD 77 F5      [19] 1289 	ld	-11 (ix),a
+   065B DD 7E F9      [19] 1290 	ld	a,-7 (ix)
+   065E DD 77 F7      [19] 1291 	ld	-9 (ix),a
+   0661 DD 7E FA      [19] 1292 	ld	a,-6 (ix)
+   0664 DD 77 F8      [19] 1293 	ld	-8 (ix),a
+   0667 DD 7E ED      [19] 1294 	ld	a,-19 (ix)
+   066A C6 02         [ 7] 1295 	add	a, #0x02
+   066C DD 77 F4      [19] 1296 	ld	-12 (ix),a
+   066F DD 7E EE      [19] 1297 	ld	a,-18 (ix)
+   0672 DD 77 F0      [19] 1298 	ld	-16 (ix),a
+   0675 DD 7E EF      [19] 1299 	ld	a,-17 (ix)
+   0678 DD 77 F1      [19] 1300 	ld	-15 (ix),a
+   067B DD 73 F6      [19] 1301 	ld	-10 (ix),e
+   067E                    1302 00134$:
+   067E FD 21r00r00   [14] 1303 	ld	iy,#_SYS_BR_ROWS
+   0682 FD 6E 00      [19] 1304 	ld	l,0 (iy)
+   0685 26 00         [ 7] 1305 	ld	h,#0x00
+   0687 DD 5E EE      [19] 1306 	ld	e,-18 (ix)
+   068A DD 56 EF      [19] 1307 	ld	d,-17 (ix)
+   068D 19            [11] 1308 	add	hl,de
+   068E DD 7E F0      [19] 1309 	ld	a,-16 (ix)
+   0691 95            [ 4] 1310 	sub	a, l
+   0692 DD 7E F1      [19] 1311 	ld	a,-15 (ix)
+   0695 9C            [ 4] 1312 	sbc	a, h
+   0696 D2r6Cr08      [10] 1313 	jp	NC,00131$
+   0699 21r00r00      [10] 1314 	ld	hl,#_fat_dir_size
+   069C DD 7E F0      [19] 1315 	ld	a,-16 (ix)
+   069F 96            [ 7] 1316 	sub	a, (hl)
+   06A0 DD 7E F1      [19] 1317 	ld	a,-15 (ix)
+   06A3 23            [ 6] 1318 	inc	hl
+   06A4 9E            [ 7] 1319 	sbc	a, (hl)
+   06A5 D2r6Cr08      [10] 1320 	jp	NC,00131$
+                           1321 ;sys_sms.c:378: if (i != selector && i != old_selector && !full_repaint)continue;
+   06A8 DD 7E 05      [19] 1322 	ld	a,5 (ix)
+   06AB DD 96 F0      [19] 1323 	sub	a, -16 (ix)
+   06AE 20 0C         [12] 1324 	jr	NZ,00216$
+   06B0 DD 7E 06      [19] 1325 	ld	a,6 (ix)
+   06B3 DD 96 F1      [19] 1326 	sub	a, -15 (ix)
+   06B6 20 04         [12] 1327 	jr	NZ,00216$
+   06B8 3E 01         [ 7] 1328 	ld	a,#0x01
+   06BA 18 01         [12] 1329 	jr	00217$
+   06BC                    1330 00216$:
+   06BC AF            [ 4] 1331 	xor	a,a
+   06BD                    1332 00217$:
+   06BD DD 77 FF      [19] 1333 	ld	-1 (ix), a
+   06C0 B7            [ 4] 1334 	or	a, a
+   06C1 20 17         [12] 1335 	jr	NZ,00115$
+   06C3 3Ar1Dr08      [13] 1336 	ld	a,(#_guiDrawBrowser_old_selector_1_123 + 0)
+   06C6 DD 96 F0      [19] 1337 	sub	a, -16 (ix)
+   06C9 20 08         [12] 1338 	jr	NZ,00218$
+   06CB 3Ar1Er08      [13] 1339 	ld	a,(#_guiDrawBrowser_old_selector_1_123 + 1)
+   06CE DD 96 F1      [19] 1340 	sub	a, -15 (ix)
+   06D1 28 07         [12] 1341 	jr	Z,00115$
+   06D3                    1342 00218$:
+   06D3 DD 7E 04      [19] 1343 	ld	a,4 (ix)
+   06D6 B7            [ 4] 1344 	or	a, a
+   06D7 CAr5Er08      [10] 1345 	jp	Z,00130$
+   06DA                    1346 00115$:
+                           1347 ;sys_sms.c:379: resp = fat_get_full_record(fat_dir[i], rec);
+   06DA DD 5E F0      [19] 1348 	ld	e,-16 (ix)
+   06DD DD 56 F1      [19] 1349 	ld	d,-15 (ix)
+   06E0 CB 23         [ 8] 1350 	sla	e
+   06E2 CB 12         [ 8] 1351 	rl	d
+   06E4 CB 23         [ 8] 1352 	sla	e
+   06E6 CB 12         [ 8] 1353 	rl	d
+   06E8 3Ar00r00      [13] 1354 	ld	a,(#_fat_dir + 0)
+   06EB 83            [ 4] 1355 	add	a, e
+   06EC 5F            [ 4] 1356 	ld	e,a
+   06ED 3Ar01r00      [13] 1357 	ld	a,(#_fat_dir + 1)
+   06F0 8A            [ 4] 1358 	adc	a, d
+   06F1 57            [ 4] 1359 	ld	d,a
+   06F2 EB            [ 4] 1360 	ex	de,hl
+   06F3 5E            [ 7] 1361 	ld	e,(hl)
+   06F4 23            [ 6] 1362 	inc	hl
+   06F5 56            [ 7] 1363 	ld	d,(hl)
+   06F6 23            [ 6] 1364 	inc	hl
+   06F7 23            [ 6] 1365 	inc	hl
+   06F8 7E            [ 7] 1366 	ld	a,(hl)
+   06F9 2B            [ 6] 1367 	dec	hl
+   06FA 6E            [ 7] 1368 	ld	l,(hl)
+   06FB 67            [ 4] 1369 	ld	h,a
+   06FC DD 4E F2      [19] 1370 	ld	c,-14 (ix)
+   06FF DD 46 F3      [19] 1371 	ld	b,-13 (ix)
+   0702 C5            [11] 1372 	push	bc
+   0703 E5            [11] 1373 	push	hl
+   0704 D5            [11] 1374 	push	de
+   0705 CDr00r00      [17] 1375 	call	_fat_get_full_record
+   0708 F1            [10] 1376 	pop	af
+   0709 F1            [10] 1377 	pop	af
+   070A F1            [10] 1378 	pop	af
+                           1379 ;sys_sms.c:380: if (resp)break;
+   070B DD 75 EB      [19] 1380 	ld	-21 (ix), l
+   070E 7D            [ 4] 1381 	ld	a, l
+   070F B7            [ 4] 1382 	or	a, a
+   0710 C2r6Cr08      [10] 1383 	jp	NZ,00131$
+                           1384 ;sys_sms.c:387: gDrawStringMl(rec->name, x, ful_name_y, max_name_len);
+   0713 DD 7E EA      [19] 1385 	ld	a,-22 (ix)
+   0716 DD 77 FD      [19] 1386 	ld	-3 (ix),a
+   0719 DD 36 FE 00   [19] 1387 	ld	-2 (ix),#0x00
+                           1388 ;sys_sms.c:383: if (selector == i) {
+   071D DD 7E FF      [19] 1389 	ld	a,-1 (ix)
+   0720 B7            [ 4] 1390 	or	a, a
+   0721 CAr9Er07      [10] 1391 	jp	Z,00123$
+                           1392 ;sys_sms.c:385: pal = rec->is_dir ? 4 : 1;
+   0724 DD 6E F9      [19] 1393 	ld	l,-7 (ix)
+   0727 DD 66 FA      [19] 1394 	ld	h,-6 (ix)
+   072A 7E            [ 7] 1395 	ld	a,(hl)
+   072B B7            [ 4] 1396 	or	a, a
+   072C 28 06         [12] 1397 	jr	Z,00143$
+   072E DD 36 E9 04   [19] 1398 	ld	-23 (ix),#0x04
+   0732 18 04         [12] 1399 	jr	00144$
+   0734                    1400 00143$:
+   0734 DD 36 E9 01   [19] 1401 	ld	-23 (ix),#0x01
+   0738                    1402 00144$:
+                           1403 ;sys_sms.c:386: gSetPal(pal);
+   0738 DD 6E E9      [19] 1404 	ld	l,-23 (ix)
+   073B 26 00         [ 7] 1405 	ld	h,#0x00
+   073D E5            [11] 1406 	push	hl
+   073E CDr1Br18      [17] 1407 	call	_gSetPal
+   0741 F1            [10] 1408 	pop	af
+                           1409 ;sys_sms.c:387: gDrawStringMl(rec->name, x, ful_name_y, max_name_len);
+   0742 DD 6E FD      [19] 1410 	ld	l,-3 (ix)
+   0745 DD 66 FE      [19] 1411 	ld	h,-2 (ix)
+   0748 E5            [11] 1412 	push	hl
+   0749 DD 66 EC      [19] 1413 	ld	h,-20 (ix)
+   074C DD 6E ED      [19] 1414 	ld	l,-19 (ix)
+   074F E5            [11] 1415 	push	hl
+   0750 DD 6E F2      [19] 1416 	ld	l,-14 (ix)
+   0753 DD 66 F3      [19] 1417 	ld	h,-13 (ix)
+   0756 E5            [11] 1418 	push	hl
+   0757 CDr00r00      [17] 1419 	call	_gDrawStringMl
+   075A 21 06 00      [10] 1420 	ld	hl,#0x0006
+   075D 39            [11] 1421 	add	hl,sp
+   075E F9            [ 6] 1422 	ld	sp,hl
+                           1423 ;sys_sms.c:389: if (str_length(rec->name) > max_name_len) {
+   075F DD 6E F2      [19] 1424 	ld	l,-14 (ix)
+   0762 DD 66 F3      [19] 1425 	ld	h,-13 (ix)
+   0765 E5            [11] 1426 	push	hl
+   0766 CDr00r00      [17] 1427 	call	_str_length
+   0769 F1            [10] 1428 	pop	af
+   076A DD 7E EA      [19] 1429 	ld	a,-22 (ix)
+   076D 95            [ 4] 1430 	sub	a, l
+   076E 30 24         [12] 1431 	jr	NC,00121$
+                           1432 ;sys_sms.c:390: gDrawStringMl(&rec->name[max_name_len], x, ful_name_y + 1, max_name_len);
+   0770 DD 7E F2      [19] 1433 	ld	a,-14 (ix)
+   0773 DD 86 EA      [19] 1434 	add	a, -22 (ix)
+   0776 5F            [ 4] 1435 	ld	e,a
+   0777 DD 7E F3      [19] 1436 	ld	a,-13 (ix)
+   077A CE 00         [ 7] 1437 	adc	a, #0x00
+   077C 57            [ 4] 1438 	ld	d,a
+   077D DD 6E FD      [19] 1439 	ld	l,-3 (ix)
+   0780 DD 66 FE      [19] 1440 	ld	h,-2 (ix)
+   0783 E5            [11] 1441 	push	hl
+   0784 DD 66 F5      [19] 1442 	ld	h,-11 (ix)
+   0787 DD 6E ED      [19] 1443 	ld	l,-19 (ix)
+   078A E5            [11] 1444 	push	hl
+   078B D5            [11] 1445 	push	de
+   078C CDr00r00      [17] 1446 	call	_gDrawStringMl
+   078F 21 06 00      [10] 1447 	ld	hl,#0x0006
+   0792 39            [11] 1448 	add	hl,sp
+   0793 F9            [ 6] 1449 	ld	sp,hl
+   0794                    1450 00121$:
+                           1451 ;sys_sms.c:392: gSetPal(0);
+   0794 21 00 00      [10] 1452 	ld	hl,#0x0000
+   0797 E5            [11] 1453 	push	hl
+   0798 CDr1Br18      [17] 1454 	call	_gSetPal
+   079B F1            [10] 1455 	pop	af
+   079C 18 1B         [12] 1456 	jr	00124$
+   079E                    1457 00123$:
+                           1458 ;sys_sms.c:395: pal = rec->is_dir ? 4 : 2;
+   079E DD 6E F7      [19] 1459 	ld	l,-9 (ix)
+   07A1 DD 66 F8      [19] 1460 	ld	h,-8 (ix)
+   07A4 7E            [ 7] 1461 	ld	a,(hl)
+   07A5 B7            [ 4] 1462 	or	a, a
+   07A6 28 04         [12] 1463 	jr	Z,00145$
+   07A8 3E 04         [ 7] 1464 	ld	a,#0x04
+   07AA 18 02         [12] 1465 	jr	00146$
+   07AC                    1466 00145$:
+   07AC 3E 02         [ 7] 1467 	ld	a,#0x02
+   07AE                    1468 00146$:
+                           1469 ;sys_sms.c:396: gSetPal(pal);
+   07AE DD 77 E9      [19] 1470 	ld	-23 (ix), a
+   07B1 6F            [ 4] 1471 	ld	l, a
+   07B2 26 00         [ 7] 1472 	ld	h,#0x00
+   07B4 E5            [11] 1473 	push	hl
+   07B5 CDr1Br18      [17] 1474 	call	_gSetPal
+   07B8 F1            [10] 1475 	pop	af
+   07B9                    1476 00124$:
+                           1477 ;sys_sms.c:399: gFillRect(0, x, y, max_name_len, 1);
+   07B9 3E 01         [ 7] 1478 	ld	a,#0x01
+   07BB F5            [11] 1479 	push	af
+   07BC 33            [ 6] 1480 	inc	sp
+   07BD DD 66 EA      [19] 1481 	ld	h,-22 (ix)
+   07C0 DD 6E F6      [19] 1482 	ld	l,-10 (ix)
+   07C3 E5            [11] 1483 	push	hl
+   07C4 DD 7E ED      [19] 1484 	ld	a,-19 (ix)
+   07C7 F5            [11] 1485 	push	af
+   07C8 33            [ 6] 1486 	inc	sp
+   07C9 21 00 00      [10] 1487 	ld	hl,#0x0000
+   07CC E5            [11] 1488 	push	hl
+   07CD CDr64r02      [17] 1489 	call	_gFillRect
+   07D0 21 06 00      [10] 1490 	ld	hl,#0x0006
+   07D3 39            [11] 1491 	add	hl,sp
+   07D4 F9            [ 6] 1492 	ld	sp,hl
+                           1493 ;sys_sms.c:400: if (selector == i) {
+   07D5 DD 7E FF      [19] 1494 	ld	a,-1 (ix)
+   07D8 B7            [ 4] 1495 	or	a, a
+   07D9 28 47         [12] 1496 	jr	Z,00126$
+                           1497 ;sys_sms.c:401: gDrawString(">", x, y);
+   07DB 11rC2r08      [10] 1498 	ld	de,#__str_7
+   07DE DD 66 F6      [19] 1499 	ld	h,-10 (ix)
+   07E1 DD 6E ED      [19] 1500 	ld	l,-19 (ix)
+   07E4 E5            [11] 1501 	push	hl
+   07E5 D5            [11] 1502 	push	de
+   07E6 CDr00r00      [17] 1503 	call	_gDrawString
+   07E9 F1            [10] 1504 	pop	af
+   07EA F1            [10] 1505 	pop	af
+                           1506 ;sys_sms.c:402: gDrawStringMl(rec->name, x + 2, y, max_name_len - 2);
+   07EB DD 7E EA      [19] 1507 	ld	a,-22 (ix)
+   07EE DD 77 FB      [19] 1508 	ld	-5 (ix),a
+   07F1 DD 36 FC 00   [19] 1509 	ld	-4 (ix),#0x00
+   07F5 DD 6E FB      [19] 1510 	ld	l,-5 (ix)
+   07F8 DD 66 FC      [19] 1511 	ld	h,-4 (ix)
+   07FB 2B            [ 6] 1512 	dec	hl
+   07FC 2B            [ 6] 1513 	dec	hl
+   07FD DD 75 FB      [19] 1514 	ld	-5 (ix),l
+   0800 DD 74 FC      [19] 1515 	ld	-4 (ix),h
+   0803 DD 6E FB      [19] 1516 	ld	l,-5 (ix)
+   0806 DD 66 FC      [19] 1517 	ld	h,-4 (ix)
+   0809 E5            [11] 1518 	push	hl
+   080A DD 66 F6      [19] 1519 	ld	h,-10 (ix)
+   080D DD 6E F4      [19] 1520 	ld	l,-12 (ix)
+   0810 E5            [11] 1521 	push	hl
+   0811 DD 6E F2      [19] 1522 	ld	l,-14 (ix)
+   0814 DD 66 F3      [19] 1523 	ld	h,-13 (ix)
+   0817 E5            [11] 1524 	push	hl
+   0818 CDr00r00      [17] 1525 	call	_gDrawStringMl
+   081B 21 06 00      [10] 1526 	ld	hl,#0x0006
+   081E 39            [11] 1527 	add	hl,sp
+   081F F9            [ 6] 1528 	ld	sp,hl
+   0820 18 1D         [12] 1529 	jr	00127$
+   0822                    1530 00126$:
+                           1531 ;sys_sms.c:404: gDrawStringMl(rec->name, x, y, max_name_len);
+   0822 DD 6E FD      [19] 1532 	ld	l,-3 (ix)
+   0825 DD 66 FE      [19] 1533 	ld	h,-2 (ix)
+   0828 E5            [11] 1534 	push	hl
+   0829 DD 66 F6      [19] 1535 	ld	h,-10 (ix)
+   082C DD 6E ED      [19] 1536 	ld	l,-19 (ix)
+   082F E5            [11] 1537 	push	hl
+   0830 DD 6E F2      [19] 1538 	ld	l,-14 (ix)
+   0833 DD 66 F3      [19] 1539 	ld	h,-13 (ix)
+   0836 E5            [11] 1540 	push	hl
+   0837 CDr00r00      [17] 1541 	call	_gDrawStringMl
+   083A 21 06 00      [10] 1542 	ld	hl,#0x0006
+   083D 39            [11] 1543 	add	hl,sp
+   083E F9            [ 6] 1544 	ld	sp,hl
+   083F                    1545 00127$:
+                           1546 ;sys_sms.c:406: if (selector == i)guiDrawCover(rec, selector, full_repaint);
+   083F DD 7E FF      [19] 1547 	ld	a,-1 (ix)
+   0842 B7            [ 4] 1548 	or	a, a
+   0843 28 19         [12] 1549 	jr	Z,00130$
+   0845 DD 7E 04      [19] 1550 	ld	a,4 (ix)
+   0848 F5            [11] 1551 	push	af
+   0849 33            [ 6] 1552 	inc	sp
+   084A DD 6E 05      [19] 1553 	ld	l,5 (ix)
+   084D DD 66 06      [19] 1554 	ld	h,6 (ix)
+   0850 E5            [11] 1555 	push	hl
+   0851 DD 6E F2      [19] 1556 	ld	l,-14 (ix)
+   0854 DD 66 F3      [19] 1557 	ld	h,-13 (ix)
+   0857 E5            [11] 1558 	push	hl
+   0858 CDrC4r08      [17] 1559 	call	_guiDrawCover
+   085B F1            [10] 1560 	pop	af
+   085C F1            [10] 1561 	pop	af
+   085D 33            [ 6] 1562 	inc	sp
+   085E                    1563 00130$:
+                           1564 ;sys_sms.c:376: for (i = page; i < page + SYS_BR_ROWS && i < fat_dir_size; i++, y++) {
+   085E DD 34 F0      [23] 1565 	inc	-16 (ix)
+   0861 20 03         [12] 1566 	jr	NZ,00221$
+   0863 DD 34 F1      [23] 1567 	inc	-15 (ix)
+   0866                    1568 00221$:
+   0866 DD 34 F6      [23] 1569 	inc	-10 (ix)
+   0869 C3r7Er06      [10] 1570 	jp	00134$
+   086C                    1571 00131$:
+                           1572 ;sys_sms.c:412: osReleaseRam(sizeof (FatFullRecord));
+   086C 21 E5 00      [10] 1573 	ld	hl,#0x00E5
+   086F E5            [11] 1574 	push	hl
+   0870 CDr00r00      [17] 1575 	call	_osReleaseRam
+   0873 F1            [10] 1576 	pop	af
+                           1577 ;sys_sms.c:413: old_selector = selector;
+   0874 DD 6E 05      [19] 1578 	ld	l,5 (ix)
+   0877 DD 66 06      [19] 1579 	ld	h,6 (ix)
+   087A 22r1Dr08      [16] 1580 	ld	(_guiDrawBrowser_old_selector_1_123),hl
+                           1581 ;sys_sms.c:414: gRepaint();
+   087D CDr00r00      [17] 1582 	call	_gRepaint
+                           1583 ;sys_sms.c:416: return resp;
+   0880 DD 6E EB      [19] 1584 	ld	l,-21 (ix)
+   0883 DD F9         [10] 1585 	ld	sp,ix
+   0885 DD E1         [14] 1586 	pop	ix
+   0887 C9            [10] 1587 	ret
+   0888                    1588 _guiDrawBrowser_end::
+   0888                    1589 __str_3:
+   0888 50 61 67 69 6E 61  1590 	.ascii "Pagina "
+        20
+   088F 00                 1591 	.db 0x00
+   0890                    1592 __str_4:
+   0890 20 64 65 20        1593 	.ascii " de "
+   0894 00                 1594 	.db 0x00
+   0895                    1595 __str_5:
+   0895 49 6E 73 74 61 67  1596 	.ascii "Instagram: @tavinho.games"
+        72 61 6D 3A 20 40
+        74 61 76 69 6E 68
+        6F 2E 67 61 6D 65
+        73
+   08AE 00                 1597 	.db 0x00
+   08AF                    1598 __str_6:
+   08AF 54 68 65 72 65 20  1599 	.ascii "There are no files"
+        61 72 65 20 6E 6F
+        20 66 69 6C 65 73
+   08C1 00                 1600 	.db 0x00
+   08C2                    1601 __str_7:
+   08C2 3E                 1602 	.ascii ">"
+   08C3 00                 1603 	.db 0x00
+                           1604 ;sys_sms.c:419: void guiDrawCover(FatFullRecord *rec, u16 selector, u8 full_repaint) {
+                           1605 ;	---------------------------------
+                           1606 ; Function guiDrawCover
+                           1607 ; ---------------------------------
+   08C4                    1608 _guiDrawCover_start::
+   08C4                    1609 _guiDrawCover:
+   08C4 DD E5         [15] 1610 	push	ix
+   08C6 DD 21 00 00   [14] 1611 	ld	ix,#0
+   08CA DD 39         [15] 1612 	add	ix,sp
+   08CC 21 FB FF      [10] 1613 	ld	hl,#-5
+   08CF 39            [11] 1614 	add	hl,sp
+   08D0 F9            [ 6] 1615 	ld	sp,hl
+                           1616 ;sys_sms.c:426: if (bi_is_gg_cart())return;
+   08D1 CDr00r00      [17] 1617 	call	_bi_is_gg_cart
+   08D4 7D            [ 4] 1618 	ld	a, l
+   08D5 B7            [ 4] 1619 	or	a, a
+   08D6 C2r18r0A      [10] 1620 	jp	NZ,00122$
+                           1621 ;sys_sms.c:427: if (str_extension(".cov", rec->name)) {
+   08D9 DD 7E 04      [19] 1622 	ld	a,4 (ix)
+   08DC DD 77 FE      [19] 1623 	ld	-2 (ix),a
+   08DF DD 7E 05      [19] 1624 	ld	a,5 (ix)
+   08E2 DD 77 FF      [19] 1625 	ld	-1 (ix),a
+   08E5 21r1Dr0A      [10] 1626 	ld	hl,#__str_8
+   08E8 DD 4E FE      [19] 1627 	ld	c,-2 (ix)
+   08EB DD 46 FF      [19] 1628 	ld	b,-1 (ix)
+   08EE C5            [11] 1629 	push	bc
+   08EF E5            [11] 1630 	push	hl
+   08F0 CDr00r00      [17] 1631 	call	_str_extension
+   08F3 F1            [10] 1632 	pop	af
+   08F4 F1            [10] 1633 	pop	af
+                           1634 ;sys_sms.c:429: old_selector = selector;
+   08F5 DD 7E 06      [19] 1635 	ld	a,6 (ix)
+   08F8 DD 77 FC      [19] 1636 	ld	-4 (ix),a
+   08FB DD 7E 07      [19] 1637 	ld	a,7 (ix)
+   08FE DD 77 FD      [19] 1638 	ld	-3 (ix),a
+                           1639 ;sys_sms.c:427: if (str_extension(".cov", rec->name)) {
+   0901 7D            [ 4] 1640 	ld	a,l
+   0902 B7            [ 4] 1641 	or	a, a
+   0903 28 14         [12] 1642 	jr	Z,00104$
+                           1643 ;sys_sms.c:428: guiClearCover();
+   0905 CDrD8r0E      [17] 1644 	call	_guiClearCover
+                           1645 ;sys_sms.c:429: old_selector = selector;
+   0908 DD 6E FC      [19] 1646 	ld	l,-4 (ix)
+   090B DD 66 FD      [19] 1647 	ld	h,-3 (ix)
+   090E 22r1Fr08      [16] 1648 	ld	(_guiDrawCover_old_selector_1_135),hl
+                           1649 ;sys_sms.c:430: old_found = 0;
+   0911 21r22r08      [10] 1650 	ld	hl,#_guiDrawCover_old_found_1_135 + 0
+   0914 36 00         [10] 1651 	ld	(hl), #0x00
+                           1652 ;sys_sms.c:431: return;
+   0916 C3r18r0A      [10] 1653 	jp	00122$
+   0919                    1654 00104$:
+                           1655 ;sys_sms.c:433: if (rec->is_dir) {
+   0919 DD 6E FE      [19] 1656 	ld	l,-2 (ix)
+   091C DD 66 FF      [19] 1657 	ld	h,-1 (ix)
+   091F 11 E4 00      [10] 1658 	ld	de, #0x00E4
+   0922 19            [11] 1659 	add	hl, de
+   0923 7E            [ 7] 1660 	ld	a,(hl)
+   0924 B7            [ 4] 1661 	or	a, a
+   0925 28 14         [12] 1662 	jr	Z,00106$
+                           1663 ;sys_sms.c:434: guiClearCover();
+   0927 CDrD8r0E      [17] 1664 	call	_guiClearCover
+                           1665 ;sys_sms.c:435: old_selector = selector;
+   092A DD 6E FC      [19] 1666 	ld	l,-4 (ix)
+   092D DD 66 FD      [19] 1667 	ld	h,-3 (ix)
+   0930 22r1Fr08      [16] 1668 	ld	(_guiDrawCover_old_selector_1_135),hl
+                           1669 ;sys_sms.c:436: old_found = 0;
+   0933 21r22r08      [10] 1670 	ld	hl,#_guiDrawCover_old_found_1_135 + 0
+   0936 36 00         [10] 1671 	ld	(hl), #0x00
+                           1672 ;sys_sms.c:437: return;
+   0938 C3r18r0A      [10] 1673 	jp	00122$
+   093B                    1674 00106$:
+                           1675 ;sys_sms.c:439: if (fat_cov_dir_size == 0) {
+   093B 3Ar01r00      [13] 1676 	ld	a,(#_fat_cov_dir_size + 1)
+   093E 21r00r00      [10] 1677 	ld	hl,#_fat_cov_dir_size + 0
+   0941 B6            [ 7] 1678 	or	a,(hl)
+   0942 20 19         [12] 1679 	jr	NZ,00108$
+                           1680 ;sys_sms.c:440: guiClearCover();
+   0944 CDrD8r0E      [17] 1681 	call	_guiClearCover
+                           1682 ;sys_sms.c:441: old_selector = selector;
+   0947 DD 6E FC      [19] 1683 	ld	l,-4 (ix)
+   094A DD 66 FD      [19] 1684 	ld	h,-3 (ix)
+   094D 22r1Fr08      [16] 1685 	ld	(_guiDrawCover_old_selector_1_135),hl
+                           1686 ;sys_sms.c:442: old_found = 0;
+   0950 21r22r08      [10] 1687 	ld	hl,#_guiDrawCover_old_found_1_135 + 0
+   0953 36 00         [10] 1688 	ld	(hl), #0x00
+                           1689 ;sys_sms.c:443: old_valid = 1;
+   0955 21r21r08      [10] 1690 	ld	hl,#_guiDrawCover_old_valid_1_135 + 0
+   0958 36 01         [10] 1691 	ld	(hl), #0x01
+                           1692 ;sys_sms.c:444: return;
+   095A C3r18r0A      [10] 1693 	jp	00122$
+   095D                    1694 00108$:
+                           1695 ;sys_sms.c:446: if (guiGetCoverMiss(selector)) {
+   095D DD 6E 06      [19] 1696 	ld	l,6 (ix)
+   0960 DD 66 07      [19] 1697 	ld	h,7 (ix)
+   0963 E5            [11] 1698 	push	hl
+   0964 CDrB5r0F      [17] 1699 	call	_guiGetCoverMiss
+   0967 F1            [10] 1700 	pop	af
+   0968 7D            [ 4] 1701 	ld	a,l
+   0969 B7            [ 4] 1702 	or	a, a
+   096A 28 19         [12] 1703 	jr	Z,00110$
+                           1704 ;sys_sms.c:447: guiClearCover();
+   096C CDrD8r0E      [17] 1705 	call	_guiClearCover
+                           1706 ;sys_sms.c:448: old_selector = selector;
+   096F DD 6E FC      [19] 1707 	ld	l,-4 (ix)
+   0972 DD 66 FD      [19] 1708 	ld	h,-3 (ix)
+   0975 22r1Fr08      [16] 1709 	ld	(_guiDrawCover_old_selector_1_135),hl
+                           1710 ;sys_sms.c:449: old_found = 0;
+   0978 21r22r08      [10] 1711 	ld	hl,#_guiDrawCover_old_found_1_135 + 0
+   097B 36 00         [10] 1712 	ld	(hl), #0x00
+                           1713 ;sys_sms.c:450: old_valid = 1;
+   097D 21r21r08      [10] 1714 	ld	hl,#_guiDrawCover_old_valid_1_135 + 0
+   0980 36 01         [10] 1715 	ld	(hl), #0x01
+                           1716 ;sys_sms.c:451: return;
+   0982 C3r18r0A      [10] 1717 	jp	00122$
+   0985                    1718 00110$:
+                           1719 ;sys_sms.c:453: if (old_valid && !full_repaint && selector == old_selector) {
+   0985 3Ar21r08      [13] 1720 	ld	a,(#_guiDrawCover_old_valid_1_135 + 0)
+   0988 B7            [ 4] 1721 	or	a, a
+   0989 28 29         [12] 1722 	jr	Z,00114$
+   098B DD 7E 08      [19] 1723 	ld	a,8 (ix)
+   098E B7            [ 4] 1724 	or	a, a
+   098F 20 23         [12] 1725 	jr	NZ,00114$
+   0991 DD 7E 06      [19] 1726 	ld	a,6 (ix)
+   0994 FD 21r1Fr08   [14] 1727 	ld	iy,#_guiDrawCover_old_selector_1_135
+   0998 FD 96 00      [19] 1728 	sub	a, 0 (iy)
+   099B 20 17         [12] 1729 	jr	NZ,00114$
+   099D DD 7E 07      [19] 1730 	ld	a,7 (ix)
+   09A0 FD 21r1Fr08   [14] 1731 	ld	iy,#_guiDrawCover_old_selector_1_135
+   09A4 FD 96 01      [19] 1732 	sub	a, 1 (iy)
+   09A7 20 0B         [12] 1733 	jr	NZ,00114$
+                           1734 ;sys_sms.c:454: if (old_found)guiPutCoverMap();
+   09A9 3Ar22r08      [13] 1735 	ld	a,(#_guiDrawCover_old_found_1_135 + 0)
+   09AC B7            [ 4] 1736 	or	a, a
+   09AD 28 69         [12] 1737 	jr	Z,00122$
+   09AF CDrFEr0E      [17] 1738 	call	_guiPutCoverMap
+                           1739 ;sys_sms.c:455: return;
+   09B2 18 64         [12] 1740 	jr	00122$
+   09B4                    1741 00114$:
+                           1742 ;sys_sms.c:458: guiClearCover();
+   09B4 CDrD8r0E      [17] 1743 	call	_guiClearCover
+                           1744 ;sys_sms.c:459: old_selector = selector;
+   09B7 DD 6E FC      [19] 1745 	ld	l,-4 (ix)
+   09BA DD 66 FD      [19] 1746 	ld	h,-3 (ix)
+   09BD 22r1Fr08      [16] 1747 	ld	(_guiDrawCover_old_selector_1_135),hl
+                           1748 ;sys_sms.c:460: old_valid = 1;
+   09C0 21r21r08      [10] 1749 	ld	hl,#_guiDrawCover_old_valid_1_135 + 0
+   09C3 36 01         [10] 1750 	ld	(hl), #0x01
+                           1751 ;sys_sms.c:461: old_found = 0;
+   09C5 21r22r08      [10] 1752 	ld	hl,#_guiDrawCover_old_found_1_135 + 0
+   09C8 36 00         [10] 1753 	ld	(hl), #0x00
+                           1754 ;sys_sms.c:463: guiMakeCoverName(rec->name, cover_name);
+   09CA 21r06r07      [10] 1755 	ld	hl,#_cover_name
+   09CD E5            [11] 1756 	push	hl
+   09CE DD 6E FE      [19] 1757 	ld	l,-2 (ix)
+   09D1 DD 66 FF      [19] 1758 	ld	h,-1 (ix)
+   09D4 E5            [11] 1759 	push	hl
+   09D5 CDr22r0A      [17] 1760 	call	_guiMakeCoverName
+   09D8 F1            [10] 1761 	pop	af
+   09D9 F1            [10] 1762 	pop	af
+                           1763 ;sys_sms.c:464: resp = guiFindCover(cover_name, rec);
+   09DA 21r06r07      [10] 1764 	ld	hl,#_cover_name
+   09DD DD 4E 04      [19] 1765 	ld	c,4 (ix)
+   09E0 DD 46 05      [19] 1766 	ld	b,5 (ix)
+   09E3 C5            [11] 1767 	push	bc
+   09E4 E5            [11] 1768 	push	hl
+   09E5 CDrE1r0A      [17] 1769 	call	_guiFindCover
+   09E8 F1            [10] 1770 	pop	af
+   09E9 F1            [10] 1771 	pop	af
+                           1772 ;sys_sms.c:465: if (!resp) {
+   09EA DD 75 FB      [19] 1773 	ld	-5 (ix), l
+   09ED 7D            [ 4] 1774 	ld	a, l
+   09EE B7            [ 4] 1775 	or	a, a
+   09EF 20 1C         [12] 1776 	jr	NZ,00120$
+                           1777 ;sys_sms.c:466: resp = guiLoadCover(rec);
+   09F1 DD 6E FE      [19] 1778 	ld	l,-2 (ix)
+   09F4 DD 66 FF      [19] 1779 	ld	h,-1 (ix)
+   09F7 E5            [11] 1780 	push	hl
+   09F8 CDr62r0B      [17] 1781 	call	_guiLoadCover
+   09FB F1            [10] 1782 	pop	af
+                           1783 ;sys_sms.c:467: if (!resp) {
+   09FC DD 75 FB      [19] 1784 	ld	-5 (ix), l
+   09FF 7D            [ 4] 1785 	ld	a, l
+   0A00 B7            [ 4] 1786 	or	a, a
+   0A01 20 15         [12] 1787 	jr	NZ,00122$
+                           1788 ;sys_sms.c:468: old_found = 1;
+   0A03 21r22r08      [10] 1789 	ld	hl,#_guiDrawCover_old_found_1_135 + 0
+   0A06 36 01         [10] 1790 	ld	(hl), #0x01
+                           1791 ;sys_sms.c:469: guiPutCoverMap();
+   0A08 CDrFEr0E      [17] 1792 	call	_guiPutCoverMap
+   0A0B 18 0B         [12] 1793 	jr	00122$
+   0A0D                    1794 00120$:
+                           1795 ;sys_sms.c:472: guiSetCoverMiss(selector);
+   0A0D DD 6E FC      [19] 1796 	ld	l,-4 (ix)
+   0A10 DD 66 FD      [19] 1797 	ld	h,-3 (ix)
+   0A13 E5            [11] 1798 	push	hl
+   0A14 CDrF6r0F      [17] 1799 	call	_guiSetCoverMiss
+   0A17 F1            [10] 1800 	pop	af
+   0A18                    1801 00122$:
+   0A18 DD F9         [10] 1802 	ld	sp,ix
+   0A1A DD E1         [14] 1803 	pop	ix
+   0A1C C9            [10] 1804 	ret
+   0A1D                    1805 _guiDrawCover_end::
+   0A1D                    1806 __str_8:
+   0A1D 2E 63 6F 76        1807 	.ascii ".cov"
+   0A21 00                 1808 	.db 0x00
+                           1809 ;sys_sms.c:476: void guiMakeCoverName(u8 *src, u8 *dst) {
+                           1810 ;	---------------------------------
+                           1811 ; Function guiMakeCoverName
+                           1812 ; ---------------------------------
+   0A22                    1813 _guiMakeCoverName_start::
+   0A22                    1814 _guiMakeCoverName:
+   0A22 DD E5         [15] 1815 	push	ix
+   0A24 DD 21 00 00   [14] 1816 	ld	ix,#0
+   0A28 DD 39         [15] 1817 	add	ix,sp
+   0A2A 21 FA FF      [10] 1818 	ld	hl,#-6
+   0A2D 39            [11] 1819 	add	hl,sp
+   0A2E F9            [ 6] 1820 	ld	sp,hl
+                           1821 ;sys_sms.c:478: u8 *dot = 0;
+   0A2F DD 36 FC 00   [19] 1822 	ld	-4 (ix),#0x00
+   0A33 DD 36 FD 00   [19] 1823 	ld	-3 (ix),#0x00
+                           1824 ;sys_sms.c:481: ptr = dst;
+   0A37 DD 7E 06      [19] 1825 	ld	a,6 (ix)
+   0A3A DD 77 FA      [19] 1826 	ld	-6 (ix),a
+   0A3D DD 7E 07      [19] 1827 	ld	a,7 (ix)
+   0A40 DD 77 FB      [19] 1828 	ld	-5 (ix),a
+                           1829 ;sys_sms.c:482: while (*src != 0) {
+   0A43 DD 7E 04      [19] 1830 	ld	a,4 (ix)
+   0A46 DD 77 FE      [19] 1831 	ld	-2 (ix),a
+   0A49 DD 7E 05      [19] 1832 	ld	a,5 (ix)
+   0A4C DD 77 FF      [19] 1833 	ld	-1 (ix),a
+   0A4F                    1834 00103$:
+   0A4F DD 6E FE      [19] 1835 	ld	l,-2 (ix)
+   0A52 DD 66 FF      [19] 1836 	ld	h,-1 (ix)
+   0A55 56            [ 7] 1837 	ld	d,(hl)
+   0A56 7A            [ 4] 1838 	ld	a,d
+   0A57 B7            [ 4] 1839 	or	a, a
+   0A58 28 26         [12] 1840 	jr	Z,00105$
+                           1841 ;sys_sms.c:483: if (*src == (u8) '.')dot = ptr;
+   0A5A 7A            [ 4] 1842 	ld	a,d
+   0A5B D6 2E         [ 7] 1843 	sub	a, #0x2E
+   0A5D 20 0C         [12] 1844 	jr	NZ,00102$
+   0A5F DD 7E FA      [19] 1845 	ld	a,-6 (ix)
+   0A62 DD 77 FC      [19] 1846 	ld	-4 (ix),a
+   0A65 DD 7E FB      [19] 1847 	ld	a,-5 (ix)
+   0A68 DD 77 FD      [19] 1848 	ld	-3 (ix),a
+   0A6B                    1849 00102$:
+                           1850 ;sys_sms.c:484: *ptr++ = *src++;
+   0A6B DD 34 FE      [23] 1851 	inc	-2 (ix)
+   0A6E 20 03         [12] 1852 	jr	NZ,00125$
+   0A70 DD 34 FF      [23] 1853 	inc	-1 (ix)
+   0A73                    1854 00125$:
+   0A73 E1            [10] 1855 	pop	hl
+   0A74 E5            [11] 1856 	push	hl
+   0A75 72            [ 7] 1857 	ld	(hl),d
+   0A76 DD 34 FA      [23] 1858 	inc	-6 (ix)
+   0A79 20 D4         [12] 1859 	jr	NZ,00103$
+   0A7B DD 34 FB      [23] 1860 	inc	-5 (ix)
+   0A7E 18 CF         [12] 1861 	jr	00103$
+   0A80                    1862 00105$:
+                           1863 ;sys_sms.c:487: if (dot == 0)dot = ptr;
+   0A80 DD 7E FD      [19] 1864 	ld	a,-3 (ix)
+   0A83 DD B6 FC      [19] 1865 	or	a,-4 (ix)
+   0A86 20 0C         [12] 1866 	jr	NZ,00107$
+   0A88 DD 7E FA      [19] 1867 	ld	a,-6 (ix)
+   0A8B DD 77 FC      [19] 1868 	ld	-4 (ix),a
+   0A8E DD 7E FB      [19] 1869 	ld	a,-5 (ix)
+   0A91 DD 77 FD      [19] 1870 	ld	-3 (ix),a
+   0A94                    1871 00107$:
+                           1872 ;sys_sms.c:488: *dot++ = '.';
+   0A94 DD 6E FC      [19] 1873 	ld	l,-4 (ix)
+   0A97 DD 66 FD      [19] 1874 	ld	h,-3 (ix)
+   0A9A 36 2E         [10] 1875 	ld	(hl),#0x2E
+   0A9C DD 34 FC      [23] 1876 	inc	-4 (ix)
+   0A9F 20 03         [12] 1877 	jr	NZ,00127$
+   0AA1 DD 34 FD      [23] 1878 	inc	-3 (ix)
+   0AA4                    1879 00127$:
+                           1880 ;sys_sms.c:489: *dot++ = 'c';
+   0AA4 DD 6E FC      [19] 1881 	ld	l,-4 (ix)
+   0AA7 DD 66 FD      [19] 1882 	ld	h,-3 (ix)
+   0AAA 36 63         [10] 1883 	ld	(hl),#0x63
+   0AAC DD 34 FC      [23] 1884 	inc	-4 (ix)
+   0AAF 20 03         [12] 1885 	jr	NZ,00128$
+   0AB1 DD 34 FD      [23] 1886 	inc	-3 (ix)
+   0AB4                    1887 00128$:
+                           1888 ;sys_sms.c:490: *dot++ = 'o';
+   0AB4 DD 6E FC      [19] 1889 	ld	l,-4 (ix)
+   0AB7 DD 66 FD      [19] 1890 	ld	h,-3 (ix)
+   0ABA 36 6F         [10] 1891 	ld	(hl),#0x6F
+   0ABC DD 34 FC      [23] 1892 	inc	-4 (ix)
+   0ABF 20 03         [12] 1893 	jr	NZ,00129$
+   0AC1 DD 34 FD      [23] 1894 	inc	-3 (ix)
+   0AC4                    1895 00129$:
+                           1896 ;sys_sms.c:491: *dot++ = 'v';
+   0AC4 DD 6E FC      [19] 1897 	ld	l,-4 (ix)
+   0AC7 DD 66 FD      [19] 1898 	ld	h,-3 (ix)
+   0ACA 36 76         [10] 1899 	ld	(hl),#0x76
+   0ACC DD 34 FC      [23] 1900 	inc	-4 (ix)
+   0ACF 20 03         [12] 1901 	jr	NZ,00130$
+   0AD1 DD 34 FD      [23] 1902 	inc	-3 (ix)
+   0AD4                    1903 00130$:
+                           1904 ;sys_sms.c:492: *dot = 0;
+   0AD4 DD 6E FC      [19] 1905 	ld	l,-4 (ix)
+   0AD7 DD 66 FD      [19] 1906 	ld	h,-3 (ix)
+   0ADA 36 00         [10] 1907 	ld	(hl),#0x00
+   0ADC DD F9         [10] 1908 	ld	sp,ix
+   0ADE DD E1         [14] 1909 	pop	ix
+   0AE0 C9            [10] 1910 	ret
+   0AE1                    1911 _guiMakeCoverName_end::
+                           1912 ;sys_sms.c:495: u8 guiFindCover(u8 *name, FatFullRecord *rec) {
+                           1913 ;	---------------------------------
+                           1914 ; Function guiFindCover
+                           1915 ; ---------------------------------
+   0AE1                    1916 _guiFindCover_start::
+   0AE1                    1917 _guiFindCover:
+   0AE1 DD E5         [15] 1918 	push	ix
+   0AE3 DD 21 00 00   [14] 1919 	ld	ix,#0
+   0AE7 DD 39         [15] 1920 	add	ix,sp
+   0AE9 F5            [11] 1921 	push	af
+   0AEA F5            [11] 1922 	push	af
+                           1923 ;sys_sms.c:500: for (i = 0; i < fat_cov_dir_size; i++) {
+   0AEB 01 00 00      [10] 1924 	ld	bc,#0x0000
+   0AEE                    1925 00107$:
+   0AEE 21r00r00      [10] 1926 	ld	hl,#_fat_cov_dir_size
+   0AF1 79            [ 4] 1927 	ld	a,c
+   0AF2 96            [ 7] 1928 	sub	a, (hl)
+   0AF3 78            [ 4] 1929 	ld	a,b
+   0AF4 23            [ 6] 1930 	inc	hl
+   0AF5 9E            [ 7] 1931 	sbc	a, (hl)
+   0AF6 30 63         [12] 1932 	jr	NC,00105$
+                           1933 ;sys_sms.c:501: resp = fat_get_full_record(fat_cov_dir[i], rec);
+   0AF8 59            [ 4] 1934 	ld	e, c
+   0AF9 50            [ 4] 1935 	ld	d, b
+   0AFA CB 23         [ 8] 1936 	sla	e
+   0AFC CB 12         [ 8] 1937 	rl	d
+   0AFE CB 23         [ 8] 1938 	sla	e
+   0B00 CB 12         [ 8] 1939 	rl	d
+   0B02 3Ar00r00      [13] 1940 	ld	a,(#_fat_cov_dir + 0)
+   0B05 83            [ 4] 1941 	add	a, e
+   0B06 5F            [ 4] 1942 	ld	e,a
+   0B07 FD 21r00r00   [14] 1943 	ld	iy,#_fat_cov_dir
+   0B0B FD 7E 01      [19] 1944 	ld	a,1 (iy)
+   0B0E 8A            [ 4] 1945 	adc	a, d
+   0B0F 57            [ 4] 1946 	ld	d,a
+   0B10 C5            [11] 1947 	push	bc
+   0B11 21 02 00      [10] 1948 	ld	hl, #0x0002
+   0B14 39            [11] 1949 	add	hl, sp
+   0B15 EB            [ 4] 1950 	ex	de, hl
+   0B16 01 04 00      [10] 1951 	ld	bc, #0x0004
+   0B19 ED B0         [21] 1952 	ldir
+   0B1B DD 6E 06      [19] 1953 	ld	l,6 (ix)
+   0B1E DD 66 07      [19] 1954 	ld	h,7 (ix)
+   0B21 E5            [11] 1955 	push	hl
+   0B22 DD 6E FE      [19] 1956 	ld	l,-2 (ix)
+   0B25 DD 66 FF      [19] 1957 	ld	h,-1 (ix)
+   0B28 E5            [11] 1958 	push	hl
+   0B29 DD 6E FC      [19] 1959 	ld	l,-4 (ix)
+   0B2C DD 66 FD      [19] 1960 	ld	h,-3 (ix)
+   0B2F E5            [11] 1961 	push	hl
+   0B30 CDr00r00      [17] 1962 	call	_fat_get_full_record
+   0B33 F1            [10] 1963 	pop	af
+   0B34 F1            [10] 1964 	pop	af
+   0B35 F1            [10] 1965 	pop	af
+   0B36 C1            [10] 1966 	pop	bc
+                           1967 ;sys_sms.c:502: if (resp)return resp;
+   0B37 7D            [ 4] 1968 	ld	a,l
+   0B38 B7            [ 4] 1969 	or	a, a
+   0B39 20 22         [12] 1970 	jr	NZ,00109$
+                           1971 ;sys_sms.c:503: if (str_eq_ncase(name, rec->name))return 0;
+   0B3B DD 6E 06      [19] 1972 	ld	l,6 (ix)
+   0B3E DD 66 07      [19] 1973 	ld	h,7 (ix)
+   0B41 C5            [11] 1974 	push	bc
+   0B42 E5            [11] 1975 	push	hl
+   0B43 DD 6E 04      [19] 1976 	ld	l,4 (ix)
+   0B46 DD 66 05      [19] 1977 	ld	h,5 (ix)
+   0B49 E5            [11] 1978 	push	hl
+   0B4A CDr00r00      [17] 1979 	call	_str_eq_ncase
+   0B4D F1            [10] 1980 	pop	af
+   0B4E F1            [10] 1981 	pop	af
+   0B4F 7D            [ 4] 1982 	ld	a,l
+   0B50 C1            [10] 1983 	pop	bc
+   0B51 B7            [ 4] 1984 	or	a, a
+   0B52 28 04         [12] 1985 	jr	Z,00108$
+   0B54 2E 00         [ 7] 1986 	ld	l,#0x00
+   0B56 18 05         [12] 1987 	jr	00109$
+   0B58                    1988 00108$:
+                           1989 ;sys_sms.c:500: for (i = 0; i < fat_cov_dir_size; i++) {
+   0B58 03            [ 6] 1990 	inc	bc
+   0B59 18 93         [12] 1991 	jr	00107$
+   0B5B                    1992 00105$:
+                           1993 ;sys_sms.c:506: return 1;
+   0B5B 2E 01         [ 7] 1994 	ld	l,#0x01
+   0B5D                    1995 00109$:
+   0B5D DD F9         [10] 1996 	ld	sp,ix
+   0B5F DD E1         [14] 1997 	pop	ix
+   0B61 C9            [10] 1998 	ret
+   0B62                    1999 _guiFindCover_end::
+                           2000 ;sys_sms.c:509: u8 guiLoadCover(FatFullRecord *rec) {
+                           2001 ;	---------------------------------
+                           2002 ; Function guiLoadCover
+                           2003 ; ---------------------------------
+   0B62                    2004 _guiLoadCover_start::
+   0B62                    2005 _guiLoadCover:
+   0B62 DD E5         [15] 2006 	push	ix
+   0B64 DD 21 00 00   [14] 2007 	ld	ix,#0
+   0B68 DD 39         [15] 2008 	add	ix,sp
+   0B6A 21 EE FF      [10] 2009 	ld	hl,#-18
+   0B6D 39            [11] 2010 	add	hl,sp
+   0B6E F9            [ 6] 2011 	ld	sp,hl
+                           2012 ;sys_sms.c:520: buff = osMallocRam(512);
+   0B6F 21 00 02      [10] 2013 	ld	hl,#0x0200
+   0B72 E5            [11] 2014 	push	hl
+   0B73 CDr00r00      [17] 2015 	call	_osMallocRam
+   0B76 F1            [10] 2016 	pop	af
+   0B77 DD 75 F5      [19] 2017 	ld	-11 (ix),l
+   0B7A DD 74 F6      [19] 2018 	ld	-10 (ix),h
+                           2019 ;sys_sms.c:521: resp = fat_open_file(rec, 0);
+   0B7D 21 00 00      [10] 2020 	ld	hl,#0x0000
+   0B80 E5            [11] 2021 	push	hl
+   0B81 DD 6E 04      [19] 2022 	ld	l,4 (ix)
+   0B84 DD 66 05      [19] 2023 	ld	h,5 (ix)
+   0B87 E5            [11] 2024 	push	hl
+   0B88 CDr00r00      [17] 2025 	call	_fat_open_file
+   0B8B F1            [10] 2026 	pop	af
+   0B8C F1            [10] 2027 	pop	af
+                           2028 ;sys_sms.c:522: if (resp) {
+   0B8D DD 75 F2      [19] 2029 	ld	-14 (ix), l
+   0B90 7D            [ 4] 2030 	ld	a, l
+   0B91 B7            [ 4] 2031 	or	a, a
+   0B92 28 0E         [12] 2032 	jr	Z,00102$
+                           2033 ;sys_sms.c:523: osReleaseRam(512);
+   0B94 21 00 02      [10] 2034 	ld	hl,#0x0200
+   0B97 E5            [11] 2035 	push	hl
+   0B98 CDr00r00      [17] 2036 	call	_osReleaseRam
+   0B9B F1            [10] 2037 	pop	af
+                           2038 ;sys_sms.c:524: return resp;
+   0B9C DD 6E F2      [19] 2039 	ld	l,-14 (ix)
+   0B9F C3rD3r0E      [10] 2040 	jp	00141$
+   0BA2                    2041 00102$:
+                           2042 ;sys_sms.c:526: if (file.sec_available == 0) {
+   0BA2 21r0Cr00      [10] 2043 	ld	hl, #(_file + 0x000c) + 0
+   0BA5 7E            [ 7] 2044 	ld	a,(hl)
+   0BA6 DD 77 FD      [19] 2045 	ld	-3 (ix),a
+   0BA9 23            [ 6] 2046 	inc	hl
+   0BAA 7E            [ 7] 2047 	ld	a,(hl)
+   0BAB DD 77 FE      [19] 2048 	ld	-2 (ix), a
+   0BAE DD B6 FD      [19] 2049 	or	a,-3 (ix)
+   0BB1 20 0D         [12] 2050 	jr	NZ,00104$
+                           2051 ;sys_sms.c:527: osReleaseRam(512);
+   0BB3 21 00 02      [10] 2052 	ld	hl,#0x0200
+   0BB6 E5            [11] 2053 	push	hl
+   0BB7 CDr00r00      [17] 2054 	call	_osReleaseRam
+   0BBA F1            [10] 2055 	pop	af
+                           2056 ;sys_sms.c:528: return 1;
+   0BBB 2E 01         [ 7] 2057 	ld	l,#0x01
+   0BBD C3rD3r0E      [10] 2058 	jp	00141$
+   0BC0                    2059 00104$:
+                           2060 ;sys_sms.c:531: resp = fat_read(buff, 1, RAM);
+   0BC0 3E 01         [ 7] 2061 	ld	a,#0x01
+   0BC2 F5            [11] 2062 	push	af
+   0BC3 33            [ 6] 2063 	inc	sp
+   0BC4 21 01 00      [10] 2064 	ld	hl,#0x0001
+   0BC7 E5            [11] 2065 	push	hl
+   0BC8 DD 6E F5      [19] 2066 	ld	l,-11 (ix)
+   0BCB DD 66 F6      [19] 2067 	ld	h,-10 (ix)
+   0BCE E5            [11] 2068 	push	hl
+   0BCF CDr00r00      [17] 2069 	call	_fat_read
+   0BD2 F1            [10] 2070 	pop	af
+   0BD3 F1            [10] 2071 	pop	af
+   0BD4 33            [ 6] 2072 	inc	sp
+                           2073 ;sys_sms.c:532: if (resp) {
+   0BD5 DD 75 F2      [19] 2074 	ld	-14 (ix), l
+   0BD8 7D            [ 4] 2075 	ld	a, l
+   0BD9 B7            [ 4] 2076 	or	a, a
+   0BDA 28 0E         [12] 2077 	jr	Z,00106$
+                           2078 ;sys_sms.c:533: osReleaseRam(512);
+   0BDC 21 00 02      [10] 2079 	ld	hl,#0x0200
+   0BDF E5            [11] 2080 	push	hl
+   0BE0 CDr00r00      [17] 2081 	call	_osReleaseRam
+   0BE3 F1            [10] 2082 	pop	af
+                           2083 ;sys_sms.c:534: return resp;
+   0BE4 DD 6E F2      [19] 2084 	ld	l,-14 (ix)
+   0BE7 C3rD3r0E      [10] 2085 	jp	00141$
+   0BEA                    2086 00106$:
+                           2087 ;sys_sms.c:537: if (buff[0] != COVER_MAGIC_0)resp = 1;
+   0BEA DD 6E F5      [19] 2088 	ld	l,-11 (ix)
+   0BED DD 66 F6      [19] 2089 	ld	h,-10 (ix)
+   0BF0 7E            [ 7] 2090 	ld	a,(hl)
+   0BF1 D6 43         [ 7] 2091 	sub	a, #0x43
+   0BF3 28 04         [12] 2092 	jr	Z,00108$
+   0BF5 DD 36 F2 01   [19] 2093 	ld	-14 (ix),#0x01
+   0BF9                    2094 00108$:
+                           2095 ;sys_sms.c:538: if (buff[1] != COVER_MAGIC_1)resp = 1;
+   0BF9 DD 6E F5      [19] 2096 	ld	l,-11 (ix)
+   0BFC DD 66 F6      [19] 2097 	ld	h,-10 (ix)
+   0BFF 23            [ 6] 2098 	inc	hl
+   0C00 7E            [ 7] 2099 	ld	a,(hl)
+   0C01 D6 4F         [ 7] 2100 	sub	a, #0x4F
+   0C03 28 04         [12] 2101 	jr	Z,00110$
+   0C05 DD 36 F2 01   [19] 2102 	ld	-14 (ix),#0x01
+   0C09                    2103 00110$:
+                           2104 ;sys_sms.c:539: if (buff[2] != COVER_MAGIC_2)resp = 1;
+   0C09 DD 6E F5      [19] 2105 	ld	l,-11 (ix)
+   0C0C DD 66 F6      [19] 2106 	ld	h,-10 (ix)
+   0C0F 23            [ 6] 2107 	inc	hl
+   0C10 23            [ 6] 2108 	inc	hl
+   0C11 7E            [ 7] 2109 	ld	a,(hl)
+   0C12 D6 56         [ 7] 2110 	sub	a, #0x56
+   0C14 28 04         [12] 2111 	jr	Z,00112$
+   0C16 DD 36 F2 01   [19] 2112 	ld	-14 (ix),#0x01
+   0C1A                    2113 00112$:
+                           2114 ;sys_sms.c:540: if (buff[3] != COVER_MAGIC_3)resp = 1;
+   0C1A DD 6E F5      [19] 2115 	ld	l,-11 (ix)
+   0C1D DD 66 F6      [19] 2116 	ld	h,-10 (ix)
+   0C20 23            [ 6] 2117 	inc	hl
+   0C21 23            [ 6] 2118 	inc	hl
+   0C22 23            [ 6] 2119 	inc	hl
+   0C23 7E            [ 7] 2120 	ld	a,(hl)
+   0C24 D6 31         [ 7] 2121 	sub	a, #0x31
+   0C26 28 04         [12] 2122 	jr	Z,00114$
+   0C28 DD 36 F2 01   [19] 2123 	ld	-14 (ix),#0x01
+   0C2C                    2124 00114$:
+                           2125 ;sys_sms.c:541: if (buff[4] == 0 || buff[4] > COVER_MAX_W)resp = 1;
+   0C2C DD 4E F5      [19] 2126 	ld	c,-11 (ix)
+   0C2F DD 46 F6      [19] 2127 	ld	b,-10 (ix)
+   0C32 C5            [11] 2128 	push	bc
+   0C33 FD E1         [14] 2129 	pop	iy
+   0C35 FD 7E 04      [19] 2130 	ld	a,4 (iy)
+   0C38 DD 77 FD      [19] 2131 	ld	-3 (ix), a
+   0C3B B7            [ 4] 2132 	or	a, a
+   0C3C 28 07         [12] 2133 	jr	Z,00115$
+   0C3E 3E 0E         [ 7] 2134 	ld	a,#0x0E
+   0C40 DD 96 FD      [19] 2135 	sub	a, -3 (ix)
+   0C43 30 04         [12] 2136 	jr	NC,00116$
+   0C45                    2137 00115$:
+   0C45 DD 36 F2 01   [19] 2138 	ld	-14 (ix),#0x01
+   0C49                    2139 00116$:
+                           2140 ;sys_sms.c:542: if (buff[5] == 0 || buff[5] > COVER_MAX_H)resp = 1;
+   0C49 FD 21 05 00   [14] 2141 	ld	iy,#0x0005
+   0C4D DD 5E F5      [19] 2142 	ld	e,-11 (ix)
+   0C50 DD 56 F6      [19] 2143 	ld	d,-10 (ix)
+   0C53 FD 19         [15] 2144 	add	iy, de
+   0C55 FD 7E 00      [19] 2145 	ld	a, 0 (iy)
+   0C58 DD 77 FF      [19] 2146 	ld	-1 (ix), a
+   0C5B B7            [ 4] 2147 	or	a, a
+   0C5C 28 07         [12] 2148 	jr	Z,00118$
+   0C5E 3E 12         [ 7] 2149 	ld	a,#0x12
+   0C60 DD 96 FF      [19] 2150 	sub	a, -1 (ix)
+   0C63 30 04         [12] 2151 	jr	NC,00119$
+   0C65                    2152 00118$:
+   0C65 DD 36 F2 01   [19] 2153 	ld	-14 (ix),#0x01
+   0C69                    2154 00119$:
+                           2155 ;sys_sms.c:543: if (resp) {
+   0C69 DD 7E F2      [19] 2156 	ld	a,-14 (ix)
+   0C6C B7            [ 4] 2157 	or	a, a
+   0C6D 28 0E         [12] 2158 	jr	Z,00122$
+                           2159 ;sys_sms.c:544: osReleaseRam(512);
+   0C6F 21 00 02      [10] 2160 	ld	hl,#0x0200
+   0C72 E5            [11] 2161 	push	hl
+   0C73 CDr00r00      [17] 2162 	call	_osReleaseRam
+   0C76 F1            [10] 2163 	pop	af
+                           2164 ;sys_sms.c:545: return resp;
+   0C77 DD 6E F2      [19] 2165 	ld	l,-14 (ix)
+   0C7A C3rD3r0E      [10] 2166 	jp	00141$
+   0C7D                    2167 00122$:
+                           2168 ;sys_sms.c:548: cover_loaded_w = buff[4];
+   0C7D DD 7E FD      [19] 2169 	ld	a,-3 (ix)
+   0C80 32rDAr07      [13] 2170 	ld	(#_cover_loaded_w + 0),a
+                           2171 ;sys_sms.c:549: cover_loaded_h = buff[5];
+   0C83 DD 7E FF      [19] 2172 	ld	a,-1 (ix)
+   0C86 32rDBr07      [13] 2173 	ld	(#_cover_loaded_h + 0),a
+                           2174 ;sys_sms.c:550: tile_bytes = (u16) cover_loaded_w * cover_loaded_h * 32;
+   0C89 21rDAr07      [10] 2175 	ld	hl,#_cover_loaded_w + 0
+   0C8C 5E            [ 7] 2176 	ld	e, (hl)
+   0C8D 16 00         [ 7] 2177 	ld	d,#0x00
+   0C8F FD 21rDBr07   [14] 2178 	ld	iy,#_cover_loaded_h
+   0C93 FD 6E 00      [19] 2179 	ld	l,0 (iy)
+   0C96 26 00         [ 7] 2180 	ld	h,#0x00
+   0C98 E5            [11] 2181 	push	hl
+   0C99 D5            [11] 2182 	push	de
+   0C9A CDr00r00      [17] 2183 	call	__mulint_rrx_s
+   0C9D F1            [10] 2184 	pop	af
+   0C9E F1            [10] 2185 	pop	af
+   0C9F 29            [11] 2186 	add	hl, hl
+   0CA0 29            [11] 2187 	add	hl, hl
+   0CA1 29            [11] 2188 	add	hl, hl
+   0CA2 29            [11] 2189 	add	hl, hl
+   0CA3 29            [11] 2190 	add	hl, hl
+   0CA4 E3            [19] 2191 	ex	(sp), hl
+                           2192 ;sys_sms.c:551: bytes_left = tile_bytes;
+   0CA5 DD 7E EE      [19] 2193 	ld	a,-18 (ix)
+   0CA8 DD 77 F3      [19] 2194 	ld	-13 (ix),a
+   0CAB DD 7E EF      [19] 2195 	ld	a,-17 (ix)
+   0CAE DD 77 F4      [19] 2196 	ld	-12 (ix),a
+                           2197 ;sys_sms.c:555: g_set_vdp_reg(VDP_REG_MODE2, 0);
+   0CB1 21 01 00      [10] 2198 	ld	hl,#0x0001
+   0CB4 E5            [11] 2199 	push	hl
+   0CB5 CDr00r00      [17] 2200 	call	_g_set_vdp_reg
+   0CB8 F1            [10] 2201 	pop	af
+                           2202 ;sys_sms.c:557: chunk = 512 - src;
+   0CB9 DD 36 F7 F0   [19] 2203 	ld	-9 (ix),#0xF0
+   0CBD DD 36 F8 01   [19] 2204 	ld	-8 (ix),#0x01
+                           2205 ;sys_sms.c:558: if (chunk > bytes_left)chunk = bytes_left;
+   0CC1 DD 7E F3      [19] 2206 	ld	a,-13 (ix)
+   0CC4 D6 F0         [ 7] 2207 	sub	a, #0xF0
+   0CC6 DD 7E F4      [19] 2208 	ld	a,-12 (ix)
+   0CC9 DE 01         [ 7] 2209 	sbc	a, #0x01
+   0CCB 30 0C         [12] 2210 	jr	NC,00124$
+   0CCD DD 7E F3      [19] 2211 	ld	a,-13 (ix)
+   0CD0 DD 77 F7      [19] 2212 	ld	-9 (ix),a
+   0CD3 DD 7E F4      [19] 2213 	ld	a,-12 (ix)
+   0CD6 DD 77 F8      [19] 2214 	ld	-8 (ix),a
+   0CD9                    2215 00124$:
+                           2216 ;sys_sms.c:559: g_vram_wr(&buff[src], dst, chunk);
+   0CD9 DD 7E F5      [19] 2217 	ld	a,-11 (ix)
+   0CDC C6 10         [ 7] 2218 	add	a, #0x10
+   0CDE 6F            [ 4] 2219 	ld	l,a
+   0CDF DD 7E F6      [19] 2220 	ld	a,-10 (ix)
+   0CE2 CE 00         [ 7] 2221 	adc	a, #0x00
+   0CE4 67            [ 4] 2222 	ld	h,a
+   0CE5 DD 4E F7      [19] 2223 	ld	c,-9 (ix)
+   0CE8 DD 46 F8      [19] 2224 	ld	b,-8 (ix)
+   0CEB C5            [11] 2225 	push	bc
+   0CEC 01 00 14      [10] 2226 	ld	bc,#0x1400
+   0CEF C5            [11] 2227 	push	bc
+   0CF0 E5            [11] 2228 	push	hl
+   0CF1 CDr00r00      [17] 2229 	call	_g_vram_wr
+   0CF4 21 06 00      [10] 2230 	ld	hl,#0x0006
+   0CF7 39            [11] 2231 	add	hl,sp
+   0CF8 F9            [ 6] 2232 	ld	sp,hl
+                           2233 ;sys_sms.c:560: bytes_left -= chunk;
+   0CF9 DD 7E F3      [19] 2234 	ld	a,-13 (ix)
+   0CFC DD 96 F7      [19] 2235 	sub	a, -9 (ix)
+   0CFF DD 77 F3      [19] 2236 	ld	-13 (ix),a
+   0D02 DD 7E F4      [19] 2237 	ld	a,-12 (ix)
+   0D05 DD 9E F8      [19] 2238 	sbc	a, -8 (ix)
+   0D08 DD 77 F4      [19] 2239 	ld	-12 (ix),a
+                           2240 ;sys_sms.c:561: dst += chunk;
+   0D0B DD 7E F7      [19] 2241 	ld	a,-9 (ix)
+   0D0E C6 00         [ 7] 2242 	add	a, #0x00
+   0D10 DD 77 F0      [19] 2243 	ld	-16 (ix),a
+   0D13 DD 7E F8      [19] 2244 	ld	a,-8 (ix)
+   0D16 CE 14         [ 7] 2245 	adc	a, #0x14
+   0D18 DD 77 F1      [19] 2246 	ld	-15 (ix),a
+                           2247 ;sys_sms.c:563: while (bytes_left) {
+   0D1B                    2248 00129$:
+   0D1B DD 7E F4      [19] 2249 	ld	a,-12 (ix)
+   0D1E DD B6 F3      [19] 2250 	or	a,-13 (ix)
+   0D21 CArEDr0D      [10] 2251 	jp	Z,00131$
+                           2252 ;sys_sms.c:564: if (file.sec_available == 0) {
+   0D24 2Ar0Cr00      [16] 2253 	ld	hl, (#(_file + 0x000c) + 0)
+   0D27 7C            [ 4] 2254 	ld	a,h
+   0D28 B5            [ 4] 2255 	or	a,l
+   0D29 20 14         [12] 2256 	jr	NZ,00126$
+                           2257 ;sys_sms.c:565: g_set_vdp_reg(VDP_REG_MODE2, VDP_MOD2_BLK);
+   0D2B 21 01 40      [10] 2258 	ld	hl,#0x4001
+   0D2E E5            [11] 2259 	push	hl
+   0D2F CDr00r00      [17] 2260 	call	_g_set_vdp_reg
+                           2261 ;sys_sms.c:566: osReleaseRam(512);
+   0D32 21 00 02      [10] 2262 	ld	hl, #0x0200
+   0D35 E3            [19] 2263 	ex	(sp),hl
+   0D36 CDr00r00      [17] 2264 	call	_osReleaseRam
+   0D39 F1            [10] 2265 	pop	af
+                           2266 ;sys_sms.c:567: return 1;
+   0D3A 2E 01         [ 7] 2267 	ld	l,#0x01
+   0D3C C3rD3r0E      [10] 2268 	jp	00141$
+   0D3F                    2269 00126$:
+                           2270 ;sys_sms.c:569: resp = fat_read(buff, 1, RAM);
+   0D3F 3E 01         [ 7] 2271 	ld	a,#0x01
+   0D41 F5            [11] 2272 	push	af
+   0D42 33            [ 6] 2273 	inc	sp
+   0D43 21 01 00      [10] 2274 	ld	hl,#0x0001
+   0D46 E5            [11] 2275 	push	hl
+   0D47 DD 6E F5      [19] 2276 	ld	l,-11 (ix)
+   0D4A DD 66 F6      [19] 2277 	ld	h,-10 (ix)
+   0D4D E5            [11] 2278 	push	hl
+   0D4E CDr00r00      [17] 2279 	call	_fat_read
+   0D51 F1            [10] 2280 	pop	af
+   0D52 F1            [10] 2281 	pop	af
+   0D53 33            [ 6] 2282 	inc	sp
+                           2283 ;sys_sms.c:570: if (resp) {
+   0D54 DD 75 F2      [19] 2284 	ld	-14 (ix), l
+   0D57 7D            [ 4] 2285 	ld	a, l
+   0D58 B7            [ 4] 2286 	or	a, a
+   0D59 28 15         [12] 2287 	jr	Z,00128$
+                           2288 ;sys_sms.c:571: g_set_vdp_reg(VDP_REG_MODE2, VDP_MOD2_BLK);
+   0D5B 21 01 40      [10] 2289 	ld	hl,#0x4001
+   0D5E E5            [11] 2290 	push	hl
+   0D5F CDr00r00      [17] 2291 	call	_g_set_vdp_reg
+                           2292 ;sys_sms.c:572: osReleaseRam(512);
+   0D62 21 00 02      [10] 2293 	ld	hl, #0x0200
+   0D65 E3            [19] 2294 	ex	(sp),hl
+   0D66 CDr00r00      [17] 2295 	call	_osReleaseRam
+   0D69 F1            [10] 2296 	pop	af
+                           2297 ;sys_sms.c:573: return resp;
+   0D6A DD 6E F2      [19] 2298 	ld	l,-14 (ix)
+   0D6D C3rD3r0E      [10] 2299 	jp	00141$
+   0D70                    2300 00128$:
+                           2301 ;sys_sms.c:575: chunk = bytes_left > 512 ? 512 : bytes_left;
+   0D70 AF            [ 4] 2302 	xor	a, a
+   0D71 DD BE F3      [19] 2303 	cp	a, -13 (ix)
+   0D74 3E 02         [ 7] 2304 	ld	a,#0x02
+   0D76 DD 9E F4      [19] 2305 	sbc	a, -12 (ix)
+   0D79 30 0A         [12] 2306 	jr	NC,00143$
+   0D7B DD 36 FD 00   [19] 2307 	ld	-3 (ix),#0x00
+   0D7F DD 36 FE 02   [19] 2308 	ld	-2 (ix),#0x02
+   0D83 18 0C         [12] 2309 	jr	00144$
+   0D85                    2310 00143$:
+   0D85 DD 7E F3      [19] 2311 	ld	a,-13 (ix)
+   0D88 DD 77 FD      [19] 2312 	ld	-3 (ix),a
+   0D8B DD 7E F4      [19] 2313 	ld	a,-12 (ix)
+   0D8E DD 77 FE      [19] 2314 	ld	-2 (ix),a
+   0D91                    2315 00144$:
+   0D91 DD 7E FD      [19] 2316 	ld	a,-3 (ix)
+   0D94 DD 77 F7      [19] 2317 	ld	-9 (ix),a
+   0D97 DD 7E FE      [19] 2318 	ld	a,-2 (ix)
+   0D9A DD 77 F8      [19] 2319 	ld	-8 (ix),a
+                           2320 ;sys_sms.c:576: g_vram_wr(buff, dst, chunk);
+   0D9D DD 7E F5      [19] 2321 	ld	a,-11 (ix)
+   0DA0 DD 77 FD      [19] 2322 	ld	-3 (ix),a
+   0DA3 DD 7E F6      [19] 2323 	ld	a,-10 (ix)
+   0DA6 DD 77 FE      [19] 2324 	ld	-2 (ix),a
+   0DA9 DD 6E F7      [19] 2325 	ld	l,-9 (ix)
+   0DAC DD 66 F8      [19] 2326 	ld	h,-8 (ix)
+   0DAF E5            [11] 2327 	push	hl
+   0DB0 DD 6E F0      [19] 2328 	ld	l,-16 (ix)
+   0DB3 DD 66 F1      [19] 2329 	ld	h,-15 (ix)
+   0DB6 E5            [11] 2330 	push	hl
+   0DB7 DD 6E FD      [19] 2331 	ld	l,-3 (ix)
+   0DBA DD 66 FE      [19] 2332 	ld	h,-2 (ix)
+   0DBD E5            [11] 2333 	push	hl
+   0DBE CDr00r00      [17] 2334 	call	_g_vram_wr
+   0DC1 21 06 00      [10] 2335 	ld	hl,#0x0006
+   0DC4 39            [11] 2336 	add	hl,sp
+   0DC5 F9            [ 6] 2337 	ld	sp,hl
+                           2338 ;sys_sms.c:577: bytes_left -= chunk;
+   0DC6 DD 7E F3      [19] 2339 	ld	a,-13 (ix)
+   0DC9 DD 96 F7      [19] 2340 	sub	a, -9 (ix)
+   0DCC DD 77 F3      [19] 2341 	ld	-13 (ix),a
+   0DCF DD 7E F4      [19] 2342 	ld	a,-12 (ix)
+   0DD2 DD 9E F8      [19] 2343 	sbc	a, -8 (ix)
+   0DD5 DD 77 F4      [19] 2344 	ld	-12 (ix),a
+                           2345 ;sys_sms.c:578: dst += chunk;
+   0DD8 DD 7E F0      [19] 2346 	ld	a,-16 (ix)
+   0DDB DD 86 F7      [19] 2347 	add	a, -9 (ix)
+   0DDE DD 77 F0      [19] 2348 	ld	-16 (ix),a
+   0DE1 DD 7E F1      [19] 2349 	ld	a,-15 (ix)
+   0DE4 DD 8E F8      [19] 2350 	adc	a, -8 (ix)
+   0DE7 DD 77 F1      [19] 2351 	ld	-15 (ix),a
+   0DEA C3r1Br0D      [10] 2352 	jp	00129$
+   0DED                    2353 00131$:
+                           2354 ;sys_sms.c:581: if (rec->size >= (u32) COVER_HDR_SIZE + tile_bytes + COVER_PAL_SIZE) {
+   0DED DD 6E 04      [19] 2355 	ld	l,4 (ix)
+   0DF0 DD 66 05      [19] 2356 	ld	h,5 (ix)
+   0DF3 11 E0 00      [10] 2357 	ld	de, #0x00E0
+   0DF6 19            [11] 2358 	add	hl, de
+   0DF7 5E            [ 7] 2359 	ld	e,(hl)
+   0DF8 23            [ 6] 2360 	inc	hl
+   0DF9 56            [ 7] 2361 	ld	d,(hl)
+   0DFA 23            [ 6] 2362 	inc	hl
+   0DFB 4E            [ 7] 2363 	ld	c,(hl)
+   0DFC 23            [ 6] 2364 	inc	hl
+   0DFD 46            [ 7] 2365 	ld	b,(hl)
+   0DFE DD 7E EE      [19] 2366 	ld	a,-18 (ix)
+   0E01 DD 77 F9      [19] 2367 	ld	-7 (ix),a
+   0E04 DD 7E EF      [19] 2368 	ld	a,-17 (ix)
+   0E07 DD 77 FA      [19] 2369 	ld	-6 (ix),a
+   0E0A DD 36 FB 00   [19] 2370 	ld	-5 (ix),#0x00
+   0E0E DD 36 FC 00   [19] 2371 	ld	-4 (ix),#0x00
+   0E12 DD 7E F9      [19] 2372 	ld	a,-7 (ix)
+   0E15 C6 20         [ 7] 2373 	add	a, #0x20
+   0E17 DD 77 F9      [19] 2374 	ld	-7 (ix),a
+   0E1A DD 7E FA      [19] 2375 	ld	a,-6 (ix)
+   0E1D CE 00         [ 7] 2376 	adc	a, #0x00
+   0E1F DD 77 FA      [19] 2377 	ld	-6 (ix),a
+   0E22 DD 7E FB      [19] 2378 	ld	a,-5 (ix)
+   0E25 CE 00         [ 7] 2379 	adc	a, #0x00
+   0E27 DD 77 FB      [19] 2380 	ld	-5 (ix),a
+   0E2A DD 7E FC      [19] 2381 	ld	a,-4 (ix)
+   0E2D CE 00         [ 7] 2382 	adc	a, #0x00
+   0E2F DD 77 FC      [19] 2383 	ld	-4 (ix),a
+   0E32 7B            [ 4] 2384 	ld	a,e
+   0E33 DD 96 F9      [19] 2385 	sub	a, -7 (ix)
+   0E36 7A            [ 4] 2386 	ld	a,d
+   0E37 DD 9E FA      [19] 2387 	sbc	a, -6 (ix)
+   0E3A 79            [ 4] 2388 	ld	a,c
+   0E3B DD 9E FB      [19] 2389 	sbc	a, -5 (ix)
+   0E3E 78            [ 4] 2390 	ld	a,b
+   0E3F DD 9E FC      [19] 2391 	sbc	a, -4 (ix)
+   0E42 38 71         [12] 2392 	jr	C,00139$
+                           2393 ;sys_sms.c:582: pal_pos = (COVER_HDR_SIZE + tile_bytes) & 511;
+   0E44 DD 7E EE      [19] 2394 	ld	a,-18 (ix)
+   0E47 C6 10         [ 7] 2395 	add	a, #0x10
+   0E49 5F            [ 4] 2396 	ld	e,a
+   0E4A DD 7E EF      [19] 2397 	ld	a,-17 (ix)
+   0E4D CE 00         [ 7] 2398 	adc	a, #0x00
+   0E4F E6 01         [ 7] 2399 	and	a, #0x01
+                           2400 ;sys_sms.c:583: if (pal_pos == 0) {
+   0E51 57            [ 4] 2401 	ld	d,a
+   0E52 B3            [ 4] 2402 	or	a,e
+   0E53 20 4C         [12] 2403 	jr	NZ,00137$
+                           2404 ;sys_sms.c:584: if (file.sec_available == 0) {
+   0E55 2Ar0Cr00      [16] 2405 	ld	hl, (#(_file + 0x000c) + 0)
+   0E58 7C            [ 4] 2406 	ld	a,h
+   0E59 B5            [ 4] 2407 	or	a,l
+   0E5A 20 13         [12] 2408 	jr	NZ,00133$
+                           2409 ;sys_sms.c:585: g_set_vdp_reg(VDP_REG_MODE2, VDP_MOD2_BLK);
+   0E5C 21 01 40      [10] 2410 	ld	hl,#0x4001
+   0E5F E5            [11] 2411 	push	hl
+   0E60 CDr00r00      [17] 2412 	call	_g_set_vdp_reg
+                           2413 ;sys_sms.c:586: osReleaseRam(512);
+   0E63 21 00 02      [10] 2414 	ld	hl, #0x0200
+   0E66 E3            [19] 2415 	ex	(sp),hl
+   0E67 CDr00r00      [17] 2416 	call	_osReleaseRam
+   0E6A F1            [10] 2417 	pop	af
+                           2418 ;sys_sms.c:587: return 1;
+   0E6B 2E 01         [ 7] 2419 	ld	l,#0x01
+   0E6D 18 64         [12] 2420 	jr	00141$
+   0E6F                    2421 00133$:
+                           2422 ;sys_sms.c:589: resp = fat_read(buff, 1, RAM);
+   0E6F D5            [11] 2423 	push	de
+   0E70 3E 01         [ 7] 2424 	ld	a,#0x01
+   0E72 F5            [11] 2425 	push	af
+   0E73 33            [ 6] 2426 	inc	sp
+   0E74 21 01 00      [10] 2427 	ld	hl,#0x0001
+   0E77 E5            [11] 2428 	push	hl
+   0E78 DD 6E F5      [19] 2429 	ld	l,-11 (ix)
+   0E7B DD 66 F6      [19] 2430 	ld	h,-10 (ix)
+   0E7E E5            [11] 2431 	push	hl
+   0E7F CDr00r00      [17] 2432 	call	_fat_read
+   0E82 F1            [10] 2433 	pop	af
+   0E83 F1            [10] 2434 	pop	af
+   0E84 33            [ 6] 2435 	inc	sp
+   0E85 D1            [10] 2436 	pop	de
+                           2437 ;sys_sms.c:590: if (resp) {
+   0E86 DD 75 F2      [19] 2438 	ld	-14 (ix), l
+   0E89 7D            [ 4] 2439 	ld	a, l
+   0E8A B7            [ 4] 2440 	or	a, a
+   0E8B 28 14         [12] 2441 	jr	Z,00137$
+                           2442 ;sys_sms.c:591: g_set_vdp_reg(VDP_REG_MODE2, VDP_MOD2_BLK);
+   0E8D 21 01 40      [10] 2443 	ld	hl,#0x4001
+   0E90 E5            [11] 2444 	push	hl
+   0E91 CDr00r00      [17] 2445 	call	_g_set_vdp_reg
+                           2446 ;sys_sms.c:592: osReleaseRam(512);
+   0E94 21 00 02      [10] 2447 	ld	hl, #0x0200
+   0E97 E3            [19] 2448 	ex	(sp),hl
+   0E98 CDr00r00      [17] 2449 	call	_osReleaseRam
+   0E9B F1            [10] 2450 	pop	af
+                           2451 ;sys_sms.c:593: return resp;
+   0E9C DD 6E F2      [19] 2452 	ld	l,-14 (ix)
+   0E9F 18 32         [12] 2453 	jr	00141$
+   0EA1                    2454 00137$:
+                           2455 ;sys_sms.c:596: g_set_pal(&buff[pal_pos], 0, COVER_PAL_SIZE);
+   0EA1 DD 6E F5      [19] 2456 	ld	l,-11 (ix)
+   0EA4 DD 66 F6      [19] 2457 	ld	h,-10 (ix)
+   0EA7 19            [11] 2458 	add	hl,de
+   0EA8 EB            [ 4] 2459 	ex	de,hl
+   0EA9 21 00 10      [10] 2460 	ld	hl,#0x1000
+   0EAC E5            [11] 2461 	push	hl
+   0EAD D5            [11] 2462 	push	de
+   0EAE CDr00r00      [17] 2463 	call	_g_set_pal
+   0EB1 F1            [10] 2464 	pop	af
+   0EB2 F1            [10] 2465 	pop	af
+   0EB3 18 0D         [12] 2466 	jr	00140$
+   0EB5                    2467 00139$:
+                           2468 ;sys_sms.c:598: g_set_pal(pal_sms, 0, COVER_PAL_SIZE);
+   0EB5 11r5Ar00      [10] 2469 	ld	de,#_pal_sms
+   0EB8 21 00 10      [10] 2470 	ld	hl,#0x1000
+   0EBB E5            [11] 2471 	push	hl
+   0EBC D5            [11] 2472 	push	de
+   0EBD CDr00r00      [17] 2473 	call	_g_set_pal
+   0EC0 F1            [10] 2474 	pop	af
+   0EC1 F1            [10] 2475 	pop	af
+   0EC2                    2476 00140$:
+                           2477 ;sys_sms.c:601: g_set_vdp_reg(VDP_REG_MODE2, VDP_MOD2_BLK);
+   0EC2 21 01 40      [10] 2478 	ld	hl,#0x4001
+   0EC5 E5            [11] 2479 	push	hl
+   0EC6 CDr00r00      [17] 2480 	call	_g_set_vdp_reg
+                           2481 ;sys_sms.c:602: osReleaseRam(512);
+   0EC9 21 00 02      [10] 2482 	ld	hl, #0x0200
+   0ECC E3            [19] 2483 	ex	(sp),hl
+   0ECD CDr00r00      [17] 2484 	call	_osReleaseRam
+   0ED0 F1            [10] 2485 	pop	af
+                           2486 ;sys_sms.c:603: return 0;
+   0ED1 2E 00         [ 7] 2487 	ld	l,#0x00
+   0ED3                    2488 00141$:
+   0ED3 DD F9         [10] 2489 	ld	sp,ix
+   0ED5 DD E1         [14] 2490 	pop	ix
+   0ED7 C9            [10] 2491 	ret
+   0ED8                    2492 _guiLoadCover_end::
+                           2493 ;sys_sms.c:606: void guiClearCover() {
+                           2494 ;	---------------------------------
+                           2495 ; Function guiClearCover
+                           2496 ; ---------------------------------
+   0ED8                    2497 _guiClearCover_start::
+   0ED8                    2498 _guiClearCover:
+                           2499 ;sys_sms.c:608: gSetPal(0);
+   0ED8 21 00 00      [10] 2500 	ld	hl,#0x0000
+   0EDB E5            [11] 2501 	push	hl
+   0EDC CDr1Br18      [17] 2502 	call	_gSetPal
+                           2503 ;sys_sms.c:609: gFillRect(0, COVER_X, COVER_Y, COVER_MAX_W, COVER_MAX_H);
+   0EDF 21 0E 12      [10] 2504 	ld	hl, #0x120E
+   0EE2 E3            [19] 2505 	ex	(sp),hl
+   0EE3 21 12 03      [10] 2506 	ld	hl,#0x0312
+   0EE6 E5            [11] 2507 	push	hl
+   0EE7 21 00 00      [10] 2508 	ld	hl,#0x0000
+   0EEA E5            [11] 2509 	push	hl
+   0EEB CDr64r02      [17] 2510 	call	_gFillRect
+   0EEE 21 06 00      [10] 2511 	ld	hl,#0x0006
+   0EF1 39            [11] 2512 	add	hl,sp
+   0EF2 F9            [ 6] 2513 	ld	sp,hl
+                           2514 ;sys_sms.c:610: cover_loaded_w = 0;
+   0EF3 21rDAr07      [10] 2515 	ld	hl,#_cover_loaded_w + 0
+   0EF6 36 00         [10] 2516 	ld	(hl), #0x00
+                           2517 ;sys_sms.c:611: cover_loaded_h = 0;
+   0EF8 21rDBr07      [10] 2518 	ld	hl,#_cover_loaded_h + 0
+   0EFB 36 00         [10] 2519 	ld	(hl), #0x00
+   0EFD C9            [10] 2520 	ret
+   0EFE                    2521 _guiClearCover_end::
+                           2522 ;sys_sms.c:614: void guiPutCoverMap() {
+                           2523 ;	---------------------------------
+                           2524 ; Function guiPutCoverMap
+                           2525 ; ---------------------------------
+   0EFE                    2526 _guiPutCoverMap_start::
+   0EFE                    2527 _guiPutCoverMap:
+   0EFE DD E5         [15] 2528 	push	ix
+   0F00 DD 21 00 00   [14] 2529 	ld	ix,#0
+   0F04 DD 39         [15] 2530 	add	ix,sp
+   0F06 21 FB FF      [10] 2531 	ld	hl,#-5
+   0F09 39            [11] 2532 	add	hl,sp
+   0F0A F9            [ 6] 2533 	ld	sp,hl
+                           2534 ;sys_sms.c:621: if (cover_loaded_w == 0 || cover_loaded_h == 0)return;
+   0F0B 3ArDAr07      [13] 2535 	ld	a,(#_cover_loaded_w + 0)
+   0F0E B7            [ 4] 2536 	or	a, a
+   0F0F CAr9Er0F      [10] 2537 	jp	Z,00112$
+   0F12 3ArDBr07      [13] 2538 	ld	a,(#_cover_loaded_h + 0)
+   0F15 B7            [ 4] 2539 	or	a, a
+   0F16 CAr9Er0F      [10] 2540 	jp	Z,00112$
+                           2541 ;sys_sms.c:623: gSetPal(0);
+   0F19 21 00 00      [10] 2542 	ld	hl,#0x0000
+   0F1C E5            [11] 2543 	push	hl
+   0F1D CDr1Br18      [17] 2544 	call	_gSetPal
+   0F20 F1            [10] 2545 	pop	af
+                           2546 ;sys_sms.c:624: tile = COVER_TILE_BASE;
+   0F21 01 A0 00      [10] 2547 	ld	bc,#0x00A0
+                           2548 ;sys_sms.c:625: for (y = 0; y < cover_loaded_h; y++) {
+   0F24 DD 36 FB 00   [19] 2549 	ld	-5 (ix),#0x00
+   0F28                    2550 00110$:
+   0F28 21rDBr07      [10] 2551 	ld	hl,#_cover_loaded_h
+   0F2B DD 7E FB      [19] 2552 	ld	a,-5 (ix)
+   0F2E 96            [ 7] 2553 	sub	a, (hl)
+   0F2F 30 6D         [12] 2554 	jr	NC,00112$
+                           2555 ;sys_sms.c:626: gSetXY(COVER_X, COVER_Y + y);
+   0F31 DD 7E FB      [19] 2556 	ld	a,-5 (ix)
+   0F34 C6 03         [ 7] 2557 	add	a, #0x03
+   0F36 C5            [11] 2558 	push	bc
+   0F37 57            [ 4] 2559 	ld	d,a
+   0F38 1E 12         [ 7] 2560 	ld	e,#0x12
+   0F3A D5            [11] 2561 	push	de
+   0F3B CDr81r03      [17] 2562 	call	_gSetXY
+   0F3E F1            [10] 2563 	pop	af
+   0F3F C1            [10] 2564 	pop	bc
+                           2565 ;sys_sms.c:627: ptr = (u16 *) & gfx_buff[g_ptr];
+   0F40 2Ar01r00      [16] 2566 	ld	hl,(_g_ptr)
+   0F43 29            [11] 2567 	add	hl, hl
+   0F44 11r06r00      [10] 2568 	ld	de,#_gfx_buff
+   0F47 19            [11] 2569 	add	hl,de
+   0F48 DD 75 FC      [19] 2570 	ld	-4 (ix),l
+   0F4B DD 74 FD      [19] 2571 	ld	-3 (ix),h
+                           2572 ;sys_sms.c:628: for (x = 0; x < cover_loaded_w; x++) {
+   0F4E DD 71 FE      [19] 2573 	ld	-2 (ix),c
+   0F51 DD 70 FF      [19] 2574 	ld	-1 (ix),b
+   0F54 16 00         [ 7] 2575 	ld	d,#0x00
+   0F56                    2576 00107$:
+   0F56 21rDAr07      [10] 2577 	ld	hl,#_cover_loaded_w
+   0F59 7A            [ 4] 2578 	ld	a,d
+   0F5A 96            [ 7] 2579 	sub	a, (hl)
+   0F5B 30 36         [12] 2580 	jr	NC,00119$
+                           2581 ;sys_sms.c:629: *ptr++ = tile++ | g_current_pal;
+   0F5D DD 5E FE      [19] 2582 	ld	e,-2 (ix)
+   0F60 DD 46 FF      [19] 2583 	ld	b,-1 (ix)
+   0F63 DD 34 FE      [23] 2584 	inc	-2 (ix)
+   0F66 20 03         [12] 2585 	jr	NZ,00131$
+   0F68 DD 34 FF      [23] 2586 	inc	-1 (ix)
+   0F6B                    2587 00131$:
+   0F6B 7B            [ 4] 2588 	ld	a,e
+   0F6C 21r03r00      [10] 2589 	ld	hl,#_g_current_pal + 0
+   0F6F B6            [ 7] 2590 	or	a,(hl)
+   0F70 5F            [ 4] 2591 	ld	e,a
+   0F71 78            [ 4] 2592 	ld	a,b
+   0F72 21r04r00      [10] 2593 	ld	hl,#_g_current_pal + 1
+   0F75 B6            [ 7] 2594 	or	a,(hl)
+   0F76 47            [ 4] 2595 	ld	b,a
+   0F77 DD 6E FC      [19] 2596 	ld	l,-4 (ix)
+   0F7A DD 66 FD      [19] 2597 	ld	h,-3 (ix)
+   0F7D 73            [ 7] 2598 	ld	(hl),e
+   0F7E 23            [ 6] 2599 	inc	hl
+   0F7F 70            [ 7] 2600 	ld	(hl),b
+   0F80 DD 7E FC      [19] 2601 	ld	a,-4 (ix)
+   0F83 C6 02         [ 7] 2602 	add	a, #0x02
+   0F85 DD 77 FC      [19] 2603 	ld	-4 (ix),a
+   0F88 DD 7E FD      [19] 2604 	ld	a,-3 (ix)
+   0F8B CE 00         [ 7] 2605 	adc	a, #0x00
+   0F8D DD 77 FD      [19] 2606 	ld	-3 (ix),a
+                           2607 ;sys_sms.c:628: for (x = 0; x < cover_loaded_w; x++) {
+   0F90 14            [ 4] 2608 	inc	d
+   0F91 18 C3         [12] 2609 	jr	00107$
+   0F93                    2610 00119$:
+   0F93 DD 4E FE      [19] 2611 	ld	c,-2 (ix)
+   0F96 DD 46 FF      [19] 2612 	ld	b,-1 (ix)
+                           2613 ;sys_sms.c:625: for (y = 0; y < cover_loaded_h; y++) {
+   0F99 DD 34 FB      [23] 2614 	inc	-5 (ix)
+   0F9C 18 8A         [12] 2615 	jr	00110$
+   0F9E                    2616 00112$:
+   0F9E DD F9         [10] 2617 	ld	sp,ix
+   0FA0 DD E1         [14] 2618 	pop	ix
+   0FA2 C9            [10] 2619 	ret
+   0FA3                    2620 _guiPutCoverMap_end::
+                           2621 ;sys_sms.c:634: void guiResetCoverCache() {
+                           2622 ;	---------------------------------
+                           2623 ; Function guiResetCoverCache
+                           2624 ; ---------------------------------
+   0FA3                    2625 _guiResetCoverCache_start::
+   0FA3                    2626 _guiResetCoverCache:
+                           2627 ;sys_sms.c:636: sysMemSet(cover_miss, 0, (OS_MAX_DIR_SIZE + 7) / 8);
+   0FA3 11rDCr07      [10] 2628 	ld	de,#_cover_miss
+   0FA6 21 40 00      [10] 2629 	ld	hl,#0x0040
+   0FA9 E5            [11] 2630 	push	hl
+   0FAA AF            [ 4] 2631 	xor	a, a
+   0FAB F5            [11] 2632 	push	af
+   0FAC 33            [ 6] 2633 	inc	sp
+   0FAD D5            [11] 2634 	push	de
+   0FAE CDr00r00      [17] 2635 	call	_sysMemSet
+   0FB1 F1            [10] 2636 	pop	af
+   0FB2 F1            [10] 2637 	pop	af
+   0FB3 33            [ 6] 2638 	inc	sp
+   0FB4 C9            [10] 2639 	ret
+   0FB5                    2640 _guiResetCoverCache_end::
+                           2641 ;sys_sms.c:639: u8 guiGetCoverMiss(u16 selector) {
+                           2642 ;	---------------------------------
+                           2643 ; Function guiGetCoverMiss
+                           2644 ; ---------------------------------
+   0FB5                    2645 _guiGetCoverMiss_start::
+   0FB5                    2646 _guiGetCoverMiss:
+   0FB5 DD E5         [15] 2647 	push	ix
+   0FB7 DD 21 00 00   [14] 2648 	ld	ix,#0
+   0FBB DD 39         [15] 2649 	add	ix,sp
+                           2650 ;sys_sms.c:641: if (selector >= OS_MAX_DIR_SIZE)return 0;
+   0FBD DD 7E 05      [19] 2651 	ld	a,5 (ix)
+   0FC0 E6 FE         [ 7] 2652 	and	a, #0xFE
+   0FC2 28 04         [12] 2653 	jr	Z,00102$
+   0FC4 2E 00         [ 7] 2654 	ld	l,#0x00
+   0FC6 18 2B         [12] 2655 	jr	00103$
+   0FC8                    2656 00102$:
+                           2657 ;sys_sms.c:642: return cover_miss[selector >> 3] & (1 << (selector & 7));
+   0FC8 21rDCr07      [10] 2658 	ld	hl,#_cover_miss
+   0FCB DD 5E 04      [19] 2659 	ld	e,4 (ix)
+   0FCE DD 56 05      [19] 2660 	ld	d,5 (ix)
+   0FD1 CB 3A         [ 8] 2661 	srl	d
+   0FD3 CB 1B         [ 8] 2662 	rr	e
+   0FD5 CB 3A         [ 8] 2663 	srl	d
+   0FD7 CB 1B         [ 8] 2664 	rr	e
+   0FD9 CB 3A         [ 8] 2665 	srl	d
+   0FDB CB 1B         [ 8] 2666 	rr	e
+   0FDD 19            [11] 2667 	add	hl,de
+   0FDE 5E            [ 7] 2668 	ld	e,(hl)
+   0FDF DD 7E 04      [19] 2669 	ld	a,4 (ix)
+   0FE2 E6 07         [ 7] 2670 	and	a, #0x07
+   0FE4 47            [ 4] 2671 	ld	b, a
+   0FE5 F5            [11] 2672 	push	af
+   0FE6 21 01 00      [10] 2673 	ld	hl,#0x0001
+   0FE9 F1            [10] 2674 	pop	af
+   0FEA 04            [ 4] 2675 	inc	b
+   0FEB 18 01         [12] 2676 	jr	00110$
+   0FED                    2677 00109$:
+   0FED 29            [11] 2678 	add	hl, hl
+   0FEE                    2679 00110$:
+   0FEE 10 FD         [13] 2680 	djnz	00109$
+   0FF0 7D            [ 4] 2681 	ld	a,l
+   0FF1 A3            [ 4] 2682 	and	a, e
+   0FF2 6F            [ 4] 2683 	ld	l,a
+   0FF3                    2684 00103$:
+   0FF3 DD E1         [14] 2685 	pop	ix
+   0FF5 C9            [10] 2686 	ret
+   0FF6                    2687 _guiGetCoverMiss_end::
+                           2688 ;sys_sms.c:645: void guiSetCoverMiss(u16 selector) {
+                           2689 ;	---------------------------------
+                           2690 ; Function guiSetCoverMiss
+                           2691 ; ---------------------------------
+   0FF6                    2692 _guiSetCoverMiss_start::
+   0FF6                    2693 _guiSetCoverMiss:
+   0FF6 DD E5         [15] 2694 	push	ix
+   0FF8 DD 21 00 00   [14] 2695 	ld	ix,#0
+   0FFC DD 39         [15] 2696 	add	ix,sp
+                           2697 ;sys_sms.c:647: if (selector >= OS_MAX_DIR_SIZE)return;
+   0FFE DD 7E 05      [19] 2698 	ld	a,5 (ix)
+   1001 E6 FE         [ 7] 2699 	and	a, #0xFE
+   1003 20 2F         [12] 2700 	jr	NZ,00103$
+                           2701 ;sys_sms.c:648: cover_miss[selector >> 3] |= 1 << (selector & 7);
+   1005 DD 6E 04      [19] 2702 	ld	l,4 (ix)
+   1008 DD 66 05      [19] 2703 	ld	h,5 (ix)
+   100B CB 3C         [ 8] 2704 	srl	h
+   100D CB 1D         [ 8] 2705 	rr	l
+   100F CB 3C         [ 8] 2706 	srl	h
+   1011 CB 1D         [ 8] 2707 	rr	l
+   1013 CB 3C         [ 8] 2708 	srl	h
+   1015 CB 1D         [ 8] 2709 	rr	l
+   1017 11rDCr07      [10] 2710 	ld	de,#_cover_miss
+   101A 19            [11] 2711 	add	hl,de
+   101B 5E            [ 7] 2712 	ld	e,(hl)
+   101C DD 7E 04      [19] 2713 	ld	a,4 (ix)
+   101F E6 07         [ 7] 2714 	and	a, #0x07
+   1021 47            [ 4] 2715 	ld	b,a
+   1022 F5            [11] 2716 	push	af
+   1023 0E 01         [ 7] 2717 	ld	c,#0x01
+   1025 16 00         [ 7] 2718 	ld	d,#0x00
+   1027 F1            [10] 2719 	pop	af
+   1028 04            [ 4] 2720 	inc	b
+   1029 18 04         [12] 2721 	jr	00110$
+   102B                    2722 00109$:
+   102B CB 21         [ 8] 2723 	sla	c
+   102D CB 12         [ 8] 2724 	rl	d
+   102F                    2725 00110$:
+   102F 10 FA         [13] 2726 	djnz	00109$
+   1031 79            [ 4] 2727 	ld	a,c
+   1032 B3            [ 4] 2728 	or	a, e
+   1033 77            [ 7] 2729 	ld	(hl),a
+   1034                    2730 00103$:
+   1034 DD E1         [14] 2731 	pop	ix
+   1036 C9            [10] 2732 	ret
+   1037                    2733 _guiSetCoverMiss_end::
+                           2734 ;sys_sms.c:651: u8 guiDrawMenu(u8 *str[], u16 def_select) {
+                           2735 ;	---------------------------------
+                           2736 ; Function guiDrawMenu
+                           2737 ; ---------------------------------
+   1037                    2738 _guiDrawMenu_start::
+   1037                    2739 _guiDrawMenu:
+   1037 DD E5         [15] 2740 	push	ix
+   1039 DD 21 00 00   [14] 2741 	ld	ix,#0
+   103D DD 39         [15] 2742 	add	ix,sp
+   103F 21 EB FF      [10] 2743 	ld	hl,#-21
+   1042 39            [11] 2744 	add	hl,sp
+   1043 F9            [ 6] 2745 	ld	sp,hl
+                           2746 ;sys_sms.c:658: u16 selector = def_select;
+   1044 DD 7E 06      [19] 2747 	ld	a,6 (ix)
+   1047 DD 77 EF      [19] 2748 	ld	-17 (ix),a
+   104A DD 7E 07      [19] 2749 	ld	a,7 (ix)
+   104D DD 77 F0      [19] 2750 	ld	-16 (ix),a
+                           2751 ;sys_sms.c:661: while (str[items] != 0)items++;
+   1050 01 00 00      [10] 2752 	ld	bc,#0x0000
+   1053                    2753 00101$:
+   1053 69            [ 4] 2754 	ld	l, c
+   1054 60            [ 4] 2755 	ld	h, b
+   1055 29            [11] 2756 	add	hl, hl
+   1056 DD 5E 04      [19] 2757 	ld	e,4 (ix)
+   1059 DD 56 05      [19] 2758 	ld	d,5 (ix)
+   105C 19            [11] 2759 	add	hl,de
+   105D 56            [ 7] 2760 	ld	d,(hl)
+   105E 23            [ 6] 2761 	inc	hl
+   105F 7E            [ 7] 2762 	ld	a, (hl)
+   1060 B2            [ 4] 2763 	or	a,d
+   1061 28 03         [12] 2764 	jr	Z,00103$
+   1063 03            [ 6] 2765 	inc	bc
+   1064 18 ED         [12] 2766 	jr	00101$
+   1066                    2767 00103$:
+                           2768 ;sys_sms.c:662: items--;
+   1066 79            [ 4] 2769 	ld	a,c
+   1067 C6 FF         [ 7] 2770 	add	a,#0xFF
+   1069 DD 77 ED      [19] 2771 	ld	-19 (ix),a
+   106C 78            [ 4] 2772 	ld	a,b
+   106D CE FF         [ 7] 2773 	adc	a,#0xFF
+   106F DD 77 EE      [19] 2774 	ld	-18 (ix),a
+                           2775 ;sys_sms.c:664: w = 0;
+   1072 DD 36 F1 00   [19] 2776 	ld	-15 (ix),#0x00
+   1076 DD 36 F2 00   [19] 2777 	ld	-14 (ix),#0x00
+                           2778 ;sys_sms.c:665: for (i = 0; i < items + 1; i++) {
+   107A DD 7E ED      [19] 2779 	ld	a,-19 (ix)
+   107D C6 01         [ 7] 2780 	add	a, #0x01
+   107F DD 77 FA      [19] 2781 	ld	-6 (ix),a
+   1082 DD 7E EE      [19] 2782 	ld	a,-18 (ix)
+   1085 CE 00         [ 7] 2783 	adc	a, #0x00
+   1087 DD 77 FB      [19] 2784 	ld	-5 (ix),a
+   108A DD 36 F3 00   [19] 2785 	ld	-13 (ix),#0x00
+   108E DD 36 F4 00   [19] 2786 	ld	-12 (ix),#0x00
+   1092                    2787 00121$:
+   1092 DD 7E F3      [19] 2788 	ld	a,-13 (ix)
+   1095 DD 96 FA      [19] 2789 	sub	a, -6 (ix)
+   1098 DD 7E F4      [19] 2790 	ld	a,-12 (ix)
+   109B DD 9E FB      [19] 2791 	sbc	a, -5 (ix)
+   109E 30 41         [12] 2792 	jr	NC,00106$
+                           2793 ;sys_sms.c:667: h = str_length(str[i]);
+   10A0 DD 6E F3      [19] 2794 	ld	l,-13 (ix)
+   10A3 DD 66 F4      [19] 2795 	ld	h,-12 (ix)
+   10A6 29            [11] 2796 	add	hl, hl
+   10A7 DD 5E 04      [19] 2797 	ld	e,4 (ix)
+   10AA DD 56 05      [19] 2798 	ld	d,5 (ix)
+   10AD 19            [11] 2799 	add	hl,de
+   10AE 5E            [ 7] 2800 	ld	e,(hl)
+   10AF 23            [ 6] 2801 	inc	hl
+   10B0 56            [ 7] 2802 	ld	d,(hl)
+   10B1 D5            [11] 2803 	push	de
+   10B2 CDr00r00      [17] 2804 	call	_str_length
+   10B5 F1            [10] 2805 	pop	af
+   10B6 DD 75 EB      [19] 2806 	ld	-21 (ix),l
+   10B9 DD 36 EC 00   [19] 2807 	ld	-20 (ix),#0x00
+                           2808 ;sys_sms.c:668: if (h > w)w = h;
+   10BD DD 7E F1      [19] 2809 	ld	a,-15 (ix)
+   10C0 DD 96 EB      [19] 2810 	sub	a, -21 (ix)
+   10C3 DD 7E F2      [19] 2811 	ld	a,-14 (ix)
+   10C6 DD 9E EC      [19] 2812 	sbc	a, -20 (ix)
+   10C9 30 0C         [12] 2813 	jr	NC,00122$
+   10CB DD 7E EB      [19] 2814 	ld	a,-21 (ix)
+   10CE DD 77 F1      [19] 2815 	ld	-15 (ix),a
+   10D1 DD 7E EC      [19] 2816 	ld	a,-20 (ix)
+   10D4 DD 77 F2      [19] 2817 	ld	-14 (ix),a
+   10D7                    2818 00122$:
+                           2819 ;sys_sms.c:665: for (i = 0; i < items + 1; i++) {
+   10D7 DD 34 F3      [23] 2820 	inc	-13 (ix)
+   10DA 20 B6         [12] 2821 	jr	NZ,00121$
+   10DC DD 34 F4      [23] 2822 	inc	-12 (ix)
+   10DF 18 B1         [12] 2823 	jr	00121$
+   10E1                    2824 00106$:
+                           2825 ;sys_sms.c:671: h = items * 2 + 1;
+   10E1 C1            [10] 2826 	pop	bc
+   10E2 E1            [10] 2827 	pop	hl
+   10E3 E5            [11] 2828 	push	hl
+   10E4 C5            [11] 2829 	push	bc
+   10E5 29            [11] 2830 	add	hl, hl
+   10E6 23            [ 6] 2831 	inc	hl
+   10E7 E3            [19] 2832 	ex	(sp), hl
+                           2833 ;sys_sms.c:672: x = (gScreenW() - w) / 2;
+   10E8 CDr15r18      [17] 2834 	call	_gScreenW
+   10EB 26 00         [ 7] 2835 	ld	h,#0x00
+   10ED 7D            [ 4] 2836 	ld	a,l
+   10EE DD 96 F1      [19] 2837 	sub	a, -15 (ix)
+   10F1 5F            [ 4] 2838 	ld	e,a
+   10F2 7C            [ 4] 2839 	ld	a,h
+   10F3 DD 9E F2      [19] 2840 	sbc	a, -14 (ix)
+   10F6 57            [ 4] 2841 	ld	d,a
+   10F7 CB 3A         [ 8] 2842 	srl	d
+   10F9 CB 1B         [ 8] 2843 	rr	e
+                           2844 ;sys_sms.c:673: y = (gScreenH() - h) / 2 - 1;
+   10FB D5            [11] 2845 	push	de
+   10FC CDr18r18      [17] 2846 	call	_gScreenH
+   10FF D1            [10] 2847 	pop	de
+   1100 26 00         [ 7] 2848 	ld	h,#0x00
+   1102 7D            [ 4] 2849 	ld	a,l
+   1103 DD 96 EB      [19] 2850 	sub	a, -21 (ix)
+   1106 6F            [ 4] 2851 	ld	l,a
+   1107 7C            [ 4] 2852 	ld	a,h
+   1108 DD 9E EC      [19] 2853 	sbc	a, -20 (ix)
+   110B 67            [ 4] 2854 	ld	h,a
+   110C CB 3C         [ 8] 2855 	srl	h
+   110E CB 1D         [ 8] 2856 	rr	l
+   1110 2B            [ 6] 2857 	dec	hl
+                           2858 ;sys_sms.c:675: guiDrawForm(x, y, w, h);
+   1111 E5            [11] 2859 	push	hl
+   1112 DD 4E EB      [19] 2860 	ld	c,-21 (ix)
+   1115 DD 46 EC      [19] 2861 	ld	b,-20 (ix)
+   1118 C5            [11] 2862 	push	bc
+   1119 DD 4E F1      [19] 2863 	ld	c,-15 (ix)
+   111C DD 46 F2      [19] 2864 	ld	b,-14 (ix)
+   111F C5            [11] 2865 	push	bc
+   1120 E5            [11] 2866 	push	hl
+   1121 D5            [11] 2867 	push	de
+   1122 CDrAEr12      [17] 2868 	call	_guiDrawForm
+   1125 21 08 00      [10] 2869 	ld	hl,#0x0008
+   1128 39            [11] 2870 	add	hl,sp
+   1129 F9            [ 6] 2871 	ld	sp,hl
+   112A 01 03 00      [10] 2872 	ld	bc,#0x0003
+   112D C5            [11] 2873 	push	bc
+   112E CDr1Br18      [17] 2874 	call	_gSetPal
+   1131 F1            [10] 2875 	pop	af
+   1132 E1            [10] 2876 	pop	hl
+                           2877 ;sys_sms.c:679: gDrawStringCx(str[0], y - 1);
+   1133 DD 75 FA      [19] 2878 	ld	-6 (ix), l
+   1136 55            [ 4] 2879 	ld	d, l
+   1137 15            [ 4] 2880 	dec	d
+   1138 DD 7E 04      [19] 2881 	ld	a,4 (ix)
+   113B DD 77 FC      [19] 2882 	ld	-4 (ix),a
+   113E DD 7E 05      [19] 2883 	ld	a,5 (ix)
+   1141 DD 77 FD      [19] 2884 	ld	-3 (ix),a
+   1144 DD 6E FC      [19] 2885 	ld	l,-4 (ix)
+   1147 DD 66 FD      [19] 2886 	ld	h,-3 (ix)
+   114A 4E            [ 7] 2887 	ld	c,(hl)
+   114B 23            [ 6] 2888 	inc	hl
+   114C 46            [ 7] 2889 	ld	b,(hl)
+   114D D5            [11] 2890 	push	de
+   114E 33            [ 6] 2891 	inc	sp
+   114F C5            [11] 2892 	push	bc
+   1150 CDr00r00      [17] 2893 	call	_gDrawStringCx
+   1153 F1            [10] 2894 	pop	af
+   1154 33            [ 6] 2895 	inc	sp
+   1155 DD 7E ED      [19] 2896 	ld	a,-19 (ix)
+   1158 C6 FF         [ 7] 2897 	add	a,#0xFF
+   115A DD 77 FE      [19] 2898 	ld	-2 (ix),a
+   115D DD 7E EE      [19] 2899 	ld	a,-18 (ix)
+   1160 CE FF         [ 7] 2900 	adc	a,#0xFF
+   1162 DD 77 FF      [19] 2901 	ld	-1 (ix),a
+   1165                    2902 00126$:
+                           2903 ;sys_sms.c:683: for (i = 0; i < items; i++) {
+   1165 DD 36 F3 00   [19] 2904 	ld	-13 (ix),#0x00
+   1169 DD 36 F4 00   [19] 2905 	ld	-12 (ix),#0x00
+   116D                    2906 00124$:
+   116D DD 7E F3      [19] 2907 	ld	a,-13 (ix)
+   1170 DD 96 ED      [19] 2908 	sub	a, -19 (ix)
+   1173 DD 7E F4      [19] 2909 	ld	a,-12 (ix)
+   1176 DD 9E EE      [19] 2910 	sbc	a, -18 (ix)
+   1179 D2r11r12      [10] 2911 	jp	NC,00110$
+                           2912 ;sys_sms.c:685: if (selector == i) {
+   117C DD 7E EF      [19] 2913 	ld	a,-17 (ix)
+   117F DD 96 F3      [19] 2914 	sub	a, -13 (ix)
+   1182 20 12         [12] 2915 	jr	NZ,00108$
+   1184 DD 7E F0      [19] 2916 	ld	a,-16 (ix)
+   1187 DD 96 F4      [19] 2917 	sub	a, -12 (ix)
+   118A 20 0A         [12] 2918 	jr	NZ,00108$
+                           2919 ;sys_sms.c:686: gSetPal(2);
+   118C 21 02 00      [10] 2920 	ld	hl,#0x0002
+   118F E5            [11] 2921 	push	hl
+   1190 CDr1Br18      [17] 2922 	call	_gSetPal
+   1193 F1            [10] 2923 	pop	af
+   1194 18 08         [12] 2924 	jr	00109$
+   1196                    2925 00108$:
+                           2926 ;sys_sms.c:688: gSetPal(0);
+   1196 21 00 00      [10] 2927 	ld	hl,#0x0000
+   1199 E5            [11] 2928 	push	hl
+   119A CDr1Br18      [17] 2929 	call	_gSetPal
+   119D F1            [10] 2930 	pop	af
+   119E                    2931 00109$:
+                           2932 ;sys_sms.c:690: gDrawStringCx(str[i + 1], i * 2 + 2 + y);
+   119E DD 7E F3      [19] 2933 	ld	a,-13 (ix)
+   11A1 87            [ 4] 2934 	add	a, a
+   11A2 67            [ 4] 2935 	ld	h,a
+   11A3 24            [ 4] 2936 	inc	h
+   11A4 24            [ 4] 2937 	inc	h
+   11A5 7C            [ 4] 2938 	ld	a,h
+   11A6 DD 86 FA      [19] 2939 	add	a, -6 (ix)
+   11A9 DD 77 F9      [19] 2940 	ld	-7 (ix),a
+   11AC DD 7E F3      [19] 2941 	ld	a,-13 (ix)
+   11AF C6 01         [ 7] 2942 	add	a, #0x01
+   11B1 DD 77 F7      [19] 2943 	ld	-9 (ix),a
+   11B4 DD 7E F4      [19] 2944 	ld	a,-12 (ix)
+   11B7 CE 00         [ 7] 2945 	adc	a, #0x00
+   11B9 DD 77 F8      [19] 2946 	ld	-8 (ix),a
+   11BC DD 7E F7      [19] 2947 	ld	a,-9 (ix)
+   11BF DD 77 F5      [19] 2948 	ld	-11 (ix),a
+   11C2 DD 7E F8      [19] 2949 	ld	a,-8 (ix)
+   11C5 DD 77 F6      [19] 2950 	ld	-10 (ix),a
+   11C8 DD CB F5 26   [23] 2951 	sla	-11 (ix)
+   11CC DD CB F6 16   [23] 2952 	rl	-10 (ix)
+   11D0 DD 7E FC      [19] 2953 	ld	a,-4 (ix)
+   11D3 DD 86 F5      [19] 2954 	add	a, -11 (ix)
+   11D6 DD 77 F5      [19] 2955 	ld	-11 (ix),a
+   11D9 DD 7E FD      [19] 2956 	ld	a,-3 (ix)
+   11DC DD 8E F6      [19] 2957 	adc	a, -10 (ix)
+   11DF DD 77 F6      [19] 2958 	ld	-10 (ix),a
+   11E2 DD 6E F5      [19] 2959 	ld	l,-11 (ix)
+   11E5 DD 66 F6      [19] 2960 	ld	h,-10 (ix)
+   11E8 7E            [ 7] 2961 	ld	a,(hl)
+   11E9 DD 77 F5      [19] 2962 	ld	-11 (ix),a
+   11EC 23            [ 6] 2963 	inc	hl
+   11ED 7E            [ 7] 2964 	ld	a,(hl)
+   11EE DD 77 F6      [19] 2965 	ld	-10 (ix),a
+   11F1 DD 7E F9      [19] 2966 	ld	a,-7 (ix)
+   11F4 F5            [11] 2967 	push	af
+   11F5 33            [ 6] 2968 	inc	sp
+   11F6 DD 6E F5      [19] 2969 	ld	l,-11 (ix)
+   11F9 DD 66 F6      [19] 2970 	ld	h,-10 (ix)
+   11FC E5            [11] 2971 	push	hl
+   11FD CDr00r00      [17] 2972 	call	_gDrawStringCx
+   1200 F1            [10] 2973 	pop	af
+   1201 33            [ 6] 2974 	inc	sp
+                           2975 ;sys_sms.c:683: for (i = 0; i < items; i++) {
+   1202 DD 66 F7      [19] 2976 	ld	h,-9 (ix)
+   1205 DD 6E F8      [19] 2977 	ld	l,-8 (ix)
+   1208 DD 74 F3      [19] 2978 	ld	-13 (ix),h
+   120B DD 75 F4      [19] 2979 	ld	-12 (ix),l
+   120E C3r6Dr11      [10] 2980 	jp	00124$
+   1211                    2981 00110$:
+                           2982 ;sys_sms.c:693: gRepaint();
+   1211 CDr00r00      [17] 2983 	call	_gRepaint
+                           2984 ;sys_sms.c:695: sysJoyWait();
+   1214 CDr08r01      [17] 2985 	call	_sysJoyWait
+                           2986 ;sys_sms.c:697: if (joy & JOY_U) {
+   1217 21r00r00      [10] 2987 	ld	hl,#_joy+0
+   121A CB 46         [12] 2988 	bit	0, (hl)
+   121C 28 38         [12] 2989 	jr	Z,00112$
+                           2990 ;sys_sms.c:698: selector = selector == 0 ? items - 1 : selector - 1;
+   121E DD 7E F0      [19] 2991 	ld	a,-16 (ix)
+   1221 DD B6 EF      [19] 2992 	or	a, -17 (ix)
+   1224 D6 01         [ 7] 2993 	sub	a,#0x01
+   1226 3E 00         [ 7] 2994 	ld	a,#0x00
+   1228 17            [ 4] 2995 	rla
+   1229 B7            [ 4] 2996 	or	a, a
+   122A 28 0E         [12] 2997 	jr	Z,00130$
+   122C DD 7E FE      [19] 2998 	ld	a,-2 (ix)
+   122F DD 77 F5      [19] 2999 	ld	-11 (ix),a
+   1232 DD 7E FF      [19] 3000 	ld	a,-1 (ix)
+   1235 DD 77 F6      [19] 3001 	ld	-10 (ix),a
+   1238 18 10         [12] 3002 	jr	00131$
+   123A                    3003 00130$:
+   123A DD 7E EF      [19] 3004 	ld	a,-17 (ix)
+   123D C6 FF         [ 7] 3005 	add	a,#0xFF
+   123F DD 77 F5      [19] 3006 	ld	-11 (ix),a
+   1242 DD 7E F0      [19] 3007 	ld	a,-16 (ix)
+   1245 CE FF         [ 7] 3008 	adc	a,#0xFF
+   1247 DD 77 F6      [19] 3009 	ld	-10 (ix),a
+   124A                    3010 00131$:
+   124A DD 7E F5      [19] 3011 	ld	a,-11 (ix)
+   124D DD 77 EF      [19] 3012 	ld	-17 (ix),a
+   1250 DD 7E F6      [19] 3013 	ld	a,-10 (ix)
+   1253 DD 77 F0      [19] 3014 	ld	-16 (ix),a
+   1256                    3015 00112$:
+                           3016 ;sys_sms.c:701: if (joy & JOY_D) {
+   1256 21r00r00      [10] 3017 	ld	hl,#_joy+0
+   1259 CB 4E         [12] 3018 	bit	1, (hl)
+   125B 28 36         [12] 3019 	jr	Z,00114$
+                           3020 ;sys_sms.c:702: selector = selector == items - 1 ? 0 : selector + 1;
+   125D DD 7E FE      [19] 3021 	ld	a,-2 (ix)
+   1260 DD 96 EF      [19] 3022 	sub	a, -17 (ix)
+   1263 20 12         [12] 3023 	jr	NZ,00132$
+   1265 DD 7E FF      [19] 3024 	ld	a,-1 (ix)
+   1268 DD 96 F0      [19] 3025 	sub	a, -16 (ix)
+   126B 20 0A         [12] 3026 	jr	NZ,00132$
+   126D DD 36 F5 00   [19] 3027 	ld	-11 (ix),#0x00
+   1271 DD 36 F6 00   [19] 3028 	ld	-10 (ix),#0x00
+   1275 18 10         [12] 3029 	jr	00133$
+   1277                    3030 00132$:
+   1277 DD 7E EF      [19] 3031 	ld	a,-17 (ix)
+   127A C6 01         [ 7] 3032 	add	a, #0x01
+   127C DD 77 F5      [19] 3033 	ld	-11 (ix),a
+   127F DD 7E F0      [19] 3034 	ld	a,-16 (ix)
+   1282 CE 00         [ 7] 3035 	adc	a, #0x00
+   1284 DD 77 F6      [19] 3036 	ld	-10 (ix),a
+   1287                    3037 00133$:
+   1287 DD 7E F5      [19] 3038 	ld	a,-11 (ix)
+   128A DD 77 EF      [19] 3039 	ld	-17 (ix),a
+   128D DD 7E F6      [19] 3040 	ld	a,-10 (ix)
+   1290 DD 77 F0      [19] 3041 	ld	-16 (ix),a
+   1293                    3042 00114$:
+                           3043 ;sys_sms.c:705: if ((joy & JOY_A)) {
+   1293 21r00r00      [10] 3044 	ld	hl,#_joy+0
+   1296 CB 6E         [12] 3045 	bit	5, (hl)
+   1298 28 04         [12] 3046 	jr	Z,00116$
+                           3047 ;sys_sms.c:706: return 0xff;
+   129A 2E FF         [ 7] 3048 	ld	l,#0xFF
+   129C 18 0B         [12] 3049 	jr	00128$
+   129E                    3050 00116$:
+                           3051 ;sys_sms.c:709: if ((joy & JOY_B)) {
+   129E 21r00r00      [10] 3052 	ld	hl,#_joy+0
+   12A1 CB 66         [12] 3053 	bit	4, (hl)
+   12A3 CAr65r11      [10] 3054 	jp	Z,00126$
+                           3055 ;sys_sms.c:710: return selector;
+   12A6 DD 6E EF      [19] 3056 	ld	l,-17 (ix)
+   12A9                    3057 00128$:
+   12A9 DD F9         [10] 3058 	ld	sp,ix
+   12AB DD E1         [14] 3059 	pop	ix
+   12AD C9            [10] 3060 	ret
+   12AE                    3061 _guiDrawMenu_end::
+                           3062 ;sys_sms.c:717: void guiDrawForm(u16 x, u16 y, u16 w, u16 h) {
+                           3063 ;	---------------------------------
+                           3064 ; Function guiDrawForm
+                           3065 ; ---------------------------------
+   12AE                    3066 _guiDrawForm_start::
+   12AE                    3067 _guiDrawForm:
+   12AE DD E5         [15] 3068 	push	ix
+   12B0 DD 21 00 00   [14] 3069 	ld	ix,#0
+   12B4 DD 39         [15] 3070 	add	ix,sp
+   12B6 3B            [ 6] 3071 	dec	sp
+                           3072 ;sys_sms.c:719: gSetPal(1);
+   12B7 21 01 00      [10] 3073 	ld	hl,#0x0001
+   12BA E5            [11] 3074 	push	hl
+   12BB CDr1Br18      [17] 3075 	call	_gSetPal
+   12BE F1            [10] 3076 	pop	af
+                           3077 ;sys_sms.c:720: gFillRect(2, x - 1, y - 1, w + 2, h + 2);
+   12BF DD 7E 0A      [19] 3078 	ld	a,10 (ix)
+   12C2 C6 02         [ 7] 3079 	add	a, #0x02
+   12C4 DD 77 FF      [19] 3080 	ld	-1 (ix),a
+   12C7 DD 46 08      [19] 3081 	ld	b,8 (ix)
+   12CA 04            [ 4] 3082 	inc	b
+   12CB 04            [ 4] 3083 	inc	b
+   12CC DD 5E 06      [19] 3084 	ld	e,6 (ix)
+   12CF 4B            [ 4] 3085 	ld	c,e
+   12D0 0D            [ 4] 3086 	dec	c
+   12D1 DD 56 04      [19] 3087 	ld	d, 4 (ix)
+   12D4 15            [ 4] 3088 	dec	d
+   12D5 C5            [11] 3089 	push	bc
+   12D6 D5            [11] 3090 	push	de
+   12D7 DD 7E FF      [19] 3091 	ld	a,-1 (ix)
+   12DA F5            [11] 3092 	push	af
+   12DB 33            [ 6] 3093 	inc	sp
+   12DC C5            [11] 3094 	push	bc
+   12DD D5            [11] 3095 	push	de
+   12DE 33            [ 6] 3096 	inc	sp
+   12DF 21 02 00      [10] 3097 	ld	hl,#0x0002
+   12E2 E5            [11] 3098 	push	hl
+   12E3 CDr64r02      [17] 3099 	call	_gFillRect
+   12E6 21 06 00      [10] 3100 	ld	hl,#0x0006
+   12E9 39            [11] 3101 	add	hl,sp
+   12EA F9            [ 6] 3102 	ld	sp,hl
+   12EB D1            [10] 3103 	pop	de
+   12EC C1            [10] 3104 	pop	bc
+                           3105 ;sys_sms.c:723: gFillRect('-', x - 1, y, w + 2, 1);
+   12ED 3E 01         [ 7] 3106 	ld	a,#0x01
+   12EF F5            [11] 3107 	push	af
+   12F0 33            [ 6] 3108 	inc	sp
+   12F1 C5            [11] 3109 	push	bc
+   12F2 33            [ 6] 3110 	inc	sp
+   12F3 7B            [ 4] 3111 	ld	a,e
+   12F4 F5            [11] 3112 	push	af
+   12F5 33            [ 6] 3113 	inc	sp
+   12F6 D5            [11] 3114 	push	de
+   12F7 33            [ 6] 3115 	inc	sp
+   12F8 21 2D 00      [10] 3116 	ld	hl,#0x002D
+   12FB E5            [11] 3117 	push	hl
+   12FC CDr64r02      [17] 3118 	call	_gFillRect
+   12FF 21 06 00      [10] 3119 	ld	hl,#0x0006
+   1302 39            [11] 3120 	add	hl,sp
+   1303 F9            [ 6] 3121 	ld	sp,hl
+   1304 33            [ 6] 3122 	inc	sp
+   1305 DD E1         [14] 3123 	pop	ix
+   1307 C9            [10] 3124 	ret
+   1308                    3125 _guiDrawForm_end::
+                           3126 ;sys_sms.c:727: u8 guiHexView(FatFullRecord *rec) {
+                           3127 ;	---------------------------------
+                           3128 ; Function guiHexView
+                           3129 ; ---------------------------------
+   1308                    3130 _guiHexView_start::
+   1308                    3131 _guiHexView:
+   1308 DD E5         [15] 3132 	push	ix
+   130A DD 21 00 00   [14] 3133 	ld	ix,#0
+   130E DD 39         [15] 3134 	add	ix,sp
+   1310 21 B9 FD      [10] 3135 	ld	hl,#-583
+   1313 39            [11] 3136 	add	hl,sp
+   1314 F9            [ 6] 3137 	ld	sp,hl
+                           3138 ;sys_sms.c:733: u32 ptr = 0;
+   1315 AF            [ 4] 3139 	xor	a, a
+   1316 FD 21 08 00   [14] 3140 	ld	iy,#8
+   131A FD 39         [15] 3141 	add	iy,sp
+   131C FD 77 00      [19] 3142 	ld	0 (iy),a
+   131F FD 77 01      [19] 3143 	ld	1 (iy),a
+   1322 FD 77 02      [19] 3144 	ld	2 (iy),a
+   1325 FD 77 03      [19] 3145 	ld	3 (iy),a
+                           3146 ;sys_sms.c:741: u32 old_sec = 0;
+   1328 AF            [ 4] 3147 	xor	a, a
+   1329 DD 77 CB      [19] 3148 	ld	-53 (ix),a
+   132C DD 77 CC      [19] 3149 	ld	-52 (ix),a
+   132F DD 77 CD      [19] 3150 	ld	-51 (ix),a
+   1332 DD 77 CE      [19] 3151 	ld	-50 (ix),a
+                           3152 ;sys_sms.c:742: u16 repaint = 1;
+   1335 01 01 00      [10] 3153 	ld	bc,#0x0001
+                           3154 ;sys_sms.c:744: u16 timer = 0;
+   1338 21 00 00      [10] 3155 	ld	hl,#0x0000
+   133B E3            [19] 3156 	ex	(sp), hl
+                           3157 ;sys_sms.c:748: gCleanScreen();
+   133C C5            [11] 3158 	push	bc
+   133D CDr52r02      [17] 3159 	call	_gCleanScreen
+   1340 21 00 00      [10] 3160 	ld	hl,#0x0000
+   1343 E5            [11] 3161 	push	hl
+   1344 CDr1Br18      [17] 3162 	call	_gSetPal
+   1347 F1            [10] 3163 	pop	af
+   1348 C1            [10] 3164 	pop	bc
+                           3165 ;sys_sms.c:753: sector = fat_cluster_to_sector(rec->data_clsut);
+   1349 DD 7E 04      [19] 3166 	ld	a,4 (ix)
+   134C DD 77 F2      [19] 3167 	ld	-14 (ix),a
+   134F DD 7E 05      [19] 3168 	ld	a,5 (ix)
+   1352 DD 77 F3      [19] 3169 	ld	-13 (ix),a
+   1355 DD 6E F2      [19] 3170 	ld	l,-14 (ix)
+   1358 DD 66 F3      [19] 3171 	ld	h,-13 (ix)
+   135B 11 DC 00      [10] 3172 	ld	de, #0x00DC
+   135E 19            [11] 3173 	add	hl, de
+   135F 5E            [ 7] 3174 	ld	e,(hl)
+   1360 23            [ 6] 3175 	inc	hl
+   1361 56            [ 7] 3176 	ld	d,(hl)
+   1362 23            [ 6] 3177 	inc	hl
+   1363 23            [ 6] 3178 	inc	hl
+   1364 7E            [ 7] 3179 	ld	a,(hl)
+   1365 2B            [ 6] 3180 	dec	hl
+   1366 6E            [ 7] 3181 	ld	l,(hl)
+   1367 67            [ 4] 3182 	ld	h,a
+   1368 C5            [11] 3183 	push	bc
+   1369 E5            [11] 3184 	push	hl
+   136A D5            [11] 3185 	push	de
+   136B CDr00r00      [17] 3186 	call	_fat_cluster_to_sector
+   136E F1            [10] 3187 	pop	af
+   136F F1            [10] 3188 	pop	af
+   1370 C1            [10] 3189 	pop	bc
+   1371 FD 21 0C 00   [14] 3190 	ld	iy,#12
+   1375 FD 39         [15] 3191 	add	iy,sp
+   1377 FD 75 00      [19] 3192 	ld	0 (iy),l
+   137A FD 74 01      [19] 3193 	ld	1 (iy),h
+   137D FD 73 02      [19] 3194 	ld	2 (iy),e
+   1380 FD 72 03      [19] 3195 	ld	3 (iy),d
+                           3196 ;sys_sms.c:754: size = rec->size;
+   1383 DD 6E F2      [19] 3197 	ld	l,-14 (ix)
+   1386 DD 66 F3      [19] 3198 	ld	h,-13 (ix)
+   1389 11 E0 00      [10] 3199 	ld	de, #0x00E0
+   138C 19            [11] 3200 	add	hl, de
+   138D 7E            [ 7] 3201 	ld	a,(hl)
+   138E FD 21 04 00   [14] 3202 	ld	iy,#4
+   1392 FD 39         [15] 3203 	add	iy,sp
+   1394 FD 77 00      [19] 3204 	ld	0 (iy),a
+   1397 23            [ 6] 3205 	inc	hl
+   1398 7E            [ 7] 3206 	ld	a,(hl)
+   1399 FD 77 01      [19] 3207 	ld	1 (iy),a
+   139C 23            [ 6] 3208 	inc	hl
+   139D 7E            [ 7] 3209 	ld	a,(hl)
+   139E FD 77 02      [19] 3210 	ld	2 (iy),a
+   13A1 23            [ 6] 3211 	inc	hl
+   13A2 7E            [ 7] 3212 	ld	a,(hl)
+   13A3 FD 77 03      [19] 3213 	ld	3 (iy),a
+                           3214 ;sys_sms.c:755: str_buff[32] = 0;
+   13A6 21 16 02      [10] 3215 	ld	hl,#0x0216
+   13A9 39            [11] 3216 	add	hl,sp
+   13AA DD 75 F2      [19] 3217 	ld	-14 (ix),l
+   13AD DD 74 F3      [19] 3218 	ld	-13 (ix),h
+   13B0 DD 7E F2      [19] 3219 	ld	a,-14 (ix)
+   13B3 C6 20         [ 7] 3220 	add	a, #0x20
+   13B5 5F            [ 4] 3221 	ld	e,a
+   13B6 DD 7E F3      [19] 3222 	ld	a,-13 (ix)
+   13B9 CE 00         [ 7] 3223 	adc	a, #0x00
+   13BB 57            [ 4] 3224 	ld	d,a
+   13BC AF            [ 4] 3225 	xor	a, a
+   13BD 12            [ 7] 3226 	ld	(de),a
+                           3227 ;sys_sms.c:757: if (size % 512 != 0)size = size / 512 * 512 + 512;
+   13BE FD 7E 00      [19] 3228 	ld	a,0 (iy)
+   13C1 B7            [ 4] 3229 	or	a, a
+   13C2 20 06         [12] 3230 	jr	NZ,00227$
+   13C4 FD 7E 01      [19] 3231 	ld	a,1 (iy)
+   13C7 0F            [ 4] 3232 	rrca
+   13C8 30 63         [12] 3233 	jr	NC,00169$
+   13CA                    3234 00227$:
+   13CA F5            [11] 3235 	push	af
+   13CB FD 21 06 00   [14] 3236 	ld	iy,#6
+   13CF FD 39         [15] 3237 	add	iy,sp
+   13D1 FD 6E 00      [19] 3238 	ld	l,0 (iy)
+   13D4 FD 66 01      [19] 3239 	ld	h,1 (iy)
+   13D7 FD 5E 02      [19] 3240 	ld	e,2 (iy)
+   13DA FD 56 03      [19] 3241 	ld	d,3 (iy)
+   13DD F1            [10] 3242 	pop	af
+   13DE 3E 09         [ 7] 3243 	ld	a,#0x09
+   13E0                    3244 00228$:
+   13E0 CB 3A         [ 8] 3245 	srl	d
+   13E2 CB 1B         [ 8] 3246 	rr	e
+   13E4 CB 1C         [ 8] 3247 	rr	h
+   13E6 CB 1D         [ 8] 3248 	rr	l
+   13E8 3D            [ 4] 3249 	dec	a
+   13E9 20 F5         [12] 3250 	jr	NZ,00228$
+   13EB F5            [11] 3251 	push	af
+   13EC DD 75 F8      [19] 3252 	ld	-8 (ix),l
+   13EF DD 74 F9      [19] 3253 	ld	-7 (ix),h
+   13F2 DD 73 FA      [19] 3254 	ld	-6 (ix),e
+   13F5 DD 72 FB      [19] 3255 	ld	-5 (ix),d
+   13F8 F1            [10] 3256 	pop	af
+   13F9 3E 09         [ 7] 3257 	ld	a,#0x09
+   13FB                    3258 00230$:
+   13FB DD CB F8 26   [23] 3259 	sla	-8 (ix)
+   13FF DD CB F9 16   [23] 3260 	rl	-7 (ix)
+   1403 DD CB FA 16   [23] 3261 	rl	-6 (ix)
+   1407 DD CB FB 16   [23] 3262 	rl	-5 (ix)
+   140B 3D            [ 4] 3263 	dec	a
+   140C 20 ED         [12] 3264 	jr	NZ,00230$
+   140E DD 7E F8      [19] 3265 	ld	a,-8 (ix)
+   1411 21 04 00      [10] 3266 	ld	hl,#4
+   1414 39            [11] 3267 	add	hl,sp
+   1415 C6 00         [ 7] 3268 	add	a, #0x00
+   1417 77            [ 7] 3269 	ld	(hl),a
+   1418 DD 7E F9      [19] 3270 	ld	a,-7 (ix)
+   141B CE 02         [ 7] 3271 	adc	a, #0x02
+   141D 23            [ 6] 3272 	inc	hl
+   141E 77            [ 7] 3273 	ld	(hl),a
+   141F DD 7E FA      [19] 3274 	ld	a,-6 (ix)
+   1422 CE 00         [ 7] 3275 	adc	a, #0x00
+   1424 23            [ 6] 3276 	inc	hl
+   1425 77            [ 7] 3277 	ld	(hl),a
+   1426 DD 7E FB      [19] 3278 	ld	a,-5 (ix)
+   1429 CE 00         [ 7] 3279 	adc	a, #0x00
+   142B 23            [ 6] 3280 	inc	hl
+   142C 77            [ 7] 3281 	ld	(hl),a
+   142D                    3282 00169$:
+   142D 21 10 00      [10] 3283 	ld	hl,#0x0010
+   1430 39            [11] 3284 	add	hl,sp
+   1431 DD 75 F8      [19] 3285 	ld	-8 (ix),l
+   1434 DD 74 F9      [19] 3286 	ld	-7 (ix),h
+   1437 DD 7E F2      [19] 3287 	ld	a,-14 (ix)
+   143A DD 77 F0      [19] 3288 	ld	-16 (ix),a
+   143D DD 7E F3      [19] 3289 	ld	a,-13 (ix)
+   1440 DD 77 F1      [19] 3290 	ld	-15 (ix),a
+   1443 FD 21 04 00   [14] 3291 	ld	iy,#4
+   1447 FD 39         [15] 3292 	add	iy,sp
+   1449 FD 7E 00      [19] 3293 	ld	a,0 (iy)
+   144C C6 00         [ 7] 3294 	add	a,#0x00
+   144E DD 77 F4      [19] 3295 	ld	-12 (ix),a
+   1451 FD 7E 01      [19] 3296 	ld	a,1 (iy)
+   1454 CE FF         [ 7] 3297 	adc	a,#0xFF
+   1456 DD 77 F5      [19] 3298 	ld	-11 (ix),a
+   1459 FD 7E 02      [19] 3299 	ld	a,2 (iy)
+   145C CE FF         [ 7] 3300 	adc	a,#0xFF
+   145E DD 77 F6      [19] 3301 	ld	-10 (ix),a
+   1461 FD 7E 03      [19] 3302 	ld	a,3 (iy)
+   1464 CE FF         [ 7] 3303 	adc	a,#0xFF
+   1466 DD 77 F7      [19] 3304 	ld	-9 (ix),a
+   1469                    3305 00139$:
+                           3306 ;sys_sms.c:761: if (old_sec != sector + ptr / 512) {
+   1469 F5            [11] 3307 	push	af
+   146A FD 21 0A 00   [14] 3308 	ld	iy,#10
+   146E FD 39         [15] 3309 	add	iy,sp
+   1470 FD 7E 00      [19] 3310 	ld	a,0 (iy)
+   1473 DD 77 FC      [19] 3311 	ld	-4 (ix),a
+   1476 FD 7E 01      [19] 3312 	ld	a,1 (iy)
+   1479 DD 77 FD      [19] 3313 	ld	-3 (ix),a
+   147C FD 7E 02      [19] 3314 	ld	a,2 (iy)
+   147F DD 77 FE      [19] 3315 	ld	-2 (ix),a
+   1482 FD 7E 03      [19] 3316 	ld	a,3 (iy)
+   1485 DD 77 FF      [19] 3317 	ld	-1 (ix),a
+   1488 F1            [10] 3318 	pop	af
+   1489 3E 09         [ 7] 3319 	ld	a,#0x09
+   148B                    3320 00232$:
+   148B DD CB FF 3E   [23] 3321 	srl	-1 (ix)
+   148F DD CB FE 1E   [23] 3322 	rr	-2 (ix)
+   1493 DD CB FD 1E   [23] 3323 	rr	-3 (ix)
+   1497 DD CB FC 1E   [23] 3324 	rr	-4 (ix)
+   149B 3D            [ 4] 3325 	dec	a
+   149C 20 ED         [12] 3326 	jr	NZ,00232$
+   149E FD 21 0C 00   [14] 3327 	ld	iy,#12
+   14A2 FD 39         [15] 3328 	add	iy,sp
+   14A4 FD 7E 00      [19] 3329 	ld	a,0 (iy)
+   14A7 DD 86 FC      [19] 3330 	add	a, -4 (ix)
+   14AA DD 77 FC      [19] 3331 	ld	-4 (ix),a
+   14AD FD 7E 01      [19] 3332 	ld	a,1 (iy)
+   14B0 DD 8E FD      [19] 3333 	adc	a, -3 (ix)
+   14B3 DD 77 FD      [19] 3334 	ld	-3 (ix),a
+   14B6 FD 7E 02      [19] 3335 	ld	a,2 (iy)
+   14B9 DD 8E FE      [19] 3336 	adc	a, -2 (ix)
+   14BC DD 77 FE      [19] 3337 	ld	-2 (ix),a
+   14BF FD 7E 03      [19] 3338 	ld	a,3 (iy)
+   14C2 DD 8E FF      [19] 3339 	adc	a, -1 (ix)
+   14C5 DD 77 FF      [19] 3340 	ld	-1 (ix),a
+   14C8 DD 7E CB      [19] 3341 	ld	a,-53 (ix)
+   14CB DD 96 FC      [19] 3342 	sub	a, -4 (ix)
+   14CE 20 18         [12] 3343 	jr	NZ,00234$
+   14D0 DD 7E CC      [19] 3344 	ld	a,-52 (ix)
+   14D3 DD 96 FD      [19] 3345 	sub	a, -3 (ix)
+   14D6 20 10         [12] 3346 	jr	NZ,00234$
+   14D8 DD 7E CD      [19] 3347 	ld	a,-51 (ix)
+   14DB DD 96 FE      [19] 3348 	sub	a, -2 (ix)
+   14DE 20 08         [12] 3349 	jr	NZ,00234$
+   14E0 DD 7E CE      [19] 3350 	ld	a,-50 (ix)
+   14E3 DD 96 FF      [19] 3351 	sub	a, -1 (ix)
+   14E6 28 40         [12] 3352 	jr	Z,00106$
+   14E8                    3353 00234$:
+                           3354 ;sys_sms.c:762: old_sec = sector + ptr / 512;
+   14E8 DD 6E FC      [19] 3355 	ld	l,-4 (ix)
+   14EB DD 66 FD      [19] 3356 	ld	h,-3 (ix)
+   14EE DD 5E FE      [19] 3357 	ld	e,-2 (ix)
+   14F1 DD 56 FF      [19] 3358 	ld	d,-1 (ix)
+   14F4 DD 75 CB      [19] 3359 	ld	-53 (ix),l
+   14F7 DD 74 CC      [19] 3360 	ld	-52 (ix),h
+   14FA DD 73 CD      [19] 3361 	ld	-51 (ix),e
+   14FD DD 72 CE      [19] 3362 	ld	-50 (ix),d
+                           3363 ;sys_sms.c:763: resp = diskReadToRam(old_sec, buff, 1);
+   1500 DD 6E F8      [19] 3364 	ld	l,-8 (ix)
+   1503 DD 66 F9      [19] 3365 	ld	h,-7 (ix)
+   1506 C5            [11] 3366 	push	bc
+   1507 11 01 00      [10] 3367 	ld	de,#0x0001
+   150A D5            [11] 3368 	push	de
+   150B E5            [11] 3369 	push	hl
+   150C DD 6E CD      [19] 3370 	ld	l,-51 (ix)
+   150F DD 66 CE      [19] 3371 	ld	h,-50 (ix)
+   1512 E5            [11] 3372 	push	hl
+   1513 DD 6E CB      [19] 3373 	ld	l,-53 (ix)
+   1516 DD 66 CC      [19] 3374 	ld	h,-52 (ix)
+   1519 E5            [11] 3375 	push	hl
+   151A CDr00r00      [17] 3376 	call	_diskReadToRam
+   151D F1            [10] 3377 	pop	af
+   151E F1            [10] 3378 	pop	af
+   151F F1            [10] 3379 	pop	af
+   1520 F1            [10] 3380 	pop	af
+   1521 C1            [10] 3381 	pop	bc
+                           3382 ;sys_sms.c:765: if (resp)return resp;
+   1522 3E 00         [ 7] 3383 	ld	a, #0x00
+   1524 B5            [ 4] 3384 	or	a,l
+   1525 C2rDBr17      [10] 3385 	jp	NZ,00141$
+   1528                    3386 00106$:
+                           3387 ;sys_sms.c:769: if (repaint) {
+   1528 78            [ 4] 3388 	ld	a,b
+   1529 B1            [ 4] 3389 	or	a,c
+   152A CArA4r16      [10] 3390 	jp	Z,00114$
+                           3391 ;sys_sms.c:771: gSetPal(4);
+   152D 21 04 00      [10] 3392 	ld	hl,#0x0004
+   1530 E5            [11] 3393 	push	hl
+   1531 CDr1Br18      [17] 3394 	call	_gSetPal
+   1534 F1            [10] 3395 	pop	af
+                           3396 ;sys_sms.c:772: gDrawString("Offset: ", x, y - 1);
+   1535 11rE0r17      [10] 3397 	ld	de,#__str_9
+   1538 21 00 01      [10] 3398 	ld	hl,#0x0100
+   153B E5            [11] 3399 	push	hl
+   153C D5            [11] 3400 	push	de
+   153D CDr00r00      [17] 3401 	call	_gDrawString
+   1540 F1            [10] 3402 	pop	af
+   1541 F1            [10] 3403 	pop	af
+                           3404 ;sys_sms.c:773: gAppendHex32(ptr);
+   1542 FD 21 08 00   [14] 3405 	ld	iy,#8
+   1546 FD 39         [15] 3406 	add	iy,sp
+   1548 FD 6E 02      [19] 3407 	ld	l,2 (iy)
+   154B FD 66 03      [19] 3408 	ld	h,3 (iy)
+   154E E5            [11] 3409 	push	hl
+   154F FD 6E 00      [19] 3410 	ld	l,0 (iy)
+   1552 FD 66 01      [19] 3411 	ld	h,1 (iy)
+   1555 E5            [11] 3412 	push	hl
+   1556 CDr00r00      [17] 3413 	call	_gAppendHex32
+   1559 F1            [10] 3414 	pop	af
+   155A F1            [10] 3415 	pop	af
+                           3416 ;sys_sms.c:775: ptr16 = (u16*) & buff[ptr % 512];
+   155B FD 21 08 00   [14] 3417 	ld	iy,#8
+   155F FD 39         [15] 3418 	add	iy,sp
+   1561 FD 56 00      [19] 3419 	ld	d,0 (iy)
+   1564 FD 7E 01      [19] 3420 	ld	a,1 (iy)
+   1567 E6 01         [ 7] 3421 	and	a, #0x01
+   1569 5F            [ 4] 3422 	ld	e,a
+   156A DD 7E F8      [19] 3423 	ld	a,-8 (ix)
+   156D 82            [ 4] 3424 	add	a, d
+   156E DD 77 FC      [19] 3425 	ld	-4 (ix),a
+   1571 DD 7E F9      [19] 3426 	ld	a,-7 (ix)
+   1574 8B            [ 4] 3427 	adc	a, e
+   1575 DD 77 FD      [19] 3428 	ld	-3 (ix),a
+   1578 DD 4E FC      [19] 3429 	ld	c,-4 (ix)
+   157B DD 46 FD      [19] 3430 	ld	b,-3 (ix)
+                           3431 ;sys_sms.c:776: for (i = 0; i < 16; i++) {
+   157E 11 00 00      [10] 3432 	ld	de,#0x0000
+   1581                    3433 00133$:
+                           3434 ;sys_sms.c:782: gSetXY(x, y + i);
+   1581 63            [ 4] 3435 	ld	h,e
+   1582 24            [ 4] 3436 	inc	h
+   1583 24            [ 4] 3437 	inc	h
+   1584 C5            [11] 3438 	push	bc
+   1585 D5            [11] 3439 	push	de
+   1586 E5            [11] 3440 	push	hl
+   1587 33            [ 6] 3441 	inc	sp
+   1588 AF            [ 4] 3442 	xor	a, a
+   1589 F5            [11] 3443 	push	af
+   158A 33            [ 6] 3444 	inc	sp
+   158B CDr81r03      [17] 3445 	call	_gSetXY
+   158E F1            [10] 3446 	pop	af
+   158F D1            [10] 3447 	pop	de
+   1590 C1            [10] 3448 	pop	bc
+                           3449 ;sys_sms.c:783: for (u = 0; u < 4; u++) {
+   1591 21 02 00      [10] 3450 	ld	hl, #2
+   1594 39            [11] 3451 	add	hl, sp
+   1595 AF            [ 4] 3452 	xor	a, a
+   1596 77            [ 7] 3453 	ld	(hl), a
+   1597 23            [ 6] 3454 	inc	hl
+   1598 77            [ 7] 3455 	ld	(hl), a
+   1599                    3456 00131$:
+                           3457 ;sys_sms.c:784: gSetPal(2);
+   1599 C5            [11] 3458 	push	bc
+   159A D5            [11] 3459 	push	de
+   159B 21 02 00      [10] 3460 	ld	hl,#0x0002
+   159E E5            [11] 3461 	push	hl
+   159F CDr1Br18      [17] 3462 	call	_gSetPal
+   15A2 F1            [10] 3463 	pop	af
+   15A3 D1            [10] 3464 	pop	de
+   15A4 C1            [10] 3465 	pop	bc
+                           3466 ;sys_sms.c:785: gAppendHex16SW(*ptr16++);
+   15A5 69            [ 4] 3467 	ld	l, c
+   15A6 60            [ 4] 3468 	ld	h, b
+   15A7 7E            [ 7] 3469 	ld	a, (hl)
+   15A8 23            [ 6] 3470 	inc	hl
+   15A9 66            [ 7] 3471 	ld	h,(hl)
+   15AA 6F            [ 4] 3472 	ld	l,a
+   15AB 03            [ 6] 3473 	inc	bc
+   15AC 03            [ 6] 3474 	inc	bc
+   15AD C5            [11] 3475 	push	bc
+   15AE D5            [11] 3476 	push	de
+   15AF E5            [11] 3477 	push	hl
+   15B0 CDr00r00      [17] 3478 	call	_gAppendHex16SW
+   15B3 21 00 00      [10] 3479 	ld	hl, #0x0000
+   15B6 E3            [19] 3480 	ex	(sp),hl
+   15B7 CDr1Br18      [17] 3481 	call	_gSetPal
+   15BA F1            [10] 3482 	pop	af
+   15BB D1            [10] 3483 	pop	de
+   15BC C1            [10] 3484 	pop	bc
+                           3485 ;sys_sms.c:787: gAppendHex16SW(*ptr16++);
+   15BD 69            [ 4] 3486 	ld	l, c
+   15BE 60            [ 4] 3487 	ld	h, b
+   15BF 7E            [ 7] 3488 	ld	a, (hl)
+   15C0 23            [ 6] 3489 	inc	hl
+   15C1 66            [ 7] 3490 	ld	h,(hl)
+   15C2 6F            [ 4] 3491 	ld	l,a
+   15C3 03            [ 6] 3492 	inc	bc
+   15C4 03            [ 6] 3493 	inc	bc
+   15C5 C5            [11] 3494 	push	bc
+   15C6 D5            [11] 3495 	push	de
+   15C7 E5            [11] 3496 	push	hl
+   15C8 CDr00r00      [17] 3497 	call	_gAppendHex16SW
+   15CB F1            [10] 3498 	pop	af
+   15CC D1            [10] 3499 	pop	de
+   15CD C1            [10] 3500 	pop	bc
+                           3501 ;sys_sms.c:783: for (u = 0; u < 4; u++) {
+   15CE FD 21 02 00   [14] 3502 	ld	iy,#2
+   15D2 FD 39         [15] 3503 	add	iy,sp
+   15D4 FD 34 00      [23] 3504 	inc	0 (iy)
+   15D7 20 03         [12] 3505 	jr	NZ,00235$
+   15D9 FD 34 01      [23] 3506 	inc	1 (iy)
+   15DC                    3507 00235$:
+   15DC FD 7E 00      [19] 3508 	ld	a,0 (iy)
+   15DF D6 04         [ 7] 3509 	sub	a, #0x04
+   15E1 FD 7E 01      [19] 3510 	ld	a,1 (iy)
+   15E4 DE 00         [ 7] 3511 	sbc	a, #0x00
+   15E6 38 B1         [12] 3512 	jr	C,00131$
+                           3513 ;sys_sms.c:776: for (i = 0; i < 16; i++) {
+   15E8 13            [ 6] 3514 	inc	de
+   15E9 7B            [ 4] 3515 	ld	a,e
+   15EA D6 10         [ 7] 3516 	sub	a, #0x10
+   15EC 7A            [ 4] 3517 	ld	a,d
+   15ED DE 00         [ 7] 3518 	sbc	a, #0x00
+   15EF 38 90         [12] 3519 	jr	C,00133$
+                           3520 ;sys_sms.c:793: gSetPal(0);
+   15F1 21 00 00      [10] 3521 	ld	hl,#0x0000
+   15F4 E5            [11] 3522 	push	hl
+   15F5 CDr1Br18      [17] 3523 	call	_gSetPal
+   15F8 F1            [10] 3524 	pop	af
+                           3525 ;sys_sms.c:794: gDrawString("--------------------------------", x, y + 16);
+   15F9 11rE9r17      [10] 3526 	ld	de,#__str_10
+   15FC 21 00 12      [10] 3527 	ld	hl,#0x1200
+   15FF E5            [11] 3528 	push	hl
+   1600 D5            [11] 3529 	push	de
+   1601 CDr00r00      [17] 3530 	call	_gDrawString
+   1604 F1            [10] 3531 	pop	af
+   1605 F1            [10] 3532 	pop	af
+                           3533 ;sys_sms.c:796: ptr8 = (u8*) & buff[ptr % 512];
+   1606 DD 4E FC      [19] 3534 	ld	c,-4 (ix)
+   1609 DD 46 FD      [19] 3535 	ld	b,-3 (ix)
+                           3536 ;sys_sms.c:797: for (i = 0; i < 8; i++) {
+   160C DD 36 C9 00   [19] 3537 	ld	-55 (ix),#0x00
+   1610 DD 36 CA 00   [19] 3538 	ld	-54 (ix),#0x00
+   1614                    3539 00137$:
+                           3540 ;sys_sms.c:799: gSetPal(0);
+   1614 C5            [11] 3541 	push	bc
+   1615 21 00 00      [10] 3542 	ld	hl,#0x0000
+   1618 E5            [11] 3543 	push	hl
+   1619 CDr1Br18      [17] 3544 	call	_gSetPal
+   161C F1            [10] 3545 	pop	af
+   161D C1            [10] 3546 	pop	bc
+                           3547 ;sys_sms.c:800: for (u = 0; u < 32; u++) {
+   161E 21 02 00      [10] 3548 	ld	hl, #2
+   1621 39            [11] 3549 	add	hl, sp
+   1622 AF            [ 4] 3550 	xor	a, a
+   1623 77            [ 7] 3551 	ld	(hl), a
+   1624 23            [ 6] 3552 	inc	hl
+   1625 77            [ 7] 3553 	ld	(hl), a
+   1626 DD 71 FC      [19] 3554 	ld	-4 (ix),c
+   1629 DD 70 FD      [19] 3555 	ld	-3 (ix),b
+   162C                    3556 00135$:
+                           3557 ;sys_sms.c:801: str_buff[u] = *ptr8++;
+   162C DD 7E F2      [19] 3558 	ld	a,-14 (ix)
+   162F 21 02 00      [10] 3559 	ld	hl,#2
+   1632 39            [11] 3560 	add	hl,sp
+   1633 86            [ 7] 3561 	add	a, (hl)
+   1634 5F            [ 4] 3562 	ld	e,a
+   1635 DD 7E F3      [19] 3563 	ld	a,-13 (ix)
+   1638 23            [ 6] 3564 	inc	hl
+   1639 8E            [ 7] 3565 	adc	a, (hl)
+   163A 57            [ 4] 3566 	ld	d,a
+   163B DD 6E FC      [19] 3567 	ld	l,-4 (ix)
+   163E DD 66 FD      [19] 3568 	ld	h,-3 (ix)
+   1641 7E            [ 7] 3569 	ld	a,(hl)
+   1642 DD 34 FC      [23] 3570 	inc	-4 (ix)
+   1645 20 03         [12] 3571 	jr	NZ,00236$
+   1647 DD 34 FD      [23] 3572 	inc	-3 (ix)
+   164A                    3573 00236$:
+   164A 12            [ 7] 3574 	ld	(de),a
+                           3575 ;sys_sms.c:802: if (str_buff[u] == 0)str_buff[u] = ' ';
+   164B B7            [ 4] 3576 	or	a, a
+   164C 20 03         [12] 3577 	jr	NZ,00136$
+   164E 3E 20         [ 7] 3578 	ld	a,#0x20
+   1650 12            [ 7] 3579 	ld	(de),a
+   1651                    3580 00136$:
+                           3581 ;sys_sms.c:800: for (u = 0; u < 32; u++) {
+   1651 FD 21 02 00   [14] 3582 	ld	iy,#2
+   1655 FD 39         [15] 3583 	add	iy,sp
+   1657 FD 34 00      [23] 3584 	inc	0 (iy)
+   165A 20 03         [12] 3585 	jr	NZ,00237$
+   165C FD 34 01      [23] 3586 	inc	1 (iy)
+   165F                    3587 00237$:
+   165F FD 7E 00      [19] 3588 	ld	a,0 (iy)
+   1662 D6 20         [ 7] 3589 	sub	a, #0x20
+   1664 FD 7E 01      [19] 3590 	ld	a,1 (iy)
+   1667 DE 00         [ 7] 3591 	sbc	a, #0x00
+   1669 38 C1         [12] 3592 	jr	C,00135$
+                           3593 ;sys_sms.c:805: gDrawString(str_buff, x, y + i + 17);
+   166B DD 4E FC      [19] 3594 	ld	c,-4 (ix)
+   166E DD 46 FD      [19] 3595 	ld	b,-3 (ix)
+   1671 DD 7E C9      [19] 3596 	ld	a, -55 (ix)
+   1674 C6 02         [ 7] 3597 	add	a, #0x02
+   1676 C6 11         [ 7] 3598 	add	a, #0x11
+   1678 67            [ 4] 3599 	ld	h,a
+   1679 DD 5E F0      [19] 3600 	ld	e,-16 (ix)
+   167C DD 56 F1      [19] 3601 	ld	d,-15 (ix)
+   167F C5            [11] 3602 	push	bc
+   1680 E5            [11] 3603 	push	hl
+   1681 33            [ 6] 3604 	inc	sp
+   1682 AF            [ 4] 3605 	xor	a, a
+   1683 F5            [11] 3606 	push	af
+   1684 33            [ 6] 3607 	inc	sp
+   1685 D5            [11] 3608 	push	de
+   1686 CDr00r00      [17] 3609 	call	_gDrawString
+   1689 F1            [10] 3610 	pop	af
+   168A F1            [10] 3611 	pop	af
+   168B C1            [10] 3612 	pop	bc
+                           3613 ;sys_sms.c:797: for (i = 0; i < 8; i++) {
+   168C DD 34 C9      [23] 3614 	inc	-55 (ix)
+   168F 20 03         [12] 3615 	jr	NZ,00238$
+   1691 DD 34 CA      [23] 3616 	inc	-54 (ix)
+   1694                    3617 00238$:
+   1694 DD 7E C9      [19] 3618 	ld	a,-55 (ix)
+   1697 D6 08         [ 7] 3619 	sub	a, #0x08
+   1699 DD 7E CA      [19] 3620 	ld	a,-54 (ix)
+   169C DE 00         [ 7] 3621 	sbc	a, #0x00
+   169E DAr14r16      [10] 3622 	jp	C,00137$
+                           3623 ;sys_sms.c:809: repaint = 0;
+   16A1 01 00 00      [10] 3624 	ld	bc,#0x0000
+   16A4                    3625 00114$:
+                           3626 ;sys_sms.c:815: gRepaint();
+   16A4 C5            [11] 3627 	push	bc
+   16A5 CDr00r00      [17] 3628 	call	_gRepaint
+   16A8 CDr17r01      [17] 3629 	call	_sysJoyRead
+   16AB C1            [10] 3630 	pop	bc
+                           3631 ;sys_sms.c:818: while (joy != 0 && timer < 40) {
+   16AC D1            [10] 3632 	pop	de
+   16AD D5            [11] 3633 	push	de
+   16AE                    3634 00116$:
+   16AE 3Ar01r00      [13] 3635 	ld	a,(#_joy + 1)
+   16B1 21r00r00      [10] 3636 	ld	hl,#_joy + 0
+   16B4 B6            [ 7] 3637 	or	a,(hl)
+   16B5 28 12         [12] 3638 	jr	Z,00174$
+   16B7 7B            [ 4] 3639 	ld	a,e
+   16B8 D6 28         [ 7] 3640 	sub	a, #0x28
+   16BA 7A            [ 4] 3641 	ld	a,d
+   16BB DE 00         [ 7] 3642 	sbc	a, #0x00
+   16BD 30 0A         [12] 3643 	jr	NC,00174$
+                           3644 ;sys_sms.c:819: timer++;
+   16BF 13            [ 6] 3645 	inc	de
+                           3646 ;sys_sms.c:820: sysJoyRead();
+   16C0 C5            [11] 3647 	push	bc
+   16C1 D5            [11] 3648 	push	de
+   16C2 CDr17r01      [17] 3649 	call	_sysJoyRead
+   16C5 D1            [10] 3650 	pop	de
+   16C6 C1            [10] 3651 	pop	bc
+   16C7 18 E5         [12] 3652 	jr	00116$
+                           3653 ;sys_sms.c:822: while (joy == 0) {
+   16C9                    3654 00174$:
+   16C9 33            [ 6] 3655 	inc	sp
+   16CA 33            [ 6] 3656 	inc	sp
+   16CB D5            [11] 3657 	push	de
+   16CC                    3658 00119$:
+   16CC 3Ar01r00      [13] 3659 	ld	a,(#_joy + 1)
+   16CF FD 21r00r00   [14] 3660 	ld	iy,#_joy
+   16D3 FD B6 00      [19] 3661 	or	a,0 (iy)
+   16D6 20 0B         [12] 3662 	jr	NZ,00121$
+                           3663 ;sys_sms.c:823: timer = 0;
+   16D8 21 00 00      [10] 3664 	ld	hl,#0x0000
+   16DB E3            [19] 3665 	ex	(sp), hl
+                           3666 ;sys_sms.c:824: sysJoyRead();
+   16DC C5            [11] 3667 	push	bc
+   16DD CDr17r01      [17] 3668 	call	_sysJoyRead
+   16E0 C1            [10] 3669 	pop	bc
+   16E1 18 E9         [12] 3670 	jr	00119$
+   16E3                    3671 00121$:
+                           3672 ;sys_sms.c:827: if (timer >= 20)timer -= 3;
+   16E3 FD 21 00 00   [14] 3673 	ld	iy,#0
+   16E7 FD 39         [15] 3674 	add	iy,sp
+   16E9 FD 7E 00      [19] 3675 	ld	a,0 (iy)
+   16EC D6 14         [ 7] 3676 	sub	a, #0x14
+   16EE FD 7E 01      [19] 3677 	ld	a,1 (iy)
+   16F1 DE 00         [ 7] 3678 	sbc	a, #0x00
+   16F3 38 0D         [12] 3679 	jr	C,00123$
+   16F5 21 00 00      [10] 3680 	ld	hl,#0
+   16F8 39            [11] 3681 	add	hl,sp
+   16F9 7E            [ 7] 3682 	ld	a,(hl)
+   16FA C6 FD         [ 7] 3683 	add	a,#0xFD
+   16FC 77            [ 7] 3684 	ld	(hl),a
+   16FD 23            [ 6] 3685 	inc	hl
+   16FE 7E            [ 7] 3686 	ld	a,(hl)
+   16FF CE FF         [ 7] 3687 	adc	a,#0xFF
+   1701 77            [ 7] 3688 	ld	(hl),a
+   1702                    3689 00123$:
+                           3690 ;sys_sms.c:829: if ((joy & JOY_A))return 0;
+   1702 21r00r00      [10] 3691 	ld	hl,#_joy+0
+   1705 CB 6E         [12] 3692 	bit	5, (hl)
+   1707 28 05         [12] 3693 	jr	Z,00125$
+   1709 2E 00         [ 7] 3694 	ld	l,#0x00
+   170B C3rDBr17      [10] 3695 	jp	00141$
+   170E                    3696 00125$:
+                           3697 ;sys_sms.c:831: if ((joy & JOY_U)) {
+   170E 21r00r00      [10] 3698 	ld	hl,#_joy+0
+   1711 CB 46         [12] 3699 	bit	0, (hl)
+   1713 28 62         [12] 3700 	jr	Z,00127$
+                           3701 ;sys_sms.c:832: ptr = ptr == 0 ? size - 256 : ptr - 256;
+   1715 FD 21 08 00   [14] 3702 	ld	iy,#8
+   1719 FD 39         [15] 3703 	add	iy,sp
+   171B FD 7E 03      [19] 3704 	ld	a,3 (iy)
+   171E FD B6 02      [19] 3705 	or	a, 2 (iy)
+   1721 FD B6 01      [19] 3706 	or	a, 1 (iy)
+   1724 FD B6 00      [19] 3707 	or	a, 0 (iy)
+   1727 D6 01         [ 7] 3708 	sub	a,#0x01
+   1729 3E 00         [ 7] 3709 	ld	a,#0x00
+   172B 17            [ 4] 3710 	rla
+   172C 4F            [ 4] 3711 	ld	c,a
+   172D B7            [ 4] 3712 	or	a, a
+   172E 28 10         [12] 3713 	jr	Z,00143$
+   1730 21 43 02      [10] 3714 	ld	hl, #579
+   1733 39            [11] 3715 	add	hl, sp
+   1734 EB            [ 4] 3716 	ex	de, hl
+   1735 21 3B 02      [10] 3717 	ld	hl, #571
+   1738 39            [11] 3718 	add	hl, sp
+   1739 01 04 00      [10] 3719 	ld	bc, #4
+   173C ED B0         [21] 3720 	ldir
+   173E 18 26         [12] 3721 	jr	00144$
+   1740                    3722 00143$:
+   1740 FD 21 08 00   [14] 3723 	ld	iy,#8
+   1744 FD 39         [15] 3724 	add	iy,sp
+   1746 FD 7E 00      [19] 3725 	ld	a,0 (iy)
+   1749 C6 00         [ 7] 3726 	add	a,#0x00
+   174B DD 77 FC      [19] 3727 	ld	-4 (ix),a
+   174E FD 7E 01      [19] 3728 	ld	a,1 (iy)
+   1751 CE FF         [ 7] 3729 	adc	a,#0xFF
+   1753 DD 77 FD      [19] 3730 	ld	-3 (ix),a
+   1756 FD 7E 02      [19] 3731 	ld	a,2 (iy)
+   1759 CE FF         [ 7] 3732 	adc	a,#0xFF
+   175B DD 77 FE      [19] 3733 	ld	-2 (ix),a
+   175E FD 7E 03      [19] 3734 	ld	a,3 (iy)
+   1761 CE FF         [ 7] 3735 	adc	a,#0xFF
+   1763 DD 77 FF      [19] 3736 	ld	-1 (ix),a
+   1766                    3737 00144$:
+   1766 21 08 00      [10] 3738 	ld	hl, #8
+   1769 39            [11] 3739 	add	hl, sp
+   176A EB            [ 4] 3740 	ex	de, hl
+   176B 21 43 02      [10] 3741 	ld	hl, #579
+   176E 39            [11] 3742 	add	hl, sp
+   176F 01 04 00      [10] 3743 	ld	bc, #4
+   1772 ED B0         [21] 3744 	ldir
+                           3745 ;sys_sms.c:833: repaint = 1;
+   1774 01 01 00      [10] 3746 	ld	bc,#0x0001
+   1777                    3747 00127$:
+                           3748 ;sys_sms.c:836: if ((joy & JOY_D)) {
+   1777 21r00r00      [10] 3749 	ld	hl,#_joy+0
+   177A CB 4E         [12] 3750 	bit	1, (hl)
+   177C CAr69r14      [10] 3751 	jp	Z,00139$
+                           3752 ;sys_sms.c:837: ptr = ptr + 256 >= size ? 0 : ptr + 256;
+   177F FD 21 08 00   [14] 3753 	ld	iy,#8
+   1783 FD 39         [15] 3754 	add	iy,sp
+   1785 FD 7E 00      [19] 3755 	ld	a,0 (iy)
+   1788 C6 00         [ 7] 3756 	add	a, #0x00
+   178A 4F            [ 4] 3757 	ld	c,a
+   178B FD 7E 01      [19] 3758 	ld	a,1 (iy)
+   178E CE 01         [ 7] 3759 	adc	a, #0x01
+   1790 47            [ 4] 3760 	ld	b,a
+   1791 FD 7E 02      [19] 3761 	ld	a,2 (iy)
+   1794 CE 00         [ 7] 3762 	adc	a, #0x00
+   1796 5F            [ 4] 3763 	ld	e,a
+   1797 FD 7E 03      [19] 3764 	ld	a,3 (iy)
+   179A CE 00         [ 7] 3765 	adc	a, #0x00
+   179C 57            [ 4] 3766 	ld	d,a
+   179D 21 04 00      [10] 3767 	ld	hl,#4
+   17A0 39            [11] 3768 	add	hl,sp
+   17A1 79            [ 4] 3769 	ld	a,c
+   17A2 96            [ 7] 3770 	sub	a, (hl)
+   17A3 78            [ 4] 3771 	ld	a,b
+   17A4 23            [ 6] 3772 	inc	hl
+   17A5 9E            [ 7] 3773 	sbc	a, (hl)
+   17A6 7B            [ 4] 3774 	ld	a,e
+   17A7 23            [ 6] 3775 	inc	hl
+   17A8 9E            [ 7] 3776 	sbc	a, (hl)
+   17A9 7A            [ 4] 3777 	ld	a,d
+   17AA 23            [ 6] 3778 	inc	hl
+   17AB 9E            [ 7] 3779 	sbc	a, (hl)
+   17AC 3E 00         [ 7] 3780 	ld	a,#0x00
+   17AE 17            [ 4] 3781 	rla
+   17AF DD 77 FC      [19] 3782 	ld	-4 (ix), a
+   17B2 D6 01         [ 7] 3783 	sub	a,#0x01
+   17B4 3E 00         [ 7] 3784 	ld	a,#0x00
+   17B6 17            [ 4] 3785 	rla
+   17B7 DD 77 FC      [19] 3786 	ld	-4 (ix), a
+   17BA B7            [ 4] 3787 	or	a, a
+   17BB 28 06         [12] 3788 	jr	Z,00145$
+   17BD 01 00 00      [10] 3789 	ld	bc,#0x0000
+   17C0 11 00 00      [10] 3790 	ld	de,#0x0000
+   17C3                    3791 00145$:
+   17C3 FD 21 08 00   [14] 3792 	ld	iy,#8
+   17C7 FD 39         [15] 3793 	add	iy,sp
+   17C9 FD 71 00      [19] 3794 	ld	0 (iy),c
+   17CC FD 70 01      [19] 3795 	ld	1 (iy),b
+   17CF FD 73 02      [19] 3796 	ld	2 (iy),e
+   17D2 FD 72 03      [19] 3797 	ld	3 (iy),d
+                           3798 ;sys_sms.c:838: repaint = 1;
+   17D5 01 01 00      [10] 3799 	ld	bc,#0x0001
+   17D8 C3r69r14      [10] 3800 	jp	00139$
+   17DB                    3801 00141$:
+   17DB DD F9         [10] 3802 	ld	sp,ix
+   17DD DD E1         [14] 3803 	pop	ix
+   17DF C9            [10] 3804 	ret
+   17E0                    3805 _guiHexView_end::
+   17E0                    3806 __str_9:
+   17E0 4F 66 66 73 65 74  3807 	.ascii "Offset: "
+        3A 20
+   17E8 00                 3808 	.db 0x00
+   17E9                    3809 __str_10:
+   17E9 2D 2D 2D 2D 2D 2D  3810 	.ascii "--------------------------------"
+        2D 2D 2D 2D 2D 2D
+        2D 2D 2D 2D 2D 2D
+        2D 2D 2D 2D 2D 2D
+        2D 2D 2D 2D 2D 2D
+        2D 2D
+   1809 00                 3811 	.db 0x00
+                           3812 ;sys_sms.c:847: u8 guiGetMaxRows() {
+                           3813 ;	---------------------------------
+                           3814 ; Function guiGetMaxRows
+                           3815 ; ---------------------------------
+   180A                    3816 _guiGetMaxRows_start::
+   180A                    3817 _guiGetMaxRows:
+                           3818 ;sys_sms.c:848: return SYS_BR_ROWS;
+   180A FD 21r00r00   [14] 3819 	ld	iy,#_SYS_BR_ROWS
+   180E FD 6E 00      [19] 3820 	ld	l,0 (iy)
+   1811 C9            [10] 3821 	ret
+   1812                    3822 _guiGetMaxRows_end::
+                           3823 ;sys_sms.c:851: u8 sysGetRomRegion(u8 *rom_hdr) {
+                           3824 ;	---------------------------------
+                           3825 ; Function sysGetRomRegion
+                           3826 ; ---------------------------------
+   1812                    3827 _sysGetRomRegion_start::
+   1812                    3828 _sysGetRomRegion:
+                           3829 ;sys_sms.c:853: return 0;
+   1812 2E 00         [ 7] 3830 	ld	l,#0x00
+   1814 C9            [10] 3831 	ret
+   1815                    3832 _sysGetRomRegion_end::
+                           3833 ;sys_sms.c:856: u8 gScreenW() {
+                           3834 ;	---------------------------------
+                           3835 ; Function gScreenW
+                           3836 ; ---------------------------------
+   1815                    3837 _gScreenW_start::
+   1815                    3838 _gScreenW:
+                           3839 ;sys_sms.c:857: return G_SCREEN_W;
+   1815 2E 20         [ 7] 3840 	ld	l,#0x20
+   1817 C9            [10] 3841 	ret
+   1818                    3842 _gScreenW_end::
+                           3843 ;sys_sms.c:860: u8 gScreenH() {
+                           3844 ;	---------------------------------
+                           3845 ; Function gScreenH
+                           3846 ; ---------------------------------
+   1818                    3847 _gScreenH_start::
+   1818                    3848 _gScreenH:
+                           3849 ;sys_sms.c:861: return G_SCREEN_H;
+   1818 2E 1C         [ 7] 3850 	ld	l,#0x1C
+   181A C9            [10] 3851 	ret
+   181B                    3852 _gScreenH_end::
+                           3853 ;sys_sms.c:864: void gSetPal(u16 pal) {
+                           3854 ;	---------------------------------
+                           3855 ; Function gSetPal
+                           3856 ; ---------------------------------
+   181B                    3857 _gSetPal_start::
+   181B                    3858 _gSetPal:
+                           3859 ;sys_sms.c:866: if (pal == 2 || pal == 4) {
+   181B FD 21 02 00   [14] 3860 	ld	iy,#2
+   181F FD 39         [15] 3861 	add	iy,sp
+   1821 FD 7E 00      [19] 3862 	ld	a,0 (iy)
+   1824 D6 02         [ 7] 3863 	sub	a, #0x02
+   1826 20 06         [12] 3864 	jr	NZ,00110$
+   1828 FD 7E 01      [19] 3865 	ld	a,1 (iy)
+   182B B7            [ 4] 3866 	or	a, a
+   182C 28 0D         [12] 3867 	jr	Z,00101$
+   182E                    3868 00110$:
+   182E FD 7E 00      [19] 3869 	ld	a,0 (iy)
+   1831 D6 04         [ 7] 3870 	sub	a, #0x04
+   1833 20 11         [12] 3871 	jr	NZ,00102$
+   1835 FD 7E 01      [19] 3872 	ld	a,1 (iy)
+   1838 B7            [ 4] 3873 	or	a, a
+   1839 20 0B         [12] 3874 	jr	NZ,00102$
+   183B                    3875 00101$:
+                           3876 ;sys_sms.c:867: g_current_pal = 1 << 11;
+   183B 21r03r00      [10] 3877 	ld	hl,#_g_current_pal + 0
+   183E 36 00         [10] 3878 	ld	(hl), #0x00
+   1840 21r04r00      [10] 3879 	ld	hl,#_g_current_pal + 1
+   1843 36 08         [10] 3880 	ld	(hl), #0x08
+   1845 C9            [10] 3881 	ret
+   1846                    3882 00102$:
+                           3883 ;sys_sms.c:869: g_current_pal = 0;
+   1846 21r03r00      [10] 3884 	ld	hl,#_g_current_pal + 0
+   1849 36 00         [10] 3885 	ld	(hl), #0x00
+   184B 21r04r00      [10] 3886 	ld	hl,#_g_current_pal + 1
+   184E 36 00         [10] 3887 	ld	(hl), #0x00
+   1850 C9            [10] 3888 	ret
+   1851                    3889 _gSetPal_end::
+                           3890 ;sys_sms.c:874: void gAppendStringMl(u8 *str, u16 len) {
+                           3891 ;	---------------------------------
+                           3892 ; Function gAppendStringMl
+                           3893 ; ---------------------------------
+   1851                    3894 _gAppendStringMl_start::
+   1851                    3895 _gAppendStringMl:
+   1851 DD E5         [15] 3896 	push	ix
+   1853 DD 21 00 00   [14] 3897 	ld	ix,#0
+   1857 DD 39         [15] 3898 	add	ix,sp
+   1859 21 FA FF      [10] 3899 	ld	hl,#-6
+   185C 39            [11] 3900 	add	hl,sp
+   185D F9            [ 6] 3901 	ld	sp,hl
+                           3902 ;sys_sms.c:877: u16 *ptr = (u16 *) & gfx_buff[g_ptr];
+   185E 2Ar01r00      [16] 3903 	ld	hl,(_g_ptr)
+   1861 29            [11] 3904 	add	hl, hl
+   1862 11r06r00      [10] 3905 	ld	de,#_gfx_buff
+   1865 19            [11] 3906 	add	hl,de
+   1866 4D            [ 4] 3907 	ld	c, l
+   1867 44            [ 4] 3908 	ld	b, h
+                           3909 ;sys_sms.c:880: while (*str != 0 && len != 0) {
+   1868 DD 5E 04      [19] 3910 	ld	e,4 (ix)
+   186B DD 56 05      [19] 3911 	ld	d,5 (ix)
+   186E DD 36 FA 00   [19] 3912 	ld	-6 (ix),#0x00
+   1872 DD 7E 06      [19] 3913 	ld	a,6 (ix)
+   1875 DD 77 FB      [19] 3914 	ld	-5 (ix),a
+   1878 DD 7E 07      [19] 3915 	ld	a,7 (ix)
+   187B DD 77 FC      [19] 3916 	ld	-4 (ix),a
+   187E                    3917 00102$:
+   187E 1A            [ 7] 3918 	ld	a,(de)
+   187F DD 77 FD      [19] 3919 	ld	-3 (ix), a
+   1882 B7            [ 4] 3920 	or	a, a
+   1883 28 46         [12] 3921 	jr	Z,00104$
+   1885 DD 7E FC      [19] 3922 	ld	a,-4 (ix)
+   1888 DD B6 FB      [19] 3923 	or	a,-5 (ix)
+   188B 28 3E         [12] 3924 	jr	Z,00104$
+                           3925 ;sys_sms.c:881: *ptr++ = *str++ | g_current_pal;
+   188D DD 7E FD      [19] 3926 	ld	a,-3 (ix)
+   1890 13            [ 6] 3927 	inc	de
+   1891 DD 77 FE      [19] 3928 	ld	-2 (ix),a
+   1894 DD 36 FF 00   [19] 3929 	ld	-1 (ix),#0x00
+   1898 DD 7E FE      [19] 3930 	ld	a,-2 (ix)
+   189B 21r03r00      [10] 3931 	ld	hl,#_g_current_pal + 0
+   189E B6            [ 7] 3932 	or	a,(hl)
+   189F DD 77 FE      [19] 3933 	ld	-2 (ix),a
+   18A2 DD 7E FF      [19] 3934 	ld	a,-1 (ix)
+   18A5 21r04r00      [10] 3935 	ld	hl,#_g_current_pal + 1
+   18A8 B6            [ 7] 3936 	or	a,(hl)
+   18A9 DD 77 FF      [19] 3937 	ld	-1 (ix),a
+   18AC 69            [ 4] 3938 	ld	l, c
+   18AD 60            [ 4] 3939 	ld	h, b
+   18AE DD 7E FE      [19] 3940 	ld	a,-2 (ix)
+   18B1 77            [ 7] 3941 	ld	(hl),a
+   18B2 23            [ 6] 3942 	inc	hl
+   18B3 DD 7E FF      [19] 3943 	ld	a,-1 (ix)
+   18B6 77            [ 7] 3944 	ld	(hl),a
+   18B7 03            [ 6] 3945 	inc	bc
+   18B8 03            [ 6] 3946 	inc	bc
+                           3947 ;sys_sms.c:882: str_len++;
+   18B9 DD 34 FA      [23] 3948 	inc	-6 (ix)
+                           3949 ;sys_sms.c:883: len--;
+   18BC DD 6E FB      [19] 3950 	ld	l,-5 (ix)
+   18BF DD 66 FC      [19] 3951 	ld	h,-4 (ix)
+   18C2 2B            [ 6] 3952 	dec	hl
+   18C3 DD 75 FB      [19] 3953 	ld	-5 (ix),l
+   18C6 DD 74 FC      [19] 3954 	ld	-4 (ix),h
+   18C9 18 B3         [12] 3955 	jr	00102$
+   18CB                    3956 00104$:
+                           3957 ;sys_sms.c:885: g_ptr += str_len;
+   18CB DD 56 FA      [19] 3958 	ld	d,-6 (ix)
+   18CE 1E 00         [ 7] 3959 	ld	e,#0x00
+   18D0 21r01r00      [10] 3960 	ld	hl,#_g_ptr
+   18D3 7E            [ 7] 3961 	ld	a,(hl)
+   18D4 82            [ 4] 3962 	add	a, d
+   18D5 77            [ 7] 3963 	ld	(hl),a
+   18D6 23            [ 6] 3964 	inc	hl
+   18D7 7E            [ 7] 3965 	ld	a,(hl)
+   18D8 8B            [ 4] 3966 	adc	a, e
+   18D9 77            [ 7] 3967 	ld	(hl),a
+   18DA DD F9         [10] 3968 	ld	sp,ix
+   18DC DD E1         [14] 3969 	pop	ix
+   18DE C9            [10] 3970 	ret
+   18DF                    3971 _gAppendStringMl_end::
+                           3972 	.area _CODE
+                           3973 	.area _INITIALIZER
+                           3974 	.area _CABS (ABS)
