@@ -16,8 +16,8 @@ O funcionamento é simples:
 
 1. Escolha uma imagem no formato `.png`.
 2. Utilize o conversor incluído neste projeto para transformá-la em um arquivo `.cov`.
-3. Copie o arquivo `.cov` para a mesma pasta da ROM correspondente no cartão SD.
-4. O arquivo da capa deve possuir exatamente o mesmo nome da ROM.
+3. Copie o arquivo `.cov` para a mesma pasta da ROM do jogo correspondente no cartão SD.
+4. O arquivo da capa deve possuir exatamente o mesmo nome da ROM do jogo.
 5. Copie o arquivo `MSOS.mso` para a raiz do cartão SD.
 6. Execute-o para atualizar o sistema operacional do EverDrive.
 
@@ -39,17 +39,17 @@ Devido às limitações de hardware do Master System e do EverDrive, algumas res
 - Tradução de todo o EverDrive para PT-BR.
 - Compatível com o EverDrive de Master System chines ou original Krikzz.
 
-# Tutorial de atualização da firmware e inclusão das capas:
+# Tutorial ilustrado de atualização da firmware e inclusão das capas:
 
 <img width="1408" height="768" alt="Tutorial" src="https://github.com/user-attachments/assets/8c1bdbc5-1952-4306-8fe5-fcb948467a16" />
 
 
-# Tutorial de utilização do conversor de capas:
+# Tutorial ilustrado de utilização do conversor de capas:
 
 <img width="1408" height="768" alt="Tutorial" src="https://github.com/user-attachments/assets/392dace8-8362-4f09-8b35-6f8e12d88e6a" />
 
 
-# Tutorial de utilização do FatSorter:
+# Tutorial ilustrado de utilização do FatSorter:
 
 <img width="1408" height="768" alt="Tutorial" src="https://github.com/user-attachments/assets/10adbaec-d93a-42e1-b9e6-736b1e540342" />
 
