@@ -30,8 +30,9 @@ O pacote também inclui tutoriais ilustrados para auxiliar na instalação e uti
 Devido às limitações de hardware do Master System e do EverDrive, algumas restrições precisam ser observadas:
 
 - Cada diretório suporta no máximo **128 capas**.
-- Um número excessivo de jogos em uma mesma pasta pode causar lentidão na navegação.
-- Nos testes realizados, o melhor equilíbrio entre organização e desempenho foi obtido com aproximadamente **54 jogos por diretório**.
+- Um número excessivo de jogos/capas em um único diretório pode causar lentidão na navegação.
+- Nos testes realizados, o melhor equilíbrio entre organização e desempenho foi obtido com **54 jogos/capas por diretório**.
+- Existe um pequeno atraso ao abrir diretórios de jogos, pois o sistema realiza uma varredura em busca dos arquivos de capa correspondentes.
 
 ## Recursos
 
